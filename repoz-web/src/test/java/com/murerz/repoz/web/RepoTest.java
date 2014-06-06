@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.googlecode.mycontainer.commons.http.Request;
 import com.googlecode.mycontainer.commons.http.Response;
+import com.murerz.repoz.web.util.Util;
 
 public class RepoTest extends AbstractTestCase {
 
@@ -63,6 +64,19 @@ public class RepoTest extends AbstractTestCase {
 		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
 		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
 		assertEquals(new Integer(200), a.code("DELETE", "/r/file.texinfo"));
+	}
+
+	@Test
+	public void testLargeFile() {
+		int size = 1024 * 512;
+		String text = Util.generateString("ab ", size);
+		assertEquals(size * 3, text.length());
+
+		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
+		assertEquals(new Integer(200), a.code("PUT", "/r/file.txt", "text/plain;charset=UTF-8", text));
+		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", text);
+		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));
+		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
 	}
 
 }

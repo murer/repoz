@@ -213,7 +213,7 @@ public class Util {
 
 	public static void copyAll(InputStream in, OutputStream out) {
 		try {
-			IOUtils.copy(in, out);
+			IOUtils.copyLarge(in, out);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -525,6 +525,14 @@ public class Util {
 		path = str(path);
 		String ret = path.replaceAll("^.*\\.([^//.]*)$", "$1");
 		return str(ret);
+	}
+
+	public static String generateString(String str, int size) {
+		StringBuilder ret = new StringBuilder(str.length() * size);
+		for (int i = 0; i < size; i++) {
+			ret.append(str);
+		}
+		return ret.toString();
 	}
 
 }
