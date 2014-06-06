@@ -19,6 +19,7 @@ public class FileAccessRepoTest extends AbstractTestCase {
 	public void setUp() {
 		super.setUp();
 		System.setProperty(FileSystemFactory.PROPERTY, MemoryFileSystem.class.getName());
+		System.setProperty(AccessManagerFactory.PROPERTY, FileAccessManager.class.getName());
 	}
 
 	@Override
@@ -30,33 +31,22 @@ public class FileAccessRepoTest extends AbstractTestCase {
 
 	@Test
 	public void testAccess() {
-		System.setProperty(AccessManagerFactory.PROPERTY, FileAccessManager.class.getName());
 		assertEquals(new Integer(403), execute(null, "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		assertEquals(new Integer(403), execute(null, "PUT", "/r/dir/a/file.txt", "text/plain;charset=UTF-8", "a2").code());
-		assertEquals(new Integer(403), execute(null, "PUT", "/r/dir/b/file.txt", "text/plain;charset=UTF-8", "a3").code());
-		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a4").code());
-		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/dir/a/file.txt", "text/plain;charset=UTF-8", "a5").code());
-		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/dir/b/file.txt", "text/plain;charset=UTF-8", "a6").code());
+		assertEquals(new Integer(403), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		a.success("POST", "/access", "application/json;charset=UTF-8", "path=/&user=admin&pass=admin1");
+		assertEquals(new Integer(403), execute(null, "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
-		System.setProperty(AccessManagerFactory.PROPERTY, GrantAccessManager.class.getName());
-		assertEquals(new Integer(200), execute(null, "PUT", "/r/.repoz-access.txt", "text/plain;charset=UTF-8", "admin:admin1 rw\nuser1:user1 ro\n").code());
-		assertEquals(new Integer(200), execute(null, "PUT", "/r/dir/.repoz-access.txt", "text/plain;charset=UTF-8", "user2:user2 ro\n").code());
-		assertEquals(new Integer(200), execute(null, "PUT", "/r/dir/a/.repoz-access.txt", "text/plain;charset=UTF-8", "anonymous:x ro\n").code());
+		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		a.success("POST", "/access", "application/json;charset=UTF-8", "path=/a/b&user=o&pass=a");
+		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
-		System.setProperty(AccessManagerFactory.PROPERTY, FileAccessManager.class.getName());
-		assertEquals(new Integer(200), execute(null, "GET", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		
-		assertEquals(new Integer(200), a.code("PUT", "/r/file.txt", "text/plain;charset=UTF-8", "my text file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/dir/other.txt", "text/plain;charset=UTF-8", "my other file"));
-
-		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", "my text file");
-		assertResp(Request.create("GET", "/r/with/some/dir/other.txt"), 200, "text/plain", "UTF-8", "my other file");
-
-		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));
-		assertEquals(new Integer(200), a.code("DELETE", "/r/with/some/dir/other.txt"));
-
-		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
-		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other.txt"));
 	}
 
 	private Response execute(String basic, String method, String uri, String contentType, String text) {
