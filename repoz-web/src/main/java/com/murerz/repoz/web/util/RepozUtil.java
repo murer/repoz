@@ -1,5 +1,7 @@
 package com.murerz.repoz.web.util;
 
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +27,12 @@ public class RepozUtil {
 	public static String mediaType(String path) {
 		Properties mediaTypes = RepozUtil.config("repoz.mediatypes.properties");
 		String ext = Util.extention(path);
-		if (ext == null) {
-			return null;
+		String ret = (ext == null ? null : mediaTypes.getProperty(ext));
+		if (ret == null) {
+			FileNameMap map = URLConnection.getFileNameMap();
+			ret = map.getContentTypeFor(path);
 		}
-		return mediaTypes.getProperty(ext);
+		return ret;
 	}
 
 }
