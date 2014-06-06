@@ -7,9 +7,27 @@ import org.junit.Test;
 
 import com.googlecode.mycontainer.commons.http.Request;
 import com.googlecode.mycontainer.commons.http.Response;
+import com.murerz.repoz.web.fs.FileSystemFactory;
+import com.murerz.repoz.web.fs.MemoryFileSystem;
+import com.murerz.repoz.web.meta.AccessManagerFactory;
+import com.murerz.repoz.web.meta.GrantAccessManager;
 import com.murerz.repoz.web.util.Util;
 
-public class RepoTest extends AbstractTestCase {
+public class MemoryGrantRepoTest extends AbstractTestCase {
+
+	@Override
+	public void setUp() {
+		super.setUp();
+		System.setProperty(FileSystemFactory.PROPERTY, MemoryFileSystem.class.getName());
+		System.setProperty(AccessManagerFactory.PROPERTY, GrantAccessManager.class.getName());
+	}
+
+	@Override
+	public void tearDown() {
+		System.getProperties().remove(FileSystemFactory.PROPERTY);
+		System.getProperties().remove(AccessManagerFactory.PROPERTY);
+		super.tearDown();
+	}
 
 	@Test
 	public void testRepo() {
