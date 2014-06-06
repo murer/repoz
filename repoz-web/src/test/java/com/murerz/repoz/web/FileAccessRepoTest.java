@@ -40,6 +40,7 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("admin:admin1", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
 
 		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
@@ -59,7 +60,7 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		}
 		if (basic != null) {
 			basic = CryptUtil.encodeBase64String(basic, "UTF-8");
-			req.headers().add("Authorization", basic);
+			req.headers().add("Authorization", "Basic " + basic);
 		}
 		Response ret = s.execute(req);
 		return ret;

@@ -114,7 +114,7 @@ public class FileAccessManager implements AccessManager {
 		if (user == null) {
 			return 403;
 		}
-		if (!user.getType().equals(accessType)) {
+		if (!user.getType().equals(accessType) && !("write".equals(user.getType()) && "read".equals(accessType))) {
 			return 403;
 		}
 		if (!checkPassword(user.getPassword(), password)) {

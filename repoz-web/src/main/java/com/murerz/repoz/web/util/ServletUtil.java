@@ -151,6 +151,7 @@ public class ServletUtil {
 		if (auth == null) {
 			return null;
 		}
+		auth = auth.replaceAll("^Basic ", "");
 		auth = CryptUtil.decodeBase64String(auth, "UTF-8");
 		String[] array = auth.split(":");
 		String username = Util.str(array[0]);
