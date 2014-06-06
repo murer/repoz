@@ -146,4 +146,51 @@ public class ServletUtil {
 		return new StringBuilder().append(req.getRemoteAddr()).append(":").append(req.getRemotePort()).toString();
 	}
 
+	public static UserPass getBasicInfo(HttpServletRequest req) {
+		String auth = req.getHeader("Authorization");
+		if (auth == null) {
+			return null;
+		}
+		auth = CryptUtil.decodeBase64String(auth, "UTF-8");
+		String[] array = auth.split(":");
+		String username = Util.str(array[0]);
+		String password = Util.str(array[1]);
+		if (username == null || password == null) {
+			return null;
+		}
+		return new UserPass().setUsername(username).setPassword(password);
+	}
+
+	public static void sendMethodNotAllowed(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void sendNotFound(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void sendUnauthorized(HttpServletResponse resp, HttpServletRequest req) {
+		try {
+			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req) {
+		try {
+			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

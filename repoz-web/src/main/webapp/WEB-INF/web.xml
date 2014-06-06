@@ -10,5 +10,14 @@
 		<servlet-name>RepoServlet</servlet-name>
 		<url-pattern>/r/*</url-pattern>
 	</servlet-mapping>
+
+	<filter>
+		<filter-name>BasicAccessFilter</filter-name>
+		<filter-class>com.murerz.repoz.web.BasicAccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>BasicAccessFilter</filter-name>
+		<url-pattern>/r/*</url-pattern>
+	</filter-mapping>
 	
 </web-app>

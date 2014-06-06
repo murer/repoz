@@ -14,6 +14,7 @@ import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StreamRepozFile;
 import com.murerz.repoz.web.util.RepozUtil;
+import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.Util;
 
 public class RepoServlet extends HttpServlet {
@@ -29,7 +30,7 @@ public class RepoServlet extends HttpServlet {
 
 			RepozFile file = fs.read(path);
 			if (file == null) {
-				sendNotFound(req, resp);
+				ServletUtil.sendNotFound(req, resp);
 				return;
 			}
 
@@ -48,14 +49,6 @@ public class RepoServlet extends HttpServlet {
 			Util.copyAll(in, out);
 		} finally {
 			Util.close(in);
-		}
-	}
-
-	private void sendNotFound(HttpServletRequest req, HttpServletResponse resp) {
-		try {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -78,7 +71,7 @@ public class RepoServlet extends HttpServlet {
 
 		fs.save(file);
 	}
-	
+
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
