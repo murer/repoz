@@ -1,6 +1,7 @@
 package com.murerz.repoz.web;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -31,8 +32,14 @@ public class RepoTest extends AbstractTestCase {
 		Response resp = s.execute(req);
 		assertEquals(new Integer(code), resp.code());
 		assertEquals(mediaType, resp.content().mediaType());
-		assertEquals(charset, resp.content().charset());
-		assertEquals(data, resp.content().text());
+		if (charset != null) {
+			assertEquals(charset, resp.content().charset());
+			assertEquals(data, resp.content().text());
+		} else {
+			assertNull(charset, resp.content().charset());
+			assertEquals(data, new String(resp.content().data()));
+		}
+
 	}
 
 	@Test
@@ -43,7 +50,7 @@ public class RepoTest extends AbstractTestCase {
 		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.txt").contentType("application/octet-stream").content("my text file".getBytes())).code());
 		assertEquals(new Integer(200), a.code("PUT", "/r/with/some/dir/other", "text/plain;charset=UTF-8", "my other file"));
 
-		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", "my text file");
+		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", null, "my text file");
 		assertResp(Request.create("GET", "/r/with/some/dir/other"), 200, "text/plain", "UTF-8", "my other file");
 
 		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));

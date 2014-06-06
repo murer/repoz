@@ -19,7 +19,7 @@ public class RepozUtil {
 		if (ret == null) {
 			throw new RuntimeException("configuration not found: " + fileName);
 		}
-		return null;
+		return ret;
 	}
 
 	public static String mediaType(String path) {
