@@ -7,7 +7,7 @@ public class AccessManagerFactory {
 	public static final String PROPERTY = "repoz.accessmanager.impl";
 
 	public static AccessManager create() {
-		String className = System.getProperty(PROPERTY, "com.murerz.repoz.web.meta.GrantAccessManager");
+		String className = System.getProperty(PROPERTY, GrantAccessManager.class.getName());
 		return (AccessManager) ReflectionUtil.newInstance(className);
 	}
 
