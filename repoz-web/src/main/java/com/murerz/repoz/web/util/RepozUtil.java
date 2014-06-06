@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class RepozUtil {
 
+	public static final String ACCESS = ".repoz-access.txt";
+
 	public static String path(HttpServletRequest req) {
 		String uri = ServletUtil.getURIWithoutContextPath(req);
 		return uri.replaceAll("^/[^/]", "");

@@ -37,6 +37,11 @@ public class BasicAccessFilter implements Filter {
 			String path = RepozUtil.path(req);
 			UserPass auth = ServletUtil.getBasicInfo(req);
 
+			if (path.endsWith("/" + RepozUtil.ACCESS)) {
+				ServletUtil.sendForbidden(resp, req);
+				return;
+			}
+
 			AccessManager am = AccessManagerFactory.create();
 			if (auth != null && !am.authenticate(auth.getUsername(), auth.getPassword())) {
 				ServletUtil.sendUnauthorized(resp, req);
