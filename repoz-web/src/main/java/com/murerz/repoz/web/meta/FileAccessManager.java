@@ -6,7 +6,7 @@ public class FileAccessManager implements AccessManager {
 		return false;
 	}
 
-	public boolean authorize(String username, String path) {
+	public boolean authorize(String username, String path, String accessType) {
 		return false;
 	}
 

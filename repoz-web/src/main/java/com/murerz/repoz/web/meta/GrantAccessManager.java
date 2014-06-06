@@ -6,7 +6,7 @@ public class GrantAccessManager implements AccessManager {
 		return true;
 	}
 
-	public boolean authorize(String username, String path) {
+	public boolean authorize(String username, String path, String accessType) {
 		return true;
 	}
 

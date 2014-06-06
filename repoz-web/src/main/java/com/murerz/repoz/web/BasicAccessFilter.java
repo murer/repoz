@@ -35,12 +35,12 @@ public class BasicAccessFilter implements Filter {
 				return;
 			}
 			String path = RepozUtil.path(req);
-			UserPass auth = ServletUtil.getBasicInfo(req);
-
 			if (path.endsWith("/" + RepozUtil.ACCESS)) {
 				ServletUtil.sendForbidden(resp, req);
 				return;
 			}
+			
+			UserPass auth = ServletUtil.getBasicInfo(req);
 
 			AccessManager am = AccessManagerFactory.create();
 			if (auth != null && !am.authenticate(auth.getUsername(), auth.getPassword())) {
@@ -48,7 +48,7 @@ public class BasicAccessFilter implements Filter {
 				return;
 			}
 
-			if (!am.authorize(auth == null ? null : auth.getUsername(), path)) {
+			if (!am.authorize(auth == null ? null : auth.getUsername(), path, accessType)) {
 				ServletUtil.sendForbidden(resp, req);
 				return;
 			}
