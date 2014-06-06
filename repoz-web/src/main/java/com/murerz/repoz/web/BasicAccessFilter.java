@@ -39,20 +39,22 @@ public class BasicAccessFilter implements Filter {
 				ServletUtil.sendForbidden(resp, req);
 				return;
 			}
-			
+
 			UserPass auth = ServletUtil.getBasicInfo(req);
 
 			AccessManager am = AccessManagerFactory.create();
-			if (auth != null && !am.authenticate(auth.getUsername(), auth.getPassword())) {
+			int code = am.auth(auth == null ? null : auth.getUsername(), auth == null ? null : auth.getPassword(), path, accessType);
+			if (code == 401) {
 				ServletUtil.sendUnauthorized(resp, req);
 				return;
 			}
-
-			if (!am.authorize(auth == null ? null : auth.getUsername(), path, accessType)) {
+			if (code == 403) {
 				ServletUtil.sendForbidden(resp, req);
 				return;
 			}
-
+			if (code != 200) {
+				throw new RuntimeException("unexpected: " + code);
+			}
 			chain.doFilter(req, resp);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

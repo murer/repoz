@@ -10,7 +10,6 @@ import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.MemoryFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.FileAccessManager;
-import com.murerz.repoz.web.meta.GrantAccessManager;
 import com.murerz.repoz.web.util.CryptUtil;
 
 public class FileAccessRepoTest extends AbstractTestCase {
@@ -35,26 +34,34 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		assertEquals(new Integer(403), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		a.success("POST", "/access", "application/json;charset=UTF-8", "path=/&user=admin&pass=admin1");
+		a.success("POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", "path=/&user=admin&pass=admin1&type=write");
 		assertEquals(new Integer(403), execute(null, "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
 		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		a.success("POST", "/access", "application/json;charset=UTF-8", "path=/a/b&user=o&pass=a");
+		a.success("POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", "path=/a/b&user=o&pass=a&type=read");
 		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		assertEquals(new Integer(200), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("o:a", "GET", "/r/file.txt", null, null).code());
+		assertEquals(new Integer(200), execute("o:a", "GET", "/r/a/b/file.txt", null, null).code());
+		assertEquals(new Integer(200), execute("o:a", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
 
 	}
 
 	private Response execute(String basic, String method, String uri, String contentType, String text) {
-		Response ret = s.execute(Request.create(method, uri).contentType(contentType).content(text));
+		Request req = Request.create(method, uri);
+		if (contentType != null) {
+			req.contentType(contentType).content(text);
+		}
 		if (basic != null) {
 			basic = CryptUtil.encodeBase64String(basic, "UTF-8");
-			ret.headers().add("Authorization", basic);
+			req.headers().add("Authorization", basic);
 		}
+		Response ret = s.execute(req);
 		return ret;
 	}
 

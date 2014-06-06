@@ -3,6 +3,16 @@
 	<display-name>RepoZ Web</display-name>
 
 	<servlet>
+		<servlet-name>AccessServlet</servlet-name>
+		<servlet-class>com.murerz.repoz.web.AccessServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AccessServlet</servlet-name>
+		<url-pattern>/access</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
 		<servlet-name>RepoServlet</servlet-name>
 		<servlet-class>com.murerz.repoz.web.RepoServlet</servlet-class>
 	</servlet>

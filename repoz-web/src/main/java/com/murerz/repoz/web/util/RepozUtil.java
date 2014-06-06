@@ -37,4 +37,20 @@ public class RepozUtil {
 		return ret;
 	}
 
+	public static void validatePath(String path) {
+		
+	}
+
+	public static void validateUser(String user) {
+		
+	}
+
+	public static void validatePass(String pass) {
+		
+	}
+
+	public static void validateAccessType(String type) {
+		
+	}
+
 }

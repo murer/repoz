@@ -2,12 +2,12 @@ package com.murerz.repoz.web.meta;
 
 public class GrantAccessManager implements AccessManager {
 
-	public boolean authenticate(String username, String password) {
-		return true;
+	public void update(String path, String user, String pass, String type) {
+
 	}
 
-	public boolean authorize(String username, String path, String accessType) {
-		return true;
+	public int auth(String username, String password, String path, String accessType) {
+		return 200;
 	}
 
 }

@@ -2,8 +2,8 @@ package com.murerz.repoz.web.meta;
 
 public interface AccessManager {
 
-	boolean authenticate(String username, String password);
+	void update(String path, String user, String pass, String type);
 
-	boolean authorize(String username, String path, String accessType);
+	int auth(String username, String password, String path, String accessType);
 
 }
