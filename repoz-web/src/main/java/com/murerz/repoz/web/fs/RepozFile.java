@@ -2,15 +2,13 @@ package com.murerz.repoz.web.fs;
 
 import java.io.InputStream;
 
-public class RepozFile {
+public abstract class RepozFile {
 
 	private String path;
 
 	private String contentType;
 
 	private String charset;
-
-	private InputStream in;
 
 	public String getPath() {
 		return path;
@@ -39,13 +37,11 @@ public class RepozFile {
 		return this;
 	}
 
-	public InputStream getIn() {
-		return in;
-	}
+	public abstract InputStream getIn();
 
-	public RepozFile setIn(InputStream in) {
-		this.in = in;
-		return this;
+	@Override
+	public String toString() {
+		return "[" + path + " " + contentType + " " + charset + "]";
 	}
 
 }

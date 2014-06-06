@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.RepozFile;
+import com.murerz.repoz.web.fs.StreamRepozFile;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.Util;
 
@@ -27,6 +28,10 @@ public class RepoServlet extends HttpServlet {
 			FileSystem fs = FileSystemFactory.create();
 
 			RepozFile file = fs.read(path);
+			if (file == null) {
+				sendNotFound(req, resp);
+				return;
+			}
 
 			String contentType = file.getContentType();
 			String charset = file.getCharset();
@@ -46,6 +51,14 @@ public class RepoServlet extends HttpServlet {
 		}
 	}
 
+	private void sendNotFound(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPut(req, resp);
@@ -61,9 +74,16 @@ public class RepoServlet extends HttpServlet {
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = new RepozFile().setPath(path).setContentType(contentType).setCharset(charset).setIn(in);
+		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setContentType(contentType).setCharset(charset);
 
 		fs.save(file);
+	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String path = RepozUtil.path(req);
+		FileSystem fs = FileSystemFactory.create();
+		fs.delete(path);
 	}
 
 }
