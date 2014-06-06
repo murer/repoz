@@ -20,7 +20,7 @@ public class MemoryFileSystem implements FileSystem {
 
 	private RepozFile createStaticFile(RepozFile file) {
 		byte[] data = Util.readAll(file.getIn());
-		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setContentType(file.getContentType());
+		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
 	}
 
 	public void delete(String path) {

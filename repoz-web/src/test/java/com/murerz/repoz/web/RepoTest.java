@@ -19,7 +19,7 @@ public class RepoTest extends AbstractTestCase {
 
 		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", "my text file");
 		assertResp(Request.create("GET", "/r/with/some/dir/other.txt"), 200, "text/plain", "UTF-8", "my other file");
-		
+
 		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));
 		assertEquals(new Integer(200), a.code("DELETE", "/r/with/some/dir/other.txt"));
 
@@ -33,6 +33,24 @@ public class RepoTest extends AbstractTestCase {
 		assertEquals(mediaType, resp.content().mediaType());
 		assertEquals(charset, resp.content().charset());
 		assertEquals(data, resp.content().text());
+	}
+
+	@Test
+	public void testMediaType() {
+		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
+		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
+
+		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.txt").contentType("application/octet-stream").content("my text file".getBytes())).code());
+		assertEquals(new Integer(200), a.code("PUT", "/r/with/some/dir/other", "text/plain;charset=UTF-8", "my other file"));
+
+		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", "my text file");
+		assertResp(Request.create("GET", "/r/with/some/dir/other"), 200, "text/plain", "UTF-8", "my other file");
+
+		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));
+		assertEquals(new Integer(200), a.code("DELETE", "/r/with/some/dir/other"));
+
+		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
+		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
 	}
 
 }

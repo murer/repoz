@@ -6,7 +6,7 @@ public abstract class RepozFile {
 
 	private String path;
 
-	private String contentType;
+	private String mediaType;
 
 	private String charset;
 
@@ -19,12 +19,12 @@ public abstract class RepozFile {
 		return this;
 	}
 
-	public String getContentType() {
-		return contentType;
+	public String getMediaType() {
+		return mediaType;
 	}
 
-	public RepozFile setContentType(String contentType) {
-		this.contentType = contentType;
+	public RepozFile setMediaType(String contentType) {
+		this.mediaType = contentType;
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public abstract class RepozFile {
 
 	@Override
 	public String toString() {
-		return "[" + path + " " + contentType + " " + charset + "]";
+		return "[" + path + " " + mediaType + " " + charset + "]";
 	}
 
 }

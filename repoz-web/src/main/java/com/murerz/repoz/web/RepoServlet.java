@@ -34,7 +34,7 @@ public class RepoServlet extends HttpServlet {
 				return;
 			}
 
-			String contentType = file.getContentType();
+			String contentType = file.getMediaType();
 			String charset = file.getCharset();
 			if (contentType != null) {
 				resp.setContentType(contentType);
@@ -63,11 +63,14 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-		String contentType = req.getContentType();
+		String mediaType = RepozUtil.mediaType(path);
+		if (mediaType == null) {
+			mediaType = req.getContentType();
+		}
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setContentType(contentType).setCharset(charset);
+		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
 
 		fs.save(file);
 	}

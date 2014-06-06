@@ -166,14 +166,6 @@ public class Util {
 		return str == null ? "" : str;
 	}
 
-	public static Properties config() {
-		Properties props = Util.classpathProperties("portal.properties");
-		if (props == null) {
-			return new Properties();
-		}
-		return props;
-	}
-
 	public static Properties classpathProperties(String path) {
 		URL url = classpath(path);
 		return properties(url);
@@ -527,6 +519,12 @@ public class Util {
 	public static String onlyNumbers(String str) {
 
 		return str.replaceAll("[\\D]", "");
+	}
+
+	public static String extention(String path) {
+		path = str(path);
+		String ret = path.replaceAll("^.*\\.([^//.]*)$", "$1");
+		return str(ret);
 	}
 
 }

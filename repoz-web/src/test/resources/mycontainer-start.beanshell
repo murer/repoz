@@ -1,0 +1,18 @@
+
+import com.murerz.repoz.web.*;
+
+try {
+	mycontainer = MycontainerHelper.me();
+	mycontainer.setUp();
+	port = 8080;
+	mycontainer.bind(port);
+
+	mycontainer.waitFor();
+
+	mycontainer.unbind(port);	
+	mycontainer.tearDown();
+	
+	mycontainer.shutdown();
+} catch (Exception e) {
+	e.printStackTrace();
+}
