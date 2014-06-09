@@ -1,5 +1,8 @@
 package com.murerz.repoz.web.meta;
 
+import com.murerz.repoz.web.util.RepozUtil;
+import com.murerz.repoz.web.util.Util;
+
 public class User {
 
 	private String path;
@@ -47,7 +50,11 @@ public class User {
 	}
 
 	public void validate() {
-		
+		RepozUtil.validatePath(path);
+		RepozUtil.checkFalsePattern(path, ".+/$");
+		RepozUtil.validateUser(user);
+		RepozUtil.validateAccessType(type);
+		RepozUtil.validatePass(pass);
 	}
 
 	@Override

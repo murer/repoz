@@ -38,19 +38,34 @@ public class RepozUtil {
 	}
 
 	public static void validatePath(String path) {
-		
+		checkPattern(path, "^[a-zA-Z0-9/_\\.\\-\\$\\@]+$");
+		checkFalsePattern(path, ".*//.*");
+	}
+
+	public static void checkPattern(String path, String pattern) {
+		if (!path.matches(pattern)) {
+			throw new RuntimeException("invalid: " + path + " " + pattern);
+		}
+	}
+
+	public static void checkFalsePattern(String path, String pattern) {
+		if (path.matches(pattern)) {
+			throw new RuntimeException("invalid: " + path + " " + pattern);
+		}
 	}
 
 	public static void validateUser(String user) {
-		
+		checkPattern(user, "^[a-zA-Z]{1,1}[a-zA-Z0-9_\\.\\-\\$\\@]{2,99}$");
 	}
 
 	public static void validatePass(String pass) {
-		
+		checkPattern(pass, "^[a-zA-Z0-9/_\\.\\-\\$\\@\\!\\?\\(\\)\\*\\%\\#\\=\\+\\[\\]\\{\\}\\,\\\\]{6,99}$");
 	}
 
 	public static void validateAccessType(String type) {
-		
+		if (!"read".equals(type) && !"write".equals(type)) {
+			throw new RuntimeException("should be read or write: " + type);
+		}
 	}
 
 }
