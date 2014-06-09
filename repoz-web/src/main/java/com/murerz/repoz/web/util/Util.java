@@ -535,4 +535,13 @@ public class Util {
 		return ret.toString();
 	}
 
+	public static void validateUsascii(CharSequence sb) {
+		for (int i = 0; i < sb.length(); i++) {
+			int b = 0xFFFFFF & sb.charAt(i);
+			if (b < 0 || b > 127) {
+				throw new RuntimeException("invalid char: " + b);
+			}
+		}
+	}
+
 }

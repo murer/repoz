@@ -10,4 +10,8 @@ public class GrantAccessManager implements AccessManager {
 		return 200;
 	}
 
+	public void save(User user) {
+		
+	}
+
 }
