@@ -27,4 +27,8 @@ public class MemoryFileSystem implements FileSystem {
 		files.remove(path);
 	}
 
+	public void deleteAll() {
+		files.clear();
+	}
+
 }

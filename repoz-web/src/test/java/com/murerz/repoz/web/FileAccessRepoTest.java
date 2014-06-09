@@ -19,6 +19,8 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		super.setUp();
 		System.setProperty(FileSystemFactory.PROPERTY, MemoryFileSystem.class.getName());
 		System.setProperty(AccessManagerFactory.PROPERTY, FileAccessManager.class.getName());
+		
+		FileSystemFactory.create().deleteAll();
 	}
 
 	@Override

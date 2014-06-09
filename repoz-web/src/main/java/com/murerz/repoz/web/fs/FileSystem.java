@@ -8,4 +8,6 @@ public interface FileSystem {
 
 	void delete(String path);
 
+	void deleteAll();
+
 }

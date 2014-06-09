@@ -18,6 +18,8 @@ public class MemoryGrantRepoTest extends AbstractTestCase {
 		super.setUp();
 		System.setProperty(FileSystemFactory.PROPERTY, MemoryFileSystem.class.getName());
 		System.setProperty(AccessManagerFactory.PROPERTY, GrantAccessManager.class.getName());
+		
+		FileSystemFactory.create().deleteAll();
 	}
 
 	@Override
