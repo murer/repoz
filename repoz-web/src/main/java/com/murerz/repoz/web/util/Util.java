@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.MaskFormatter;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -541,6 +542,37 @@ public class Util {
 			if (b < 0 || b > 127) {
 				throw new RuntimeException("invalid char: " + b);
 			}
+		}
+	}
+
+	public static void deleteChildsRecursively(File base) {
+		try {
+			File[] files = base.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					FileUtils.deleteDirectory(file);
+				} else {
+					if (!file.delete()) {
+						throw new RuntimeException("can not be deleted: " + file);
+					}
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void deleteRecursively(File f) {
+		try {
+			if (f.isDirectory()) {
+				FileUtils.deleteDirectory(f);
+			} else {
+				if (!f.delete()) {
+					throw new RuntimeException("can not be deleted: " + f);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
