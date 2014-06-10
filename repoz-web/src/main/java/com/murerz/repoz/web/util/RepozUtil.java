@@ -12,7 +12,9 @@ public class RepozUtil {
 
 	public static String path(HttpServletRequest req) {
 		String uri = ServletUtil.getURIWithoutContextPath(req);
-		return uri.replaceAll("^/[^/]", "");
+		String ret = uri.replaceAll("^/[^/]", "");
+		validatePath(ret);
+		return ret;
 	}
 
 	public static Properties config(String fileName) {
