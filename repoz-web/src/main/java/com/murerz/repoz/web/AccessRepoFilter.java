@@ -18,7 +18,7 @@ import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.UserPass;
 
-public class BasicAccessFilter implements Filter {
+public class AccessRepoFilter implements Filter {
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 

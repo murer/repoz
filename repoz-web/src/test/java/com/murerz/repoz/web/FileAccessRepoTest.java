@@ -19,7 +19,7 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		super.setUp();
 		System.setProperty(FileSystemFactory.PROPERTY, MemoryFileSystem.class.getName());
 		System.setProperty(AccessManagerFactory.PROPERTY, FileAccessManager.class.getName());
-		
+
 		FileSystemFactory.create().deleteAll();
 	}
 
@@ -36,8 +36,8 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		assertEquals(new Integer(401), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute("admin:admin1", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		a.success("POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", "path=/a&user=admin&pass=admin1&type=write");
-		a.success("POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", "path=/z&user=admin&pass=admin1&type=write");
+		setAccess("path=/a&user=admin&pass=admin1&type=write");
+		setAccess("path=/z&user=admin&pass=admin1&type=write");
 		assertEquals(new Integer(401), execute(null, "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute(null, "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
@@ -47,28 +47,15 @@ public class FileAccessRepoTest extends AbstractTestCase {
 
 		assertEquals(new Integer(401), execute("o:a", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
-		a.success("POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", "path=/a&user=ooo&pass=aaaaaa&type=read");
+		setAccess("path=/a&user=ooo&pass=aaaaaa&type=read");
 		assertEquals(new Integer(401), execute("ooo:aaaaaa", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("ooo:aaaaaa", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute("ooo:aaaaaa", "GET", "/r/z/file.txt", null, null).code());
 		assertEquals(new Integer(200), execute("ooo:aaaaaa", "GET", "/r/a/b/file.txt", null, null).code());
 		assertEquals(new Integer(200), execute("ooo:aaaaaa", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
-		
+
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
-	}
-
-	private Response execute(String basic, String method, String uri, String contentType, String text) {
-		Request req = Request.create(method, uri);
-		if (contentType != null) {
-			req.contentType(contentType).content(text);
-		}
-		if (basic != null) {
-			basic = CryptUtil.encodeBase64String(basic, "UTF-8");
-			req.headers().add("Authorization", "Basic " + basic);
-		}
-		Response ret = s.execute(req);
-		return ret;
 	}
 
 }
