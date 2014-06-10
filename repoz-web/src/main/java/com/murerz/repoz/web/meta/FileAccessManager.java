@@ -24,7 +24,7 @@ public class FileAccessManager implements AccessManager {
 
 		if (username == null) {
 			username = "anonymous";
-			password = "123";
+			password = "anonymous";
 		}
 
 		RepozAuths auths = loadFile(repo);

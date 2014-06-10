@@ -7,7 +7,7 @@ public class FileSystemFactory {
 	public static final String PROPERTY = "repoz.filesystem.impl";
 
 	public static FileSystem create() {
-		String className = System.getProperty(PROPERTY, MemoryFileSystem.class.getName());
+		String className = System.getProperty(PROPERTY, RawFileSystem.class.getName());
 		return (FileSystem) ReflectionUtil.newInstance(className);
 	}
 

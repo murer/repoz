@@ -11,13 +11,20 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.UserPass;
 
 public class AccessBasicFilter implements Filter {
 
+	private static final Logger LOG = LoggerFactory.getLogger(AccessBasicFilter.class);
+
 	public void init(FilterConfig filterConfig) throws ServletException {
+		System.out.println("inittttttttttt");
+		LOG.info("inittttttttttt");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
