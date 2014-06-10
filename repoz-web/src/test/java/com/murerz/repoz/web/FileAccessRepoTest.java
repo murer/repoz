@@ -42,15 +42,17 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(200), execute("admin:admin1", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
+		assertEquals(new Integer(200), execute("admin:admin1", "DELETE", "/r/a/b/c/d/e/file.txt", null, null).code());
 
 		assertEquals(new Integer(401), execute("o:a", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(401), execute("o:a", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		setAccess("path=/a&user=ooo&pass=aaaaaa&type=read");
 		assertEquals(new Integer(401), execute("ooo:aaaaaa", "PUT", "/r/z/file.txt", "text/plain;charset=UTF-8", "a1").code());
 		assertEquals(new Integer(403), execute("ooo:aaaaaa", "PUT", "/r/a/b/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(403), execute("ooo:aaaaaa", "DELETE", "/r/a/b/file.txt", null, null).code());
 		assertEquals(new Integer(401), execute("ooo:aaaaaa", "GET", "/r/z/file.txt", null, null).code());
 		assertEquals(new Integer(200), execute("ooo:aaaaaa", "GET", "/r/a/b/file.txt", null, null).code());
-		assertEquals(new Integer(200), execute("ooo:aaaaaa", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
+		assertEquals(new Integer(404), execute("ooo:aaaaaa", "GET", "/r/a/b/c/d/e/file.txt", null, null).code());
 
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
