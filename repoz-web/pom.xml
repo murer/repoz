@@ -15,6 +15,18 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.flexjson</groupId>
+			<artifactId>flexjson</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
@@ -26,37 +38,11 @@
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
 			<artifactId>mycontainer-web</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
 			<artifactId>mycontainer-commons</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.googlecode.mycontainer</groupId>
-			<artifactId>mycontainer-gae-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-1.0-sdk</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-labs</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-api-stubs</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.appengine</groupId>
-			<artifactId>appengine-testing</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

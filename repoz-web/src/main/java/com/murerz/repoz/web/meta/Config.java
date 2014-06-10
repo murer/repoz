@@ -2,9 +2,14 @@ package com.murerz.repoz.web.meta;
 
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.murerz.repoz.web.util.Util;
 
 public class Config {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
 	private static Object MUTEX = new Object();
 
@@ -28,6 +33,7 @@ public class Config {
 	private void prepare() {
 		props = Util.properties(getClass().getClassLoader().getResource("repoz.properties"));
 		if (props == null) {
+			LOG.info("repoz.properties not found");
 			props = new Properties();
 		}
 		props.putAll(System.getProperties());

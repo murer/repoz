@@ -10,7 +10,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mycontainer.version>1.4.6</mycontainer.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<gae.version>1.8.2</gae.version>
 		<appengine.target.plugin.version>1.8.2</appengine.target.plugin.version>
 		<main.basedir>${project.basedir}</main.basedir>
 	</properties>
@@ -126,36 +125,6 @@
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>1.8.0.7</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-remote-api</artifactId>
-				<version>${gae.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-api-labs</artifactId>
-				<version>${gae.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-testing</artifactId>
-				<version>${gae.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine.tools</groupId>
-				<artifactId>appengine-gcs-client</artifactId>
-				<version>0.3</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-api-1.0-sdk</artifactId>
-				<version>${gae.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.appengine</groupId>
-				<artifactId>appengine-api-stubs</artifactId>
-				<version>${gae.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.googlecode.mycontainer</groupId>

@@ -61,11 +61,13 @@ public class MycontainerHelper {
 		webServer = builder.createDeployer(JettyServerDeployer.class);
 		webServer.setName("WebServer");
 		ContextWebServer webContext = webServer.createContextWebServer();
-		webContext.setContext("/");
+		
 		
 		if(new File("repoz-web/src/main/webapp").exists()) {
+			webContext.setContext("/repoz");
 			webContext.setResources("repoz-web/src/main/webapp");	
 		} else {
+			webContext.setContext("/");
 			webContext.setResources("src/main/webapp");
 		}
 		
