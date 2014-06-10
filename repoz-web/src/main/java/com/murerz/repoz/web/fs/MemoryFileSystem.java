@@ -3,7 +3,7 @@ package com.murerz.repoz.web.fs;
 import java.util.Hashtable;
 import java.util.Map;
 
-import com.murerz.repoz.web.util.Util;
+import com.murerz.repoz.web.util.RepozUtil;
 
 public class MemoryFileSystem implements FileSystem {
 
@@ -14,13 +14,8 @@ public class MemoryFileSystem implements FileSystem {
 	}
 
 	public void save(RepozFile file) {
-		file = createStaticFile(file);
+		file = RepozUtil.createStaticFile(file);
 		files.put(file.getPath(), file);
-	}
-
-	private RepozFile createStaticFile(RepozFile file) {
-		byte[] data = Util.readAll(file.getIn());
-		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
 	}
 
 	public void delete(String path) {

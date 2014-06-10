@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.murerz.repoz.web.meta.AccessManager;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.User;
+import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 
 public class AccessServlet extends HttpServlet {
@@ -35,7 +36,9 @@ public class AccessServlet extends HttpServlet {
 
 		User user = new User().setPath(path).setUser(username).setType(type).setPass(pass);
 		user.validate();
-
+		
+		RepozUtil.checkPattern(path, "^/[^/]+$");
+		
 		AccessManager am = AccessManagerFactory.create();
 		am.save(user);
 	}

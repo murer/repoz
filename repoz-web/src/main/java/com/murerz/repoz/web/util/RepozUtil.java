@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.murerz.repoz.web.fs.RepozFile;
+import com.murerz.repoz.web.fs.StaticRepozFile;
+
 public class RepozUtil {
 
 	public static final String ACCESS = "/.repozauth.txt";
@@ -68,6 +71,11 @@ public class RepozUtil {
 		if (!"read".equals(type) && !"write".equals(type)) {
 			throw new RuntimeException("should be read or write: " + type);
 		}
+	}
+
+	public static RepozFile createStaticFile(RepozFile file) {
+		byte[] data = Util.readAll(file.getIn());
+		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
 	}
 
 }
