@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-import org.apache.taglibs.standard.lang.jstl.test.StaticFunctionTests;
+import java.util.Collection;
 
 import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
@@ -30,12 +29,12 @@ public class FileAccessManager implements AccessManager {
 
 		RepozAuths auths = loadFile(repo);
 
-		User saved = auths.get(repo, username);
+		User saved = auths.get(username);
 
-		if (saved == null || !password.equals(user.getPass())) {
+		if (saved == null || !password.equals(saved.getPass())) {
 			return 401;
 		}
-		if ("write".equals(type) && "read".equals(user.getType())) {
+		if ("write".equals(type) && "read".equals(saved.getType())) {
 			return 403;
 		}
 		return 200;
@@ -47,7 +46,7 @@ public class FileAccessManager implements AccessManager {
 	}
 
 	private RepozAuths loadFile(String path) {
-		RepozAuths ret = new RepozAuths();
+		RepozAuths ret = new RepozAuths(path);
 		FileSystem fs = FileSystemFactory.create();
 		RepozFile file = fs.read(path + RepozUtil.ACCESS);
 		if (file == null) {
@@ -83,8 +82,8 @@ public class FileAccessManager implements AccessManager {
 		String[] array = line.split("\\s+");
 		String repo = array[0];
 		String username = array[1];
-		String password = array[2];
-		String type = array[3];
+		String type = array[2];
+		String password = array[3];
 		User ret = new User().setPath(repo).setUser(username).setPass(password).setType(type);
 		ret.validate();
 		return ret;
@@ -99,10 +98,25 @@ public class FileAccessManager implements AccessManager {
 	}
 
 	private void saveFile(RepozAuths auths) {
-		FileSystem fs = FileSystemFactory.create();
-		StaticRepozFile file = new StaticRepozFile();
-		fs.save(file);
+		try {
+			FileSystem fs = FileSystemFactory.create();
+			StaticRepozFile file = new StaticRepozFile();
+			file.setPath(auths.getPath() + RepozUtil.ACCESS).setCharset("UTF-8").setMediaType("plain/text");
+			Collection<User> set = auths.getUsers().values();
+			StringBuilder sb = new StringBuilder();
+			for (User user : set) {
+				sb.append(user.getPath());
+				sb.append(" ").append(user.getUser());
+				sb.append(" ").append(user.getType());
+				sb.append(" ").append(user.getPass());
+				sb.append("\n");
+			}
+			byte[] data = sb.toString().getBytes("UTF-8");
+			file.setData(data);
+			fs.save(file);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
-

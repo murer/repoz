@@ -1,23 +1,42 @@
 package com.murerz.repoz.web.meta;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.murerz.repoz.web.util.RepozUtil;
-
 public class RepozAuths {
 
-	private final Map<RepozAuthEntry, User> users = new TreeMap<RepozAuthEntry, User>();
+	private final Map<String, User> users = new TreeMap<String, User>();
 
-	public User get(String repo, String user) {
-		return users.get(new RepozAuthEntry(repo, user));
+	private final String path;
+
+	public RepozAuths(String path) {
+		this.path = path;
+	}
+
+	public User get(String user) {
+		return users.get(user);
 	}
 
 	public void put(User user) {
+		if (!path.equals(user.getPath())) {
+			throw new RuntimeException("wrong: " + path + " " + user.getPath());
+		}
 		user.validate();
-		RepozUtil.checkPattern(user.getPath(), "^/[^/]+$");
-		RepozAuthEntry entry = new RepozAuthEntry(user.getPath(), user.getUser());
-		users.put(entry, user);
+		users.put(user.getUser(), user);
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public Map<String, User> getUsers() {
+		return Collections.unmodifiableMap(users);
+	}
+
+	@Override
+	public String toString() {
+		return "[RepozAuths " + path + "]";
 	}
 
 }
