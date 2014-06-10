@@ -119,4 +119,13 @@ public class FileAccessManager implements AccessManager {
 		}
 	}
 
+	public void delete(String repo, String username) {
+		RepozAuths auths = loadFile(repo);
+		if (auths == null) {
+			return;
+		}
+		auths.remove(username);
+		saveFile(auths);
+	}
+
 }

@@ -7,7 +7,11 @@ public class GrantAccessManager implements AccessManager {
 	}
 
 	public void save(User user) {
-		
+
+	}
+
+	public void delete(String repo, String username) {
+
 	}
 
 }

@@ -4,13 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.googlecode.mycontainer.commons.http.Request;
 import com.googlecode.mycontainer.commons.http.Response;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.MemoryFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.FileAccessManager;
-import com.murerz.repoz.web.util.CryptUtil;
 
 public class FileAccessRepoTest extends AbstractTestCase {
 
@@ -56,6 +54,31 @@ public class FileAccessRepoTest extends AbstractTestCase {
 
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/b/c/d/e/file.txt", "text/plain;charset=UTF-8", "a1").code());
 
+	}
+
+	@Test
+	public void testCrud() {
+		assertEquals("", listAccess("/a"));
+		setAccess("path=/a&user=admin&pass=admin1&type=write");
+		setAccess("path=/b&user=admin&pass=admin1&type=write");
+		setAccess("path=/b&user=other&pass=other1&type=write");
+		assertEquals("/a admin write admin1", listAccess("/a"));
+		assertEquals("/b admin write admin1\n/b other write other1", listAccess("/b"));
+		deleteAccess("/b", "other");
+		deleteAccess("/a", "admin");
+		assertEquals("", listAccess("/a"));
+		assertEquals("/b admin write admin1", listAccess("/b"));
+	}
+
+	private void deleteAccess(String path, String user) {
+		assertEquals(new Integer(200), execute("main:123", "DELETE", "/access?path=" + path + "&user=" + user, null, null).code());
+	}
+
+	private String listAccess(String path) {
+		Response resp = execute("main:123", "GET", "/access?path=" + path, null, null);
+		assertEquals(new Integer(200), resp.code());
+		String text = resp.content().text().trim();
+		return text;
 	}
 
 }

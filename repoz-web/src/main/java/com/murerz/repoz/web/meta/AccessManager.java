@@ -6,4 +6,6 @@ public interface AccessManager {
 
 	void save(User user);
 
+	void delete(String repo, String username);
+
 }

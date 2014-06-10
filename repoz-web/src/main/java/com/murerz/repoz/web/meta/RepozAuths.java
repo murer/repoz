@@ -39,4 +39,8 @@ public class RepozAuths {
 		return "[RepozAuths " + path + "]";
 	}
 
+	public void remove(String username) {
+		users.remove(username);
+	}
+
 }
