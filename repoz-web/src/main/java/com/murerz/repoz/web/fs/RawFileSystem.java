@@ -4,22 +4,25 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.murerz.repoz.web.meta.Config;
+import com.murerz.repoz.web.util.FlexJson;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.Util;
 
 public class RawFileSystem implements FileSystem {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RawFileSystem.class);
-	
+
 	private File base() {
 		String ret = Config.me().retProperty("repoz.rawfilesytem.base");
 		File file = new File(ret);
@@ -38,16 +41,24 @@ public class RawFileSystem implements FileSystem {
 
 	public RepozFile read(String path) {
 		try {
+			if (path.endsWith(".repozmeta")) {
+				return null;
+			}
 			File file = new File(base(), path);
 			if (!file.exists() || file.isDirectory()) {
 				return null;
 			}
 			String mediaType = RepozUtil.mediaType(file.getPath());
 			StreamRepozFile ret = new StreamRepozFile();
-			ret.setCharset("UTF-8").setPath(path).setMediaType(mediaType);
+			ret.setPath(path).setMediaType(mediaType);
+
+			String m = Util.read(new File(file.getPath() + ".repozmeta").toURI().toURL(), "UTF-8");
+			FileMeta meta = FlexJson.instance().parse(m, FileMeta.class);
+			ret.setCharset(meta.getCharset()).setMediaType(meta.getMediaType());
+
 			ret.setIn(new BufferedInputStream(new FileInputStream(file)));
 			return ret;
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -58,6 +69,27 @@ public class RawFileSystem implements FileSystem {
 		if (!parent.exists()) {
 			parent.mkdirs();
 		}
+
+		File meta = new File(f.getPath() + ".repozmeta");
+		FileMeta m = new FileMeta(file.getMediaType(), file.getCharset());
+		Util.write(meta, FlexJson.instance().format(m));
+		copyBinary(file, f);
+	}
+
+	private void copyText(RepozFile file, File f, String charset) {
+		Writer out = null;
+		try {
+			out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(f)), "UTF-8");
+			InputStreamReader in = new InputStreamReader(new BufferedInputStream(file.getIn()), charset);
+			Util.copyAll(in, out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Util.close(out);
+		}
+	}
+
+	private void copyBinary(RepozFile file, File f) {
 		OutputStream out = null;
 		try {
 			out = new BufferedOutputStream(new FileOutputStream(f));
@@ -71,7 +103,13 @@ public class RawFileSystem implements FileSystem {
 
 	public void delete(String path) {
 		File f = new File(base(), path);
-		Util.deleteRecursively(f);
+		File meta = new File(f + ".repozmeta");
+		if (f.exists()) {
+			Util.deleteRecursively(f);
+		}
+		if (meta.exists()) {
+			Util.deleteRecursively(meta);
+		}
 	}
 
 	public void deleteAll() {

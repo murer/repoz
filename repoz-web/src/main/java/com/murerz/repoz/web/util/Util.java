@@ -576,4 +576,18 @@ public class Util {
 		}
 	}
 
+	public static void write(File meta, String format) {
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(meta);
+			out.write(format.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(out);
+		}
+	}
+
 }
