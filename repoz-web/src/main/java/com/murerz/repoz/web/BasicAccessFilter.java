@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.murerz.repoz.web.meta.AccessManager;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
+import com.murerz.repoz.web.meta.User;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.UserPass;
@@ -43,7 +44,11 @@ public class BasicAccessFilter implements Filter {
 			UserPass auth = ServletUtil.getBasicInfo(req);
 
 			AccessManager am = AccessManagerFactory.create();
-			int code = am.auth(auth == null ? null : auth.getUsername(), auth == null ? null : auth.getPassword(), path, accessType);
+			User user = new User().setPath(path).setType(accessType);
+			if (auth != null) {
+				user.setUser(auth.getUsername()).setPass(auth.getPassword());
+			}
+			int code = am.auth(user);
 			if (code == 401) {
 				ServletUtil.sendUnauthorized(resp, req);
 				return;
