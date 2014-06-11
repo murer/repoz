@@ -70,4 +70,4 @@ EOF
 sudo ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
 sudo service apache2 restart
 
-./cmds/prod/repoz-install.sh
+./cmds/prod/repoz-install/install-repoz.sh
