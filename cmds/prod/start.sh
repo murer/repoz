@@ -28,9 +28,9 @@ tar czf - cmds/prod/repoz-install | cmds/prod/connect.sh bash -xc "cat | tar xzv
 
 cmds/prod/connect.sh "find cmds -name '*.sh' -exec chmod -v +x '{}' \;"
 
-cmds/prod/connect.sh bash -xc ./cmds/prod/repoz-install/install.sh
+cmds/prod/connect.sh ./cmds/prod/repoz-install/install.sh
 
-#cmds/prod/connect.sh tail -f install.log
+cmds/prod/connect.sh tail -f install.log
 
 
 

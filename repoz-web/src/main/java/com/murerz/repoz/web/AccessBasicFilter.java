@@ -23,8 +23,6 @@ public class AccessBasicFilter implements Filter {
 	private static final Logger LOG = LoggerFactory.getLogger(AccessBasicFilter.class);
 
 	public void init(FilterConfig filterConfig) throws ServletException {
-		System.out.println("inittttttttttt");
-		LOG.info("inittttttttttt");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

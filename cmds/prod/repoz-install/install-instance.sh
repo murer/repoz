@@ -9,7 +9,7 @@ sudo service cron restart
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install vim nmap netcat tcpdump zip pv apache2-utils apache2 curl ntpdate
+sudo apt-get -y install vim nmap netcat tcpdump zip pv apache2-utils apache2 curl ntpdate psmisc
 
 sudo service ntp stop
 sudo ntpdate ntp.ubuntu.com
@@ -39,7 +39,7 @@ java -version
 # apache
 sudo a2enmod proxy proxy_http
 
-sudo htpasswd -bc /etc/apache2/passwd root wr4th0fg0ds
+sudo htpasswd -bc /etc/apache2/passwd root 1q2w3e4r
 
 sudo rm /etc/apache2/sites-enabled/000-default
 sudo tee /etc/apache2/sites-available/repoz <<-EOF
@@ -70,4 +70,15 @@ EOF
 sudo ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
 sudo service apache2 restart
 
-./cmds/prod/repoz-install/install-repoz.sh
+cd -
+
+mkdir opt
+cd opt
+wget http://storage.googleapis.com/dextra-pdoc-pub/repo/ext/br/com/portaldedocumentos/ext/jboss-as/7.1.1.Final/jboss-as-7.1.1.Final.zip -O jboss.zip
+unzip jboss.zip
+ln -s jboss-as-7.1.1.Final jboss
+
+cd -
+
+./cmds/prod/repoz-install/update-repoz.sh
+
