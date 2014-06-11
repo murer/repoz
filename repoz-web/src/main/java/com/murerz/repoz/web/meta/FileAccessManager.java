@@ -48,7 +48,7 @@ public class FileAccessManager implements AccessManager {
 	private RepozAuths loadFile(String path) {
 		RepozAuths ret = new RepozAuths(path);
 		FileSystem fs = FileSystemFactory.create();
-		RepozFile file = fs.read(path + RepozUtil.ACCESS);
+		RepozFile file = fs.read(path + "/" + RepozUtil.ACCESS);
 		if (file == null) {
 			return ret;
 		}
@@ -101,7 +101,7 @@ public class FileAccessManager implements AccessManager {
 		try {
 			FileSystem fs = FileSystemFactory.create();
 			StaticRepozFile file = new StaticRepozFile();
-			file.setPath(auths.getPath() + RepozUtil.ACCESS).setCharset("UTF-8").setMediaType("plain/text");
+			file.setPath(auths.getPath() + "/" + RepozUtil.ACCESS).setCharset("UTF-8").setMediaType("plain/text");
 			Collection<User> set = auths.getUsers().values();
 			StringBuilder sb = new StringBuilder();
 			for (User user : set) {

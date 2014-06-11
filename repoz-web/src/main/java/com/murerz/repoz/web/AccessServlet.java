@@ -33,7 +33,7 @@ public class AccessServlet extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 
 		FileSystem fs = FileSystemFactory.create();
-		RepozFile file = fs.read(repo + RepozUtil.ACCESS);
+		RepozFile file = fs.read(repo + "/" + RepozUtil.ACCESS);
 		if (file == null) {
 			return;
 		}

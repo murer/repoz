@@ -11,7 +11,7 @@ import com.murerz.repoz.web.fs.StaticRepozFile;
 
 public class RepozUtil {
 
-	public static final String ACCESS = "/.repozauth.txt";
+	public static final String ACCESS = ".repozauth.txt";
 
 	public static String path(HttpServletRequest req) {
 		String uri = ServletUtil.getURIWithoutContextPath(req);
@@ -77,5 +77,7 @@ public class RepozUtil {
 		byte[] data = Util.readAll(file.getIn());
 		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
 	}
+
+	public static final String REPOZMETA = ".repozmeta";
 
 }

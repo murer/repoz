@@ -9,6 +9,7 @@ import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.MemoryFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.FileAccessManager;
+import com.murerz.repoz.web.util.RepozUtil;
 
 public class FileAccessRepoTest extends AbstractTestCase {
 
@@ -70,6 +71,21 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		deleteAccess("/a", "admin");
 		assertEquals("", listAccess("/a"));
 		assertEquals("/b admin write admin1", listAccess("/b"));
+	}
+
+	@Test
+	public void testMetaFiles() {
+		setAccess("path=/a&user=admin&pass=admin1&type=write");
+		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/any/file.txt", "text/plain;charset=UTF-8", "a1").code());
+		assertEquals(new Integer(200), execute("admin:admin1", "GET", "/r/a/any/file.txt", null, null).code());
+
+		assertEquals(new Integer(403), execute("admin:admin1", "GET", "/r/a/" + RepozUtil.ACCESS, null, null).code());
+		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/a/" + RepozUtil.ACCESS, "text/plain;charset=UTF-8", "/a admin write admin1").code());
+
+		assertEquals(new Integer(403), execute("admin:admin1", "GET", "/r/a/any/file.txt.repozmeta", null, null).code());
+		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/a/any/file.txt.repozmeta", "text/plain;charset=UTF-8", "/a admin write admin1").code());
+		assertEquals(new Integer(403), execute("admin:admin1", "GET", "/r/a/any/other.txt.repozmeta", null, null).code());
+		assertEquals(new Integer(403), execute("admin:admin1", "PUT", "/r/a/any/other.txt.repozmeta", "text/plain;charset=UTF-8", "/a admin write admin1").code());
 	}
 
 	private void deleteAccess(String path, String user) {

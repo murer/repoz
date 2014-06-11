@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +38,6 @@ public class RawFileSystem implements FileSystem {
 
 	public RepozFile read(String path) {
 		try {
-			if (path.endsWith(".repozmeta")) {
-				return null;
-			}
 			File file = new File(base(), path);
 			if (!file.exists() || file.isDirectory()) {
 				return null;
@@ -52,7 +46,7 @@ public class RawFileSystem implements FileSystem {
 			StreamRepozFile ret = new StreamRepozFile();
 			ret.setPath(path).setMediaType(mediaType);
 
-			String m = Util.read(new File(file.getPath() + ".repozmeta").toURI().toURL(), "UTF-8");
+			String m = Util.read(new File(file.getPath() + RepozUtil.REPOZMETA).toURI().toURL(), "UTF-8");
 			FileMeta meta = FlexJson.instance().parse(m, FileMeta.class);
 			ret.setCharset(meta.getCharset()).setMediaType(meta.getMediaType());
 
@@ -70,23 +64,10 @@ public class RawFileSystem implements FileSystem {
 			parent.mkdirs();
 		}
 
-		File meta = new File(f.getPath() + ".repozmeta");
+		File meta = new File(f.getPath() + RepozUtil.REPOZMETA);
 		FileMeta m = new FileMeta(file.getMediaType(), file.getCharset());
 		Util.write(meta, FlexJson.instance().format(m));
 		copyBinary(file, f);
-	}
-
-	private void copyText(RepozFile file, File f, String charset) {
-		Writer out = null;
-		try {
-			out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(f)), "UTF-8");
-			InputStreamReader in = new InputStreamReader(new BufferedInputStream(file.getIn()), charset);
-			Util.copyAll(in, out);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			Util.close(out);
-		}
 	}
 
 	private void copyBinary(RepozFile file, File f) {
@@ -103,7 +84,7 @@ public class RawFileSystem implements FileSystem {
 
 	public void delete(String path) {
 		File f = new File(base(), path);
-		File meta = new File(f + ".repozmeta");
+		File meta = new File(f + RepozUtil.REPOZMETA);
 		if (f.exists()) {
 			Util.deleteRecursively(f);
 		}

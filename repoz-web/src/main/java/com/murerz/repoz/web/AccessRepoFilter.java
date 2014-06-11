@@ -36,7 +36,7 @@ public class AccessRepoFilter implements Filter {
 				return;
 			}
 			String path = RepozUtil.path(req);
-			if (path.endsWith("/" + RepozUtil.ACCESS)) {
+			if (path.endsWith(RepozUtil.ACCESS) || path.endsWith(RepozUtil.REPOZMETA)) {
 				ServletUtil.sendForbidden(resp, req);
 				return;
 			}
