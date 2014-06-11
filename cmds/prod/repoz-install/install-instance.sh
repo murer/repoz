@@ -43,22 +43,23 @@ sudo htpasswd -bc /etc/apache2/passwd root 1q2w3e4r
 
 sudo rm /etc/apache2/sites-enabled/000-default
 sudo tee /etc/apache2/sites-available/repoz <<-EOF
-<Location />
-    AuthType Basic
-    AuthName "repoz-prod"
-    AuthUserFile /etc/apache2/passwd
-    Require user root
-</Location>
-<Location /pdoc-web>
+<Location /repoz>
     ProxyPass http://localhost:8080/repoz
     ProxyPassReverse http://localhost:8080/repoz
 </Location>
+<Location /home/repoz>
+    AuthType Basic
+    AuthName "repoz"
+    AuthUserFile /etc/apache2/passwd
+    Require user root
+</Location>
 <VirtualHost *:80>
-    DocumentRoot /home/repoz
+    DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
         AllowOverride None
     </Directory>
+    Alias /home/repoz "/home/repoz"
     <Directory /home/repoz>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
@@ -80,5 +81,5 @@ ln -s jboss-as-7.1.1.Final jboss
 
 cd -
 
-./cmds/prod/repoz-install/update-repoz.sh
+./cmds/prod/repoz-install/install-repoz.sh
 

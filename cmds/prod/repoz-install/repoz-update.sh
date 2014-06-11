@@ -2,11 +2,13 @@
 
 source /etc/bash.bashrc.repoz
 
-if [ ! -d packs ]; then
-	mkdir packs
-fi;
-
 cat > packs/repoz.war
+
+cd packs
+
+jar uvf repoz.war WEB-INF/classes/repoz.properties
+
+cd -
 
 killall java | cat 
 sleep 3
@@ -17,6 +19,7 @@ rm -rf opt/jboss/standalone/tmp | cat
 rm -rf opt/jboss/standalone/log | cat
 rm -rf opt/jboss/standalone/data | cat
 rm -rf opt/jboss/standalone/work | cat
+rm -rf opt/jboss/standalone/deployments/repoz* | cat
 
 cp packs/repoz.war opt/jboss/standalone/deployments/repoz.war
 
