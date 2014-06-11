@@ -11,7 +11,6 @@
 		<url-pattern>/access</url-pattern>
 	</servlet-mapping>
 
-
 	<servlet>
 		<servlet-name>RepoServlet</servlet-name>
 		<servlet-class>com.murerz.repoz.web.RepoServlet</servlet-class>
@@ -19,6 +18,15 @@
 	<servlet-mapping>
 		<servlet-name>RepoServlet</servlet-name>
 		<url-pattern>/r/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ErrorServlet</servlet-name>
+		<servlet-class>com.murerz.repoz.web.ErrorServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ErrorServlet</servlet-name>
+		<url-pattern>/error/*</url-pattern>
 	</servlet-mapping>
 
 	<filter>
@@ -38,5 +46,26 @@
 		<filter-name>AccessRepoFilter</filter-name>
 		<url-pattern>/r/*</url-pattern>
 	</filter-mapping>
+
+	<error-page>
+		<error-code>401</error-code>
+		<location>/error/401.html</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error/403.html</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>405</error-code>
+		<location>/error/405.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.html</location>
+	</error-page>
 
 </web-app>

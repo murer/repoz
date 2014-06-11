@@ -164,7 +164,8 @@ public class ServletUtil {
 
 	public static void sendMethodNotAllowed(HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			resp.getWriter().println(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
