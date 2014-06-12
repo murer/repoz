@@ -3,14 +3,27 @@
 export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
+############
 echo "America/Sao_Paulo" | sudo tee /etc/timezone
 sudo dpkg-reconfigure --frontend noninteractive tzdata
 sudo service cron restart
 
+############
+mkdir -p repoz-repo packs/WEB-INF/classes 
+sudo mount /dev/disk/by-id/google-repoz-repository repoz-repo
+if [ ! -f repoz-repo/repoz.properties ]; then
+	echo "No repoz.properties found in repoz-repo/repoz.properties"
+	exit 1;
+fi
+mkdir repoz-repo/repository | cat
+cp repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties
+
+############
 sudo apt-get -y update
-sudo apt-get -y upgrade
+#sudo apt-get -y upgrade
 sudo apt-get -y install vim nmap netcat tcpdump zip pv apache2-utils apache2 curl ntpdate psmisc
 
+############
 sudo service ntp stop
 sudo ntpdate ntp.ubuntu.com
 sudo service ntp start
@@ -19,6 +32,7 @@ date
 
 cd /opt
 
+############
 sudo wget http://storage.googleapis.com/dextra-pdoc-pub/repo/ext/br/com/portaldedocumentos/ext/jdk/7u45-linux-x64/jdk-7u45-linux-x64.zip -O jdk.zip
 
 sudo unzip jdk.zip
@@ -36,7 +50,7 @@ source /etc/bash.bashrc.repoz
 
 java -version
 
-# apache
+############
 sudo a2enmod proxy proxy_http
 
 sudo htpasswd -bc /etc/apache2/passwd root 1q2w3e4r
@@ -73,6 +87,7 @@ sudo service apache2 restart
 
 cd -
 
+############
 mkdir opt
 cd opt
 wget http://storage.googleapis.com/dextra-pdoc-pub/repo/ext/br/com/portaldedocumentos/ext/jboss-as/7.1.1.Final/jboss-as-7.1.1.Final.zip -O jboss.zip
@@ -81,5 +96,8 @@ ln -s jboss-as-7.1.1.Final jboss
 
 cd -
 
-./cmds/prod/repoz-install/install-repoz.sh
+echo "install-instance done"
+
+
+
 
