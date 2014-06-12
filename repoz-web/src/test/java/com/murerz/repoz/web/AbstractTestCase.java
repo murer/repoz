@@ -18,15 +18,20 @@ public class AbstractTestCase {
 	protected int port;
 	protected HttpClientRequestService s;
 	protected RequestAdapter a;
+	protected int maxLimit;
 
 	@Before
 	public void setUp() {
+		maxLimit = 300;
+		System.setProperty("repoz.post.maxLength", Integer.toString(maxLimit));
+		
 		mycontainer = MycontainerHelper.me();
 		mycontainer.setUp();
 		port = mycontainer.bind(0);
-
+		
 		s = new HttpClientRequestService("http://localhost:" + port);
 		a = new RequestAdapter(s);
+		
 	}
 
 	@After

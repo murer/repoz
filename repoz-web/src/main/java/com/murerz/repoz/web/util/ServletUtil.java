@@ -1,6 +1,7 @@
 package com.murerz.repoz.web.util;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -190,6 +191,22 @@ public class ServletUtil {
 	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req) {
 		try {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static BigInteger headerBigInteger(HttpServletRequest req, String name) {
+		String str = Util.str(req.getHeader(name));
+		if (str == null) {
+			return null;
+		}
+		return new BigInteger(str);
+	}
+
+	public static void sendRequestEntityTooLarge(HttpServletResponse response, String max, String len) {
+		try {
+			response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "max: " + max + ", but was: " + len);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
