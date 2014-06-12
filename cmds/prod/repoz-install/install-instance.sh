@@ -15,6 +15,11 @@ if [ ! -f repoz-repo/repoz.properties ]; then
 	echo "No repoz.properties found in repoz-repo/repoz.properties"
 	exit 1;
 fi
+REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
+if [ "x$REPOZ_PASSWORD" == "x" ]; then
+	echo "repoz.access.root not found in repoz-repo/repoz.properties";
+	exit 1;
+fi
 mkdir repoz-repo/repository | cat
 cp repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties
 
@@ -53,7 +58,7 @@ java -version
 ############
 sudo a2enmod proxy proxy_http
 
-sudo htpasswd -bc /etc/apache2/passwd root 1q2w3e4r
+sudo htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
 sudo rm /etc/apache2/sites-enabled/000-default
 sudo tee /etc/apache2/sites-available/repoz <<-EOF
