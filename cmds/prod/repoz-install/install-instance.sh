@@ -20,6 +20,7 @@ fi
 echo "repoz:$(cat repoz-repo/repoz.passwd)" | sudo chpasswd
 chmod -v 600 repoz-repo/repoz.passwd
 sudo sed -i.sedbak "s/^PasswordAuthentication .*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+sudo service ssh reload
 
 ############
 REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
