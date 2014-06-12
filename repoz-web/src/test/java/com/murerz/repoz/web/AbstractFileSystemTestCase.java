@@ -50,17 +50,4 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals(new Integer(200), a.code("DELETE", "/r/file.texinfo"));
 	}
 
-	@Test
-	public void testLargeFile() {
-		int size = 1024 * 512;
-		String text = Util.generateString("ab ", size);
-		assertEquals(size * 3, text.length());
-
-		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/file.txt", "text/plain;charset=UTF-8", text));
-		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", "UTF-8", text);
-		assertEquals(new Integer(200), a.code("DELETE", "/r/file.txt"));
-		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
-	}
-
 }
