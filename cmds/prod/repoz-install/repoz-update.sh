@@ -24,7 +24,7 @@ rm -rf opt/jboss/standalone/deployments/repoz* | cat
 cp packs/repoz.war opt/jboss/standalone/deployments/repoz.war
 
 cd opt/jboss/bin
-(./standalone.sh 1> /home/repoz/repoz-app/jboss.out 2>&1 &)
+(./standalone.sh 1> /home/repoz/repoz-repo/jboss.out 2>&1 &)
 
 sleep 3;
 
