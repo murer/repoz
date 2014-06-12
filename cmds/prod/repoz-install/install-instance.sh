@@ -4,17 +4,24 @@ export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
 ############
-echo "America/Sao_Paulo" | sudo tee /etc/timezone
-sudo dpkg-reconfigure --frontend noninteractive tzdata
-sudo service cron restart
-
-############
 mkdir -p repoz-repo packs/WEB-INF/classes 
 sudo mount /dev/disk/by-id/google-repoz-repository repoz-repo
+chown -R repoz:repoz $HOME
+if [ ! -f repoz-repo/repoz.passwd ]; then
+	echo "File not found: repoz.passwd"
+	exit 1;
+fi
 if [ ! -f repoz-repo/repoz.properties ]; then
 	echo "No repoz.properties found in repoz-repo/repoz.properties"
 	exit 1;
 fi
+
+############
+echo "repoz:$(cat repoz-repo/repoz.passwd)" | sudo chpasswd
+chmod -v 600 repoz-repo/repoz.passwd
+sudo sed -i.sedbak "s/^PasswordAuthentication .*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+
+############
 REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
 if [ "x$REPOZ_PASSWORD" == "x" ]; then
 	echo "repoz.access.root not found in repoz-repo/repoz.properties";
@@ -22,6 +29,11 @@ if [ "x$REPOZ_PASSWORD" == "x" ]; then
 fi
 mkdir repoz-repo/repository | cat
 cp repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties
+
+############
+echo "America/Sao_Paulo" | sudo tee /etc/timezone
+sudo dpkg-reconfigure --frontend noninteractive tzdata
+sudo service cron restart
 
 ############
 sudo apt-get -y update
