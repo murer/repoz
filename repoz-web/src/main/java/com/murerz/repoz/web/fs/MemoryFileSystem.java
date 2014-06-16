@@ -2,6 +2,8 @@ package com.murerz.repoz.web.fs;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.murerz.repoz.web.util.RepozUtil;
 
@@ -24,6 +26,16 @@ public class MemoryFileSystem implements FileSystem {
 
 	public void deleteAll() {
 		files.clear();
+	}
+
+	public Set<String> listRepositories() {
+		Set<String> ret = new TreeSet<String>();
+		Set<String> set = files.keySet();
+		for (String path : set) {
+			String[] name = path.split("/");
+			ret.add("/" + name[1]);
+		}
+		return ret;
 	}
 
 }

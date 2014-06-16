@@ -74,6 +74,16 @@ public class FileAccessRepoTest extends AbstractTestCase {
 	}
 
 	@Test
+	public void testListRepository() {
+		setAccess("path=/a&user=admin&pass=admin1&type=write");
+		setAccess("path=/b&user=admin&pass=admin1&type=write");
+
+		Response resp = execute("main:123", "GET", "/access?path=/", null, null);
+		assertEquals(new Integer(200), resp.code());
+		assertEquals("/a\n/b", resp.content().text().trim());
+	}
+
+	@Test
 	public void testMetaFiles() {
 		setAccess("path=/a&user=admin&pass=admin1&type=write");
 		assertEquals(new Integer(200), execute("admin:admin1", "PUT", "/r/a/any/file.txt", "text/plain;charset=UTF-8", "a1").code());

@@ -2,6 +2,8 @@ package com.murerz.repoz.web;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +28,12 @@ public class AccessServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String repo = ServletUtil.param(req, "path");
 		RepozUtil.validatePath(repo);
+		
+		if ("/".equals(repo)) {
+			list(req, resp);
+			return;
+		}
+
 		RepozUtil.checkFalsePattern(repo, ".+/$");
 		RepozUtil.checkPattern(repo, "^/[^/]+$");
 
@@ -43,6 +51,21 @@ public class AccessServlet extends HttpServlet {
 			Util.copyAll(in, resp.getOutputStream());
 		} finally {
 			Util.close(in);
+		}
+	}
+
+	private void list(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			FileSystem fs = FileSystemFactory.create();
+			Set<String> paths = fs.listRepositories();
+			resp.setContentType("text/plain");
+			resp.setCharacterEncoding("UTF-8");
+			PrintWriter out = resp.getWriter();
+			for (String path : paths) {
+				out.println(path);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.murerz.repoz.web.fs;
 
+import java.util.Set;
+
 public interface FileSystem {
 
 	RepozFile read(String path);
@@ -9,5 +11,7 @@ public interface FileSystem {
 	void delete(String path);
 
 	void deleteAll();
+
+	Set<String> listRepositories();
 
 }

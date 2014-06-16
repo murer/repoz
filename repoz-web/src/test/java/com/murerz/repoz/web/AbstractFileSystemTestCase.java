@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.googlecode.mycontainer.commons.http.Request;
-import com.murerz.repoz.web.util.Util;
+import com.googlecode.mycontainer.commons.http.Response;
 
 public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
@@ -48,6 +48,16 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
 		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
 		assertEquals(new Integer(200), a.code("DELETE", "/r/file.texinfo"));
+	}
+
+	@Test
+	public void testListRepository() {
+		assertEquals(new Integer(200), a.code("PUT", "/r/a/f.txt", "text/plain;charset=UTF-8", "my other file"));
+		assertEquals(new Integer(200), a.code("PUT", "/r/b/f.txt", "text/plain;charset=UTF-8", "my other file"));
+
+		Response resp = execute("main:123", "GET", "/access?path=/", null, null);
+		assertEquals(new Integer(200), resp.code());
+		assertEquals("/a\n/b", resp.content().text().trim());
 	}
 
 }

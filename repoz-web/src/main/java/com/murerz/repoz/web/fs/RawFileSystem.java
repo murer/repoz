@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,6 +99,18 @@ public class RawFileSystem implements FileSystem {
 		File base = base();
 		LOG.info("Deleting all: " + base);
 		Util.deleteChildsRecursively(base);
+	}
+
+	public Set<String> listRepositories() {
+		File base = base();
+		File[] array = base.listFiles();
+		Set<String> ret = new TreeSet<String>();
+		for (File file : array) {
+			if (file.isDirectory()) {
+				ret.add("/" + file.getName());
+			}
+		}
+		return ret;
 	}
 
 }
