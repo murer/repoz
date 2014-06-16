@@ -100,6 +100,13 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     </Directory>
 </VirtualHost>
 EOF
+sudo cp /var/www/index.html /var/www/index.html.old
+sudo tee /var/www/index.html <<-EOF
+<html><head><title>Repoz</title></head><body>
+<a href="repoz">repoz</a><br/>
+<a href="home/repoz">home/repoz</a>
+</body></html>
+EOF
 sudo ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
 sudo service apache2 restart
 
