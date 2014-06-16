@@ -18,6 +18,7 @@ public class RepozUtil {
 
 	public static String getBaseURL(HttpServletRequest req) {
 		String baseURL = Config.me().getBaseURL();
+		baseURL = baseURL.replaceAll("/+$", "");
 		baseURL += req.getContextPath();
 		baseURL = baseURL.replaceAll("/+$", "");
 		return baseURL;
