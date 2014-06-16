@@ -13,8 +13,7 @@ public class ErrorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object code = req.getAttribute("javax.servlet.error.status_code");
 		Object msg = req.getAttribute("javax.servlet.error.message");
 		Object servlet = req.getAttribute("javax.servlet.error.servlet_name");
@@ -32,4 +31,5 @@ public class ErrorServlet extends HttpServlet {
 		}
 		out.println();
 	}
+
 }
