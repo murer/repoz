@@ -34,8 +34,8 @@ public class OAuth2GoogleServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String GOOGLE_CLIENT_SECRET = "m5ZNLzYoFoYXfKNip6j994aI";
-	public static final String GOOGLE_CLIENT_ID = "797755358727-2cu9c5l79uq97sudh62bb3uhl4b24nhc.apps.googleusercontent.com";
+	public static final String GOOGLE_CLIENT_SECRET = "FyrqeZn-RkcUnZVHC180fGf4";
+	public static final String GOOGLE_CLIENT_ID = "797755358727-jf70gvanrvk52eanodm69gpkbrkn97ep.apps.googleusercontent.com";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
