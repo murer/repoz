@@ -1,5 +1,6 @@
 package com.murerz.repoz.web.fs;
 
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
@@ -36,6 +37,21 @@ public class MemoryFileSystem implements FileSystem {
 			ret.add("/" + name[1]);
 		}
 		return ret;
+	}
+
+	public void deleteRepository(String repo) {
+		Set<String> set = files.keySet();
+		for (String path : set) {
+			if (path.startsWith(repo) && !path.startsWith(".repozauth.txt")) {
+				throw new RuntimeException("directory is not empty: " + path);
+			}
+		}
+		set = new HashSet<String>(files.keySet());
+		for (String path : set) {
+			if (path.startsWith(repo)) {
+				files.remove(path);
+			}
+		}
 	}
 
 }

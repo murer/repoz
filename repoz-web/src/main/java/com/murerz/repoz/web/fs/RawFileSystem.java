@@ -113,4 +113,19 @@ public class RawFileSystem implements FileSystem {
 		return ret;
 	}
 
+	public void deleteRepository(String repo) {
+		File base = base();
+		File f = new File(base, repo);
+		String[] list = f.list();
+		for (String n : list) {
+			if (!n.startsWith(".repozauth.txt")) {
+				throw new RuntimeException("directory is not empty: " + n);
+			}
+		}
+		for (String n : list) {
+			new File(f, n).delete();
+		}
+		f.delete();
+	}
+
 }

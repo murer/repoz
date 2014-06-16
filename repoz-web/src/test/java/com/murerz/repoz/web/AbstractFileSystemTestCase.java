@@ -51,13 +51,26 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 	}
 
 	@Test
-	public void testListRepository() {
-		assertEquals(new Integer(200), a.code("PUT", "/r/a/f.txt", "text/plain;charset=UTF-8", "my other file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/b/f.txt", "text/plain;charset=UTF-8", "my other file"));
-
+	public void testListDeleteRepository() {
 		Response resp = execute("main:123", "GET", "/access?path=/", null, null);
 		assertEquals(new Integer(200), resp.code());
+		assertEquals("", resp.content().text().trim());
+
+		assertEquals(new Integer(200), a.code("PUT", "/r/a/x/f.txt", "text/plain;charset=UTF-8", "my other file"));
+		assertEquals(new Integer(200), a.code("PUT", "/r/b/x/f.txt", "text/plain;charset=UTF-8", "my other file"));
+		
+		resp = execute("main:123", "GET", "/access?path=/", null, null);
+		assertEquals(new Integer(200), resp.code());
 		assertEquals("/a\n/b", resp.content().text().trim());
+		
+		assertEquals(new Integer(500), execute("main:123", "DELETE", "/access?path=/a", null, null).code());
+		assertEquals(new Integer(200), a.code("DELETE", "/r/a/x/f.txt"));
+		assertEquals(new Integer(200), a.code("DELETE", "/r/a/x"));
+		assertEquals(new Integer(200), execute("main:123", "DELETE", "/access?path=/a", null, null).code());
+		
+		resp = execute("main:123", "GET", "/access?path=/", null, null);
+		assertEquals(new Integer(200), resp.code());
+		assertEquals("/b", resp.content().text().trim());
 	}
 
 }
