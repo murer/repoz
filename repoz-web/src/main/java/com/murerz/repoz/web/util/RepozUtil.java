@@ -5,12 +5,14 @@ import java.net.URLConnection;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StaticRepozFile;
 
 public class RepozUtil {
 
+	public static final String REPOZMETA = ".repozmeta";
 	public static final String ACCESS = ".repozauth.txt";
 
 	public static String path(HttpServletRequest req) {
@@ -78,6 +80,16 @@ public class RepozUtil {
 		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
 	}
 
-	public static final String REPOZMETA = ".repozmeta";
+	public static void sendHtmlError(HttpServletResponse resp, String error) {
+		StringBuilder str = new StringBuilder();
+		str.append("<html><head><title>Repoz</title></head><body>");
+		str.append("<h1>Error</h1>");
+		if (error != null) {
+			str.append("<p>").append(error).append("</p>");
+		}
+		str.append("<a href=\"index.html\">Voltar</a>");
+		str.append("</body></html>");
+		ServletUtil.writeHtml(resp, str);
+	}
 
 }

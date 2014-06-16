@@ -590,4 +590,28 @@ public class Util {
 		}
 	}
 
+	public static String mountURL(String url, String... params) {
+		if (params == null) {
+			params = new String[0];
+		}
+		if (params.length % 2 != 0) {
+			throw new RuntimeException("wrong: " + params.length);
+		}
+		StringBuilder builder = new StringBuilder();
+		builder.append(url);
+		if (params.length > 0) {
+			builder.append("?");
+		}
+		for (int i = 0; i < params.length; i += 2) {
+			String name = params[i];
+			String value = params[i + 1];
+			builder.append(name).append("=");
+			builder.append(encodeURI(value));
+			if (i + 2 < params.length) {
+				builder.append("&");
+			}
+		}
+		return builder.toString();
+	}
+
 }

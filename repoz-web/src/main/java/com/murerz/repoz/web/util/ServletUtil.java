@@ -212,4 +212,13 @@ public class ServletUtil {
 		}
 	}
 
+	public static void sendRedirect(HttpServletResponse resp, String url, String... params) {
+		try {
+			String fullURL = Util.mountURL(url, params);
+			resp.sendRedirect(fullURL);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

@@ -21,6 +21,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>OAuth2GoogleServlet</servlet-name>
+		<servlet-class>com.murerz.repoz.web.OAuth2GoogleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OAuth2GoogleServlet</servlet-name>
+		<url-pattern>/oauth2google</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>ErrorServlet</servlet-name>
 		<servlet-class>com.murerz.repoz.web.ErrorServlet</servlet-class>
 	</servlet>
@@ -39,12 +48,12 @@
 	</filter-mapping>
 
 	<filter>
-		<filter-name>AccessGoogleFilter</filter-name>
-		<filter-class>com.murerz.repoz.web.AccessGoogleFilter</filter-class>
+		<filter-name>AuthGoogleFilter</filter-name>
+		<filter-class>com.murerz.repoz.web.AuthGoogleFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>AccessGoogleFilter</filter-name>
-		<url-pattern>/access</url-pattern>
+		<filter-name>AuthGoogleFilter</filter-name>
+		<url-pattern>/panel.html</url-pattern>
 	</filter-mapping>
 
 	<filter>
