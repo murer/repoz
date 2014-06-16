@@ -40,4 +40,8 @@ public class GoogleOAuthToken {
 		return "[GoogleOAuthToken " + accessToken + " " + expiresIn + " " + tokenType + "]";
 	}
 
+	public String toAuth() {
+		return new StringBuilder().append(tokenType).append(" ").append(accessToken).toString();
+	}
+
 }
