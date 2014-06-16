@@ -57,6 +57,11 @@
 				var page = $(main());
 				$('#wrapper').html(page);
 
+				if (!path) {
+					location = '#Access?path=/';
+					return;
+				}
+
 				function query() {
 					if (!path) {
 						return false;
@@ -80,7 +85,7 @@
 								$('<td/>').text(args[1]).appendTo(tr);
 								$('<td/>').text(args[2]).appendTo(tr);
 								$('<td/>').text(args[3]).appendTo(tr);
-								$('<td><input type="button" value="Delete" class="delete" /></td>').appendTo(tr);
+								$('<td><input type="button" value="Delete" class="delete" /><a class="go" href="#Access?path=' + args[0] + '">Go</a></td>').appendTo(tr);
 								tr.data('repoz.access.user', args[1]);
 							}
 							page.find('.queryResult tbody .delete').click(function() {
@@ -96,10 +101,18 @@
 									});
 								}
 							});
+							if(path == '/') {
+								page.find('.queryResult tbody .delete').hide();
+								page.find('.queryResult tr > :eq(1)').hide();
+								page.find('.queryResult tr > :eq(2)').hide();
+								page.find('.queryResult tr > :eq(3)').hide();
+							} else {
+								page.find('.queryResult tbody .go').hide();
+							}
 						}
 					});
 				}
-				if (!path) {
+				if (path == '/') {
 					page.find('.accessQuery .add').hide();
 				} else {
 					page.find('.accessQuery .add').show();
