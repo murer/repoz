@@ -24,7 +24,7 @@
 					<fieldset>
 						<ul>
 							<li><label>Path: </label> <input type="text" name="path" class="path" /></li>
-							<li><input type="button" value="Add" class="add" /><input type="submit" value="Query" /></li>
+							<li><input type="submit" value="Query" /></li>
 						</ul>
 					</fieldset>
 				</form>
@@ -42,6 +42,7 @@
 						<tbody>
 						</tbody>
 					</table>
+					<input type="button" value="Add" class="add" />
 				</div>
 			</div>
 		</div>
@@ -97,6 +98,11 @@
 							});
 						}
 					});
+				}
+				if (!path) {
+					page.find('.accessQuery .add').hide();
+				} else {
+					page.find('.accessQuery .add').show();
 				}
 
 				page.find('.accessNew').hide();
