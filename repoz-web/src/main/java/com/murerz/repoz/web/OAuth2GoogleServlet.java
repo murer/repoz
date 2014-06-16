@@ -36,7 +36,6 @@ public class OAuth2GoogleServlet extends HttpServlet {
 
 	public static final String GOOGLE_CLIENT_SECRET = "m5ZNLzYoFoYXfKNip6j994aI";
 	public static final String GOOGLE_CLIENT_ID = "797755358727-2cu9c5l79uq97sudh62bb3uhl4b24nhc.apps.googleusercontent.com";
-	public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/repoz/oauth2google";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,7 +51,7 @@ public class OAuth2GoogleServlet extends HttpServlet {
 		}
 
 		GoogleOAuthToken oToken = HttpClientUtil.jsonPost(GoogleOAuthToken.class, "https://accounts.google.com/o/oauth2/token", "grant_type", "authorization_code", "code", code,
-				"client_id", GOOGLE_CLIENT_ID, "client_secret", GOOGLE_CLIENT_SECRET, "redirect_uri", GOOGLE_REDIRECT_URI);
+				"client_id", GOOGLE_CLIENT_ID, "client_secret", GOOGLE_CLIENT_SECRET, "redirect_uri", RepozUtil.getOauthCallback(req));
 
 		String email = getEmail(oToken);
 		LOG.info("User: " + email);

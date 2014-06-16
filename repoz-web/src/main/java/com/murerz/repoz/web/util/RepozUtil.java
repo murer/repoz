@@ -9,11 +9,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StaticRepozFile;
+import com.murerz.repoz.web.meta.Config;
 
 public class RepozUtil {
 
 	public static final String REPOZMETA = ".repozmeta";
 	public static final String ACCESS = ".repozauth.txt";
+
+	public static String getBaseURL(HttpServletRequest req) {
+		String baseURL = Config.me().getBaseURL();
+		baseURL += req.getContextPath();
+		baseURL = baseURL.replaceAll("/+$", "");
+		return baseURL;
+	}
+
+	public static String getUrl(HttpServletRequest req, String path) {
+		String base = getBaseURL(req);
+		return base + path;
+	}
 
 	public static String path(HttpServletRequest req) {
 		String uri = ServletUtil.getURIWithoutContextPath(req);
@@ -92,4 +105,7 @@ public class RepozUtil {
 		ServletUtil.writeHtml(resp, str);
 	}
 
+	public static String getOauthCallback(HttpServletRequest req) {
+		return getUrl(req, "/oauth2google");
+	}
 }

@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.GsonUtil;
+import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.SecurityHelper;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.Util;
@@ -52,7 +53,7 @@ public class AuthGoogleFilter implements Filter {
 
 			String uri = ServletUtil.getURIWithoutContextPath(req);
 			if ("/panel.html".equals(uri)) {
-				ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", OAuth2GoogleServlet.GOOGLE_REDIRECT_URI,
+				ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", RepozUtil.getOauthCallback(req),
 						"response_type", "code", "client_id", OAuth2GoogleServlet.GOOGLE_CLIENT_ID, "access_type", "online");
 				return;
 			}

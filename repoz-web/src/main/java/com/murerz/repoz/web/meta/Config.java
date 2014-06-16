@@ -47,6 +47,10 @@ public class Config {
 		return Util.str(props.getProperty(key));
 	}
 
+	public String getProperty(String key, String def) {
+		return Util.str(props.getProperty(key, def));
+	}
+
 	public String retProperty(String key) {
 		String ret = getProperty(key);
 		if (ret == null) {
@@ -57,6 +61,10 @@ public class Config {
 
 	public boolean getBoolean(String key) {
 		return "true".equals(getProperty(key));
+	}
+
+	public String getBaseURL() {
+		return retProperty("repoz.base.url");
 	}
 
 }
