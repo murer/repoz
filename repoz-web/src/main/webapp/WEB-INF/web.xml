@@ -55,6 +55,10 @@
 		<filter-name>AuthGoogleFilter</filter-name>
 		<url-pattern>/panel.html</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>AuthGoogleFilter</filter-name>
+		<url-pattern>/access</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>AccessBasicFilter</filter-name>

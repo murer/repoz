@@ -24,6 +24,8 @@ public class AuthGoogleFilter implements Filter {
 
 	private static final long TIMEOUT = 1l * 60 * 60 * 1000;
 
+	private static ThreadLocal<String> username = new ThreadLocal<String>();
+
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
 
@@ -32,21 +34,33 @@ public class AuthGoogleFilter implements Filter {
 	}
 
 	private void filter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		boolean disabled = Config.me().getBoolean("repoz.google.auth.disabled");
-		if (disabled) {
-			chain.doFilter(req, resp);
-			return;
-		}
+		try {
+			username.set(null);
+			boolean disabled = Config.me().getBoolean("repoz.google.auth.disabled");
+			if (disabled) {
+				chain.doFilter(req, resp);
+				return;
+			}
 
-		Cookie cookie = ServletUtil.cookie(req, "Repoz");
-		JsonObject obj = validate(cookie);
-		if (obj != null) {
-			chain.doFilter(req, resp);
-			return;
-		}
+			Cookie cookie = ServletUtil.cookie(req, "Repoz");
+			JsonObject obj = validate(cookie);
+			if (obj != null) {
+				username.set(obj.get("u").getAsString());
+				chain.doFilter(req, resp);
+				return;
+			}
 
-		ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", OAuth2GoogleServlet.GOOGLE_REDIRECT_URI,
-				"response_type", "code", "client_id", OAuth2GoogleServlet.GOOGLE_CLIENT_ID, "access_type", "online");
+			String uri = ServletUtil.getURIWithoutContextPath(req);
+			if ("/panel.html".equals(uri)) {
+				ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", OAuth2GoogleServlet.GOOGLE_REDIRECT_URI,
+						"response_type", "code", "client_id", OAuth2GoogleServlet.GOOGLE_CLIENT_ID, "access_type", "online");
+				return;
+			}
+
+			ServletUtil.writeJson(resp, GsonUtil.createObject("error", "Forbidden"));
+		} finally {
+			username.set(null);
+		}
 	}
 
 	private JsonObject validate(Cookie cookie) {
@@ -69,6 +83,10 @@ public class AuthGoogleFilter implements Filter {
 
 	public void destroy() {
 
+	}
+
+	public static String getUsername() {
+		return username.get();
 	}
 
 }

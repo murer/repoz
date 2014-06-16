@@ -20,11 +20,10 @@ public class ErrorServlet extends HttpServlet {
 		Object servlet = req.getAttribute("javax.servlet.error.servlet_name");
 		Throwable exp = (Throwable) req.getAttribute("javax.servlet.error.exception");
 
-		if(code != null && "401".equals(code.toString())) {
+		if (code != null && "401".equals(code.toString())) {
 			resp.addHeader("WWW-Authenticate", "Basic realm=\"repoz\"");
-			System.out.println("xxxxx");
 		}
-		
+
 		PrintWriter out = resp.getWriter();
 		out.printf("Error code: %s %s (%s)", code, msg, servlet);
 		out.println();

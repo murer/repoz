@@ -30,6 +30,10 @@ public class AccessBasicFilter implements Filter {
 	}
 
 	private void filter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
+		if (AuthGoogleFilter.getUsername() != null) {
+			chain.doFilter(req, resp);
+			return;
+		}
 		UserPass basic = ServletUtil.getBasicInfo(req);
 		if (basic == null) {
 			ServletUtil.sendUnauthorized(resp, req);
