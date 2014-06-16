@@ -1,6 +1,5 @@
 package com.murerz.repoz.web.util;
 
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -15,10 +14,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 public class GsonUtil {
-
-	public static JsonElement parse(Reader reader) {
-		return new JsonParser().parse(reader);
-	}
 
 	public static JsonElement parse(String json) {
 		return new JsonParser().parse(json);
@@ -81,7 +76,7 @@ public class GsonUtil {
 		return list;
 	}
 
-	public static JsonObject object(Object... values) {
+	public static JsonObject createObject(Object... values) {
 		if (values.length % 2 != 0) {
 			throw new RuntimeException("invalid length");
 		}
@@ -93,7 +88,7 @@ public class GsonUtil {
 				value = JsonNull.INSTANCE;
 			}
 			if (!(value instanceof JsonElement)) {
-				value = basic(value);
+				value = createBasic(value);
 			}
 			ret.add(name, (JsonElement) value);
 		}
@@ -102,7 +97,7 @@ public class GsonUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static JsonElement basic(Object value) {
+	public static JsonElement createBasic(Object value) {
 		if (value == null) {
 			return JsonNull.INSTANCE;
 		}
@@ -119,7 +114,7 @@ public class GsonUtil {
 			Iterable<Object> it = (Iterable<Object>) value;
 			JsonArray ret = new JsonArray();
 			for (Object object : it) {
-				ret.add(basic(object));
+				ret.add(createBasic(object));
 			}
 			return ret;
 		}
@@ -139,7 +134,7 @@ public class GsonUtil {
 		return ret;
 	}
 
-	public static JsonElement array(Object... values) {
+	public static JsonElement createJsonArray(Object... values) {
 		JsonArray ret = new JsonArray();
 		for (int i = 0; i < values.length; i++) {
 			Object value = values[i];
@@ -147,7 +142,7 @@ public class GsonUtil {
 				value = JsonNull.INSTANCE;
 			}
 			if (!(value instanceof JsonElement)) {
-				value = basic(value);
+				value = createBasic(value);
 			}
 			ret.add((JsonElement) value);
 		}
@@ -169,6 +164,7 @@ public class GsonUtil {
 				return element.getAsBoolean();
 			}
 		}
+
 		throw new RuntimeException("unsupported: " + element);
 	}
 
