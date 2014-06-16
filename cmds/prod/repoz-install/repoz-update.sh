@@ -4,6 +4,8 @@ source /etc/bash.bashrc.repoz
 
 cat > packs/repoz.war
 
+cp -v repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties 
+
 cd packs
 
 jar uvf repoz.war WEB-INF/classes/repoz.properties
