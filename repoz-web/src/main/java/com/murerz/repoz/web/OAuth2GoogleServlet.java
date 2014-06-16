@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.googlecode.mycontainer.commons.util.CryptoUtil;
 import com.murerz.repoz.web.meta.GoogleOAuthToken;
 import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.GsonUtil;
