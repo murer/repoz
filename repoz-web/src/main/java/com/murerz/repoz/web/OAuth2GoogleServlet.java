@@ -13,18 +13,25 @@ import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.googlecode.mycontainer.commons.util.CryptoUtil;
 import com.murerz.repoz.web.meta.GoogleOAuthToken;
+import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.GsonUtil;
 import com.murerz.repoz.web.util.HttpClientUtil;
 import com.murerz.repoz.web.util.RepozUtil;
+import com.murerz.repoz.web.util.SecurityHelper;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.Util;
 
 public class OAuth2GoogleServlet extends HttpServlet {
+
+	private static final Logger LOG = LoggerFactory.getLogger(OAuth2GoogleServlet.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +56,14 @@ public class OAuth2GoogleServlet extends HttpServlet {
 				"client_id", GOOGLE_CLIENT_ID, "client_secret", GOOGLE_CLIENT_SECRET, "redirect_uri", GOOGLE_REDIRECT_URI);
 
 		String email = getEmail(oToken);
-		System.out.println("s: " + email);
+		LOG.info("User: " + email);
+		if (email != null) {
+			String token = GsonUtil.createObject("u", email, "t", System.currentTimeMillis()).toString();
+			token = CryptUtil.encodeBase64String(token, "UTF-8");
+			token = SecurityHelper.me().sign(token);
+			ServletUtil.addCookie(resp, "Repoz", token, "/", -1);
+		}
+		ServletUtil.sendJSRedirect(resp, "index.html");
 	}
 
 	private String getEmail(GoogleOAuthToken oToken) {

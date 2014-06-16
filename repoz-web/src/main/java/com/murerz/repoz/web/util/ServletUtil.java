@@ -221,4 +221,12 @@ public class ServletUtil {
 		}
 	}
 
+	public static void sendJSRedirect(HttpServletResponse resp, String url) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><head><title>Repoz</title></head>");
+		sb.append("<body onload=\"location='");
+		sb.append(url);
+		sb.append("'\"></body></html>");
+		writeHtml(resp, sb.toString());
+	}
 }

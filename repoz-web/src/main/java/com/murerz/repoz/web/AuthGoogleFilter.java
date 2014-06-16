@@ -8,18 +8,21 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.gson.JsonObject;
 import com.murerz.repoz.web.meta.Config;
+import com.murerz.repoz.web.util.CryptUtil;
+import com.murerz.repoz.web.util.GsonUtil;
+import com.murerz.repoz.web.util.SecurityHelper;
 import com.murerz.repoz.web.util.ServletUtil;
+import com.murerz.repoz.web.util.Util;
 
 public class AuthGoogleFilter implements Filter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AuthGoogleFilter.class);
+	private static final long TIMEOUT = 1l * 60 * 60 * 1000;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
@@ -35,9 +38,33 @@ public class AuthGoogleFilter implements Filter {
 			return;
 		}
 
-		// https://accounts.google.com/o/oauth2/auth?scope=openid+email&redirect_uri=http%3A%2F%2Flocalhost:8080%2Fs%2FOauth2%2Fcallback&response_type=code&client_id=797755358727-2cu9c5l79uq97sudh62bb3uhl4b24nhc.apps.googleusercontent.com&access_type=offline
+		Cookie cookie = ServletUtil.cookie(req, "Repoz");
+		JsonObject obj = validate(cookie);
+		if (obj != null) {
+			chain.doFilter(req, resp);
+			return;
+		}
+
 		ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", OAuth2GoogleServlet.GOOGLE_REDIRECT_URI,
 				"response_type", "code", "client_id", OAuth2GoogleServlet.GOOGLE_CLIENT_ID, "access_type", "online");
+	}
+
+	private JsonObject validate(Cookie cookie) {
+		if (cookie == null) {
+			return null;
+		}
+		String token = Util.str(cookie.getValue());
+		if (token == null) {
+			return null;
+		}
+		token = SecurityHelper.me().unsign(token);
+		token = CryptUtil.decodeBase64String(token, "UTF-8");
+		JsonObject obj = GsonUtil.parse(token).getAsJsonObject();
+		long t = obj.get("t").getAsLong();
+		if (System.currentTimeMillis() <= (t + TIMEOUT)) {
+			return obj;
+		}
+		return null;
 	}
 
 	public void destroy() {
