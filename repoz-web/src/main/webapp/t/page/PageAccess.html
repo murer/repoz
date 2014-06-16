@@ -5,9 +5,9 @@
 			<h1>Access</h1>
 			<div class="accessNew">
 				<form action="#" class="">
+					<input type="hidden" name="path" class="path" />
 					<fieldset>
 						<ul>
-							<li><label>Path: </label> <input type="text" name="path" class="path" /></li>
 							<li><label>User: </label> <input type="text" name="user" class="user" /></li>
 							<li><label>Pass: </label> <input type="text" name="pass" class="pass" /></li>
 							<li><label>Type: </label> <select name="type">
@@ -28,6 +28,21 @@
 						</ul>
 					</fieldset>
 				</form>
+				<div class="queryResult">
+					<table>
+						<thead>
+							<tr>
+								<th>path</th>
+								<th>user</th>
+								<th>pass</th>
+								<th>type</th>
+								<th>action</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -41,10 +56,53 @@
 				var page = $(main());
 				$('#wrapper').html(page);
 
+				function query() {
+					if (!path) {
+						return false;
+					}
+					page.find('.queryResult tbody').html('');
+					$.ajax({
+						url : 'access',
+						dataType : 'text',
+						data : {
+							path : path
+						},
+						success : function(rows) {
+							rows = $.trim(rows);
+							rows = rows.split('\n');
+							for (var i = 0; $.oplt(i, rows.length); i++) {
+								var row = rows[i];
+								var args = row.split(/\s+/);
+								var tr = $('<tr/>');
+								page.find('.queryResult tbody').append(tr)
+								$('<td/>').text(args[0]).appendTo(tr);
+								$('<td/>').text(args[1]).appendTo(tr);
+								$('<td/>').text(args[2]).appendTo(tr);
+								$('<td/>').text(args[3]).appendTo(tr);
+								$('<td><input type="button" value="Delete" class="delete" /></td>').appendTo(tr);
+								tr.data('repoz.access.user', args[1]);
+							}
+							page.find('.queryResult tbody .delete').click(function() {
+								var user = $(this).closest('tr').data('repoz.access.user');
+								if (window.confirm('Delete ' + path + ' ' + user + '?')) {
+									$.ajax({
+										type : 'DELETE',
+										url : 'access?path=' + path + '&amp;user=' + user,
+										success : function() {
+											query();
+										}
+
+									});
+								}
+							});
+						}
+					});
+				}
+
 				page.find('.accessNew').hide();
 				page.find('.accessQuery').show();
-
 				page.find('.accessQuery .path').val(path);
+				page.find('.accessNew .path').val(path);
 				page.find('.accessQuery .add').click(function() {
 					page.find('.accessQuery').hide();
 					page.find('.accessNew').show();
@@ -63,9 +121,19 @@
 				});
 				page.find('.accessNew form').submit(function() {
 					var obj = $(this).serializeObject();
-					console.info('x', obj);
+					$.ajax({
+						type : 'POST',
+						url : 'access',
+						data : obj,
+						success : function() {
+							page.find('.accessNew').hide();
+							page.find('.accessQuery').show();
+							query();
+						}
+					});
 					return false;
 				});
+				query();
 			}
 
 			wf.def({
