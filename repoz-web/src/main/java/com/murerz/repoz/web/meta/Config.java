@@ -55,4 +55,8 @@ public class Config {
 		return ret;
 	}
 
+	public boolean getBoolean(String key) {
+		return "true".equals(getProperty(key));
+	}
+
 }

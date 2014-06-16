@@ -39,6 +39,15 @@
 	</filter-mapping>
 
 	<filter>
+		<filter-name>AccessGoogleFilter</filter-name>
+		<filter-class>com.murerz.repoz.web.AccessGoogleFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessGoogleFilter</filter-name>
+		<url-pattern>/access</url-pattern>
+	</filter-mapping>
+
+	<filter>
 		<filter-name>AccessBasicFilter</filter-name>
 		<filter-class>com.murerz.repoz.web.AccessBasicFilter</filter-class>
 	</filter>
