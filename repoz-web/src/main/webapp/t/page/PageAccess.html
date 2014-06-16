@@ -1,0 +1,77 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="accessMain">
+			<h1>Access</h1>
+			<div class="accessNew">
+				<form action="#" class="">
+					<fieldset>
+						<ul>
+							<li><label>Path: </label> <input type="text" name="path" class="path" /></li>
+							<li><label>User: </label> <input type="text" name="user" class="user" /></li>
+							<li><label>Pass: </label> <input type="text" name="pass" class="pass" /></li>
+							<li><label>Type: </label> <select name="type">
+									<option value="read">read</option>
+									<option value="write">write</option>
+							</select></li>
+							<li><input type="button" value="Cancel" class="cancel" /><input type="submit" value="Add" /></li>
+						</ul>
+					</fieldset>
+				</form>
+			</div>
+			<div class="accessQuery">
+				<form action="#" class="">
+					<fieldset>
+						<ul>
+							<li><label>Path: </label> <input type="text" name="path" class="path" /></li>
+							<li><input type="button" value="Add" class="add" /><input type="submit" value="Query" /></li>
+						</ul>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		(function($, wf) {
+			var main = wf.text('.main');
+
+			function open() {
+				var path = $.querystring().get('path');
+				var page = $(main());
+				$('#wrapper').html(page);
+
+				page.find('.accessNew').hide();
+				page.find('.accessQuery').show();
+
+				page.find('.accessQuery .path').val(path);
+				page.find('.accessQuery .add').click(function() {
+					page.find('.accessQuery').hide();
+					page.find('.accessNew').show();
+				});
+				page.find('.accessNew .cancel').click(function() {
+					page.find('.accessQuery').show();
+					page.find('.accessNew').hide();
+				});
+				page.find('.accessQuery form').submit(function() {
+					var obj = $(this).serializeObject();
+					if (!obj.path) {
+						return false;
+					}
+					location = '#Access?path=' + obj.path;
+					return false;
+				});
+				page.find('.accessNew form').submit(function() {
+					var obj = $(this).serializeObject();
+					console.info('x', obj);
+					return false;
+				});
+			}
+
+			wf.def({
+				open : open
+			});
+		})(jQuery, windfury);
+	</script>
+
+</section>
