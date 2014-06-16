@@ -98,12 +98,14 @@ public class AccessServlet extends HttpServlet {
 		RepozUtil.validatePath(repo);
 		RepozUtil.checkFalsePattern(repo, ".+/$");
 		RepozUtil.checkPattern(repo, "^/[^/]+$");
+
 		if(username == null) {
 			deleteRepository(req, resp);
 			return;
 		}
-		RepozUtil.validateUser(username);
 
+		RepozUtil.validateUser(username);
+		
 		AccessManager am = AccessManagerFactory.create();
 		am.delete(repo, username);
 	}
