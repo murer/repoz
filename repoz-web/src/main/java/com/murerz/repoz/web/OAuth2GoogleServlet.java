@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.meta.GoogleOAuthToken;
 import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.GsonUtil;
@@ -34,9 +35,6 @@ public class OAuth2GoogleServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String GOOGLE_CLIENT_SECRET = "FyrqeZn-RkcUnZVHC180fGf4";
-	public static final String GOOGLE_CLIENT_ID = "797755358727-jf70gvanrvk52eanodm69gpkbrkn97ep.apps.googleusercontent.com";
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String error = ServletUtil.param(req, "error");
@@ -50,8 +48,11 @@ public class OAuth2GoogleServlet extends HttpServlet {
 			throw new RuntimeException("code is required");
 		}
 
+		String clientId = Config.me().getGoogleClientId();
+		String secret = Config.me().getGoogleSecret();
+		
 		GoogleOAuthToken oToken = HttpClientUtil.jsonPost(GoogleOAuthToken.class, "https://accounts.google.com/o/oauth2/token", "grant_type", "authorization_code", "code", code,
-				"client_id", GOOGLE_CLIENT_ID, "client_secret", GOOGLE_CLIENT_SECRET, "redirect_uri", RepozUtil.getOauthCallback(req));
+				"client_id", clientId, "client_secret", secret, "redirect_uri", RepozUtil.getOauthCallback(req));
 
 		String email = getEmail(oToken);
 		LOG.info("User: " + email);

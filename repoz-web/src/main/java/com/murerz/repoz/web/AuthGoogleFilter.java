@@ -51,10 +51,12 @@ public class AuthGoogleFilter implements Filter {
 				return;
 			}
 
+			String clientId = Config.me().getGoogleClientId();
+
 			String uri = ServletUtil.getURIWithoutContextPath(req);
 			if ("/panel.html".equals(uri)) {
 				ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", RepozUtil.getOauthCallback(req),
-						"response_type", "code", "client_id", OAuth2GoogleServlet.GOOGLE_CLIENT_ID, "access_type", "online");
+						"response_type", "code", "client_id", clientId, "access_type", "online");
 				return;
 			}
 

@@ -67,4 +67,12 @@ public class Config {
 		return retProperty("repoz.base.url");
 	}
 
+	public String getGoogleClientId() {
+		return retProperty("repoz.google.clientid");
+	}
+
+	public String getGoogleSecret() {
+		return retProperty("repoz.google.secret");
+	}
+
 }
