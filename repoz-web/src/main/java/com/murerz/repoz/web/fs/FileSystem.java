@@ -14,4 +14,8 @@ public interface FileSystem {
 
 	Set<String> listRepositories();
 
+	Set<String> list(String path);
+
+	Set<String> listRecursively(String path);
+
 }

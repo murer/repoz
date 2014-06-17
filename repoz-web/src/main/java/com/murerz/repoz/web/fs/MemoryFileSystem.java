@@ -44,4 +44,13 @@ public class MemoryFileSystem implements FileSystem {
 		return ret;
 	}
 
+	public Set<String> list(String path) {
+		return null;
+	}
+
+	public Set<String> listRecursively(String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

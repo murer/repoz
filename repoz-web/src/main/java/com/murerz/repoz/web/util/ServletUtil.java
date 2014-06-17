@@ -1,6 +1,7 @@
 package com.murerz.repoz.web.util;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
@@ -228,5 +229,23 @@ public class ServletUtil {
 		sb.append(url);
 		sb.append("'\"></body></html>");
 		writeHtml(resp, sb.toString());
+	}
+
+	public static boolean paramBoolean(HttpServletRequest req, String name) {
+		return "true".equals(param(req, name));
+	}
+
+	public static void writeTextLines(HttpServletResponse resp, Collection<?> rows) {
+		try {
+			resp.setContentType("text/plain");
+			resp.setCharacterEncoding("UTF-8");
+			PrintWriter out = resp.getWriter();
+			for (Object o : rows) {
+				out.println(o);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 }

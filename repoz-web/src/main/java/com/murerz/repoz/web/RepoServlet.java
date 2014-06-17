@@ -3,6 +3,7 @@ package com.murerz.repoz.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,6 +27,12 @@ public class RepoServlet extends HttpServlet {
 		InputStream in = null;
 		try {
 			String path = RepozUtil.path(req);
+			boolean list = ServletUtil.paramBoolean(req, "l");
+			if (list) {
+				list(req, resp);
+				return;
+			}
+
 			FileSystem fs = FileSystemFactory.create();
 
 			RepozFile file = fs.read(path);
@@ -50,6 +57,19 @@ public class RepoServlet extends HttpServlet {
 		} finally {
 			Util.close(in);
 		}
+	}
+
+	private void list(HttpServletRequest req, HttpServletResponse resp) {
+		String path = RepozUtil.path(req);
+		boolean recursively = ServletUtil.paramBoolean(req, "r");
+		FileSystem fs = FileSystemFactory.create();
+		if (recursively) {
+			Set<String> childs = fs.listRecursively(path);
+			ServletUtil.writeTextLines(resp, childs);
+			return;
+		}
+		Set<String> childs = fs.list(path);
+		ServletUtil.writeTextLines(resp, childs);
 	}
 
 	@Override

@@ -113,4 +113,34 @@ public class RawFileSystem implements FileSystem {
 		return ret;
 	}
 
+	public Set<String> list(String path) {
+		File base = base();
+		File parent = new File(base, path);
+		File[] list = parent.listFiles();
+		TreeSet<String> ret = new TreeSet<String>();
+		if (list == null) {
+			return ret;
+		}
+		for (File child : list) {
+			if (!child.getName().endsWith(RepozUtil.REPOZMETA) && !child.getName().endsWith(RepozUtil.ACCESS)) {
+				if (path.endsWith("/")) {
+					ret.add(path + child.getName());
+				} else {
+					ret.add(path + "/" + child.getName());
+				}
+			}
+		}
+		return ret;
+	}
+
+	public Set<String> listRecursively(String path) {
+		TreeSet<String> ret = new TreeSet<String>();
+		Set<String> files = list(path);
+		for (String child : files) {
+			ret.add(child);
+			ret.addAll(listRecursively(child));
+		}
+		return ret;
+	}
+
 }
