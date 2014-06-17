@@ -73,6 +73,9 @@ public class AuthGoogleFilter implements Filter {
 			return null;
 		}
 		token = SecurityHelper.me().unsign(token);
+		if (token == null) {
+			return null;
+		}
 		token = CryptUtil.decodeBase64String(token, "UTF-8");
 		JsonObject obj = GsonUtil.parse(token).getAsJsonObject();
 		long t = obj.get("t").getAsLong();

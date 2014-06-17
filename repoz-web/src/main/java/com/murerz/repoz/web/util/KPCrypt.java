@@ -43,7 +43,7 @@ public class KPCrypt {
 	public static KPCrypt create() {
 		try {
 			KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALG_KEY);
-			keyGen.initialize(1024);
+			keyGen.initialize(512);
 			KeyPair keypair = keyGen.genKeyPair();
 			KPCrypt ret = new KPCrypt();
 			ret.privateKey = keypair.getPrivate();
