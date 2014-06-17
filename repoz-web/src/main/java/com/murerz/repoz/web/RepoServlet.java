@@ -78,13 +78,8 @@ public class RepoServlet extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
-		boolean recursively = "true".equals(ServletUtil.param(req, "r"));
 		FileSystem fs = FileSystemFactory.create();
-		if (recursively) {
-			fs.deleteRecursively(path);
-		} else {
-			fs.delete(path);
-		}
+		fs.delete(path);
 	}
 
 }

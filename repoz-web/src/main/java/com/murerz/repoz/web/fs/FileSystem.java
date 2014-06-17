@@ -14,6 +14,4 @@ public interface FileSystem {
 
 	Set<String> listRepositories();
 
-	void deleteRecursively(String path);
-
 }

@@ -38,11 +38,6 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");
 
 		assertEquals(new Integer(200), a.code("DELETE", "/r/a"));
-		assertResp(Request.create("GET", "/r/a/file.txt"), 200, "text/plain", "UTF-8", "my text file");
-		assertResp(Request.create("GET", "/r/a/with/some/dir/other.txt"), 200, "text/plain", "UTF-8", "my other file");
-		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");
-
-		assertEquals(new Integer(200), a.code("DELETE", "/r/a?r=true"));
 		assertEquals(new Integer(404), a.code("GET", "/r/a/file.txt"));
 		assertEquals(new Integer(404), a.code("GET", "/r/a/with/some/dir/other.txt"));
 		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");

@@ -22,7 +22,12 @@ public class MemoryFileSystem implements FileSystem {
 	}
 
 	public void delete(String path) {
-		files.remove(path);
+		Set<String> set = new HashSet<String>(files.keySet());
+		for (String p : set) {
+			if (p.startsWith(path)) {
+				files.remove(p);
+			}
+		}
 	}
 
 	public void deleteAll() {
@@ -37,15 +42,6 @@ public class MemoryFileSystem implements FileSystem {
 			ret.add("/" + name[1]);
 		}
 		return ret;
-	}
-
-	public void deleteRecursively(String path) {
-		Set<String> set = new HashSet<String>(files.keySet());
-		for (String p : set) {
-			if (p.startsWith(path)) {
-				files.remove(p);
-			}
-		}
 	}
 
 }

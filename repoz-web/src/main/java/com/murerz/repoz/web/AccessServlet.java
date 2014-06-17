@@ -113,7 +113,7 @@ public class AccessServlet extends HttpServlet {
 	private void deleteRepository(HttpServletRequest req, HttpServletResponse resp) {
 		String repo = ServletUtil.param(req, "path");
 		FileSystem fs = FileSystemFactory.create();
-		fs.deleteRecursively(repo);
+		fs.delete(repo);
 	}
 
 }

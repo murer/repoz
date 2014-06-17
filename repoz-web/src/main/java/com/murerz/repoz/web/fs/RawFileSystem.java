@@ -113,10 +113,4 @@ public class RawFileSystem implements FileSystem {
 		return ret;
 	}
 
-	public void deleteRecursively(String path) {
-		File base = base();
-		File file = new File(base, path);
-		Util.deleteRecursively(file);
-	}
-
 }
