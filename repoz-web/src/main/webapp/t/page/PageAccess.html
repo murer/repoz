@@ -94,20 +94,22 @@
 								var user = $(this).closest('tr').data('repoz.access.user');
 								if (window.confirm('Delete ' + path + ' ' + user + '?')) {
 									var url = 'access?path=' + path;
-									if(user) {
-										url += '&amp;user=' + user;	
+									if (user) {
+										url += '&amp;user=' + user;
 									}
-									$.ajax({
-										type : 'DELETE',
-										url : url,
-										success : function() {
-											query();
-										}
+									if (user || window.prompt('Type delete to confirm').toLowerCase() == 'delete') {
+										$.ajax({
+											type : 'DELETE',
+											url : url,
+											success : function() {
+												query();
+											}
 
-									});
+										});
+									}
 								}
 							});
-							if(path == '/') {
+							if (path == '/') {
 								page.find('.queryResult tr > :eq(1)').hide();
 								page.find('.queryResult tr > :eq(2)').hide();
 								page.find('.queryResult tr > :eq(3)').hide();
