@@ -61,7 +61,7 @@ public class OAuth2GoogleServlet extends HttpServlet {
 			token = SecurityHelper.me().sign(token);
 			ServletUtil.addCookie(resp, "Repoz", token, "/", -1);
 		}
-		ServletUtil.sendJSRedirect(resp, "index.html");
+		ServletUtil.sendJSRedirect(resp, "panel.html");
 	}
 
 	private String getEmail(GoogleOAuthToken oToken) {
