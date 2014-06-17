@@ -39,17 +39,11 @@ public class MemoryFileSystem implements FileSystem {
 		return ret;
 	}
 
-	public void deleteRepository(String repo) {
-		Set<String> set = files.keySet();
-		for (String path : set) {
-			if (path.startsWith(repo) && !path.startsWith(".repozauth.txt")) {
-				throw new RuntimeException("directory is not empty: " + path);
-			}
-		}
-		set = new HashSet<String>(files.keySet());
-		for (String path : set) {
-			if (path.startsWith(repo)) {
-				files.remove(path);
+	public void deleteRecursively(String path) {
+		Set<String> set = new HashSet<String>(files.keySet());
+		for (String p : set) {
+			if (p.startsWith(path)) {
+				files.remove(p);
 			}
 		}
 	}

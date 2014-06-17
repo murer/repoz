@@ -63,9 +63,6 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals(new Integer(200), resp.code());
 		assertEquals("/a\n/b", resp.content().text().trim());
 		
-		assertEquals(new Integer(500), execute("main:123", "DELETE", "/access?path=/a", null, null).code());
-		assertEquals(new Integer(200), a.code("DELETE", "/r/a/x/f.txt"));
-		assertEquals(new Integer(200), a.code("DELETE", "/r/a/x"));
 		assertEquals(new Integer(200), execute("main:123", "DELETE", "/access?path=/a", null, null).code());
 		
 		resp = execute("main:123", "GET", "/access?path=/", null, null);
