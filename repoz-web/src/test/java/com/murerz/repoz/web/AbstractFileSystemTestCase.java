@@ -28,6 +28,27 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 	}
 
 	@Test
+	public void testDeleteRepository() {
+		assertEquals(new Integer(200), a.code("PUT", "/r/a/file.txt", "text/plain;charset=UTF-8", "my text file"));
+		assertEquals(new Integer(200), a.code("PUT", "/r/a/with/some/dir/other.txt", "text/plain;charset=UTF-8", "my other file"));
+		assertEquals(new Integer(200), a.code("PUT", "/r/b/other.txt", "text/plain;charset=UTF-8", "my other file"));
+
+		assertResp(Request.create("GET", "/r/a/file.txt"), 200, "text/plain", "UTF-8", "my text file");
+		assertResp(Request.create("GET", "/r/a/with/some/dir/other.txt"), 200, "text/plain", "UTF-8", "my other file");
+		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");
+
+		assertEquals(new Integer(200), a.code("DELETE", "/r/a"));
+		assertResp(Request.create("GET", "/r/a/file.txt"), 200, "text/plain", "UTF-8", "my text file");
+		assertResp(Request.create("GET", "/r/a/with/some/dir/other.txt"), 200, "text/plain", "UTF-8", "my other file");
+		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");
+
+		assertEquals(new Integer(200), a.code("DELETE", "/r/a?r=true"));
+		assertEquals(new Integer(404), a.code("GET", "/r/a/file.txt"));
+		assertEquals(new Integer(404), a.code("GET", "/r/a/with/some/dir/other.txt"));
+		assertResp(Request.create("GET", "/r/b/other.txt"), 200, "text/plain", "UTF-8", "my other file");
+	}
+
+	@Test
 	public void testMediaType() {
 		assertEquals(new Integer(404), a.code("GET", "/r/file.txt"));
 		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
@@ -58,13 +79,13 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
 		assertEquals(new Integer(200), a.code("PUT", "/r/a/x/f.txt", "text/plain;charset=UTF-8", "my other file"));
 		assertEquals(new Integer(200), a.code("PUT", "/r/b/x/f.txt", "text/plain;charset=UTF-8", "my other file"));
-		
+
 		resp = execute("main:123", "GET", "/access?path=/", null, null);
 		assertEquals(new Integer(200), resp.code());
 		assertEquals("/a\n/b", resp.content().text().trim());
-		
+
 		assertEquals(new Integer(200), execute("main:123", "DELETE", "/access?path=/a", null, null).code());
-		
+
 		resp = execute("main:123", "GET", "/access?path=/", null, null);
 		assertEquals(new Integer(200), resp.code());
 		assertEquals("/b", resp.content().text().trim());
