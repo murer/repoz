@@ -57,13 +57,5 @@ public class GSCPoc {
 		content = response.parseAsString();
 		System.out.println("x: " + content);
 
-		URI = "https://repoz-test.storage.googleapis.com/object";
-		requestFactory = httpTransport.createRequestFactory(credential);
-		url = new GenericUrl(URI);
-		request = requestFactory.buildGetRequest(url);
-		request.setRequestMethod("GET");
-		response = request.execute();
-		content = response.parseAsString();
-		System.out.println("x: " + content);
 	}
 }
