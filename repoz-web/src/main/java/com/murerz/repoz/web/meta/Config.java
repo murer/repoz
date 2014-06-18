@@ -2,14 +2,9 @@ package com.murerz.repoz.web.meta;
 
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.murerz.repoz.web.util.Util;
 
 public class Config {
-
-	private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
 	private static Object MUTEX = new Object();
 
@@ -33,8 +28,7 @@ public class Config {
 	private void prepare() {
 		props = Util.properties(getClass().getClassLoader().getResource("repoz.properties"));
 		if (props == null) {
-			LOG.info("repoz.properties not found");
-			props = new Properties();
+			throw new RuntimeException("properties not found");
 		}
 		props.putAll(System.getProperties());
 	}
@@ -51,7 +45,7 @@ public class Config {
 		return Util.str(props.getProperty(key, def));
 	}
 
-	public String retProperty(String key) {
+	public String reqProperty(String key) {
 		String ret = getProperty(key);
 		if (ret == null) {
 			throw new RuntimeException("configuration missing: " + key);
@@ -64,15 +58,15 @@ public class Config {
 	}
 
 	public String getBaseURL() {
-		return retProperty("repoz.base.url");
+		return reqProperty("repoz.base.url");
 	}
 
 	public String getGoogleClientId() {
-		return retProperty("repoz.google.clientid");
+		return reqProperty("repoz.google.clientid");
 	}
 
 	public String getGoogleSecret() {
-		return retProperty("repoz.google.secret");
+		return reqProperty("repoz.google.secret");
 	}
 
 }

@@ -44,4 +44,10 @@ public abstract class RepozFile {
 		return "[" + path + " " + mediaType + " " + charset + "]";
 	}
 
+	public String getContentType() {
+		if (charset == null) {
+			return mediaType;
+		}
+		return "" + mediaType + "; charset=" + charset;
+	}
 }

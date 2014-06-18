@@ -23,7 +23,7 @@ public class RawFileSystem implements FileSystem {
 	private static final Logger LOG = LoggerFactory.getLogger(RawFileSystem.class);
 
 	private File base() {
-		String ret = Config.me().retProperty("repoz.rawfilesytem.base");
+		String ret = Config.me().reqProperty("repoz.rawfilesytem.base");
 		File file = new File(ret);
 		if (!file.exists()) {
 			file.mkdirs();
