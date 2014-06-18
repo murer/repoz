@@ -65,7 +65,8 @@ public class GCSHandler {
 	}
 
 	public GenericUrl createURL(String path) {
-		return new GenericUrl("https://repoz-test.storage.googleapis.com" + path);
+		String bucket = Config.me().reqProperty("repoz.gcs.bucket");
+		return new GenericUrl("https://" + bucket + ".storage.googleapis.com" + path);
 	}
 
 }

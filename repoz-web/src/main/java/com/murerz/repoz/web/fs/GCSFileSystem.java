@@ -6,25 +6,15 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.InputStreamContent;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.murerz.repoz.web.util.Util;
 import com.murerz.repoz.web.util.XMLQuery;
 
 public class GCSFileSystem implements FileSystem {
-
-	private static final String SERVICE_ACCOUNT_EMAIL = "797755358727-0vo50r71dcf96p0kmgl03o2uh3tbdeut@developer.gserviceaccount.com";
-	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-
-	private static final Logger LOG = LoggerFactory.getLogger(GCSFileSystem.class);
 
 	public RepozFile read(String path) {
 		try {
@@ -93,6 +83,10 @@ public class GCSFileSystem implements FileSystem {
 	}
 
 	public void deleteAll() {
+		Set<String> list = listRecursively("/");
+		for (String path : list) {
+			delete(path);
+		}
 	}
 
 	public Set<String> listRepositories() {
@@ -130,12 +124,13 @@ public class GCSFileSystem implements FileSystem {
 		try {
 			in = resp.getContent();
 			XMLQuery query = XMLQuery.parse(in, false);
-			XMLQuery list = query.find("//Contents/Key/text()");
+			XMLQuery list = query.find("//Contents/Key/text() | //CommonPrefixes/Prefix/text()");
 			Set<String> ret = new TreeSet<String>();
 			for (int i = 0; i < list.size(); i++) {
-				ret.add("/" + list.get(i).getContent());
+				String path = list.get(i).getContent();
+				path = path.replaceAll("/+$", "");
+				ret.add("/" + path);
 			}
-			System.out.println(ret);
 			return ret;
 		} finally {
 			Util.close(in);
@@ -149,7 +144,9 @@ public class GCSFileSystem implements FileSystem {
 		StringBuilder sb = new StringBuilder().append(path);
 		sb.deleteCharAt(0);
 		sb.append("/");
-		return sb.toString();
+		String ret = sb.toString();
+		ret = ret.replaceAll("^/+", "");
+		return ret;
 	}
 
 }

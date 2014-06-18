@@ -25,7 +25,6 @@ public class AbstractTestCase {
 		maxLimit = 300;
 		System.setProperty("repoz.post.maxLength", Integer.toString(maxLimit));
 		System.setProperty("repoz.google.auth.disabled", "true");
-		System.setProperty("repoz.gcs.auth.email", "797755358727-0vo50r71dcf96p0kmgl03o2uh3tbdeut@developer.gserviceaccount.com");
 
 
 		mycontainer = MycontainerHelper.me();

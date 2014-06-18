@@ -1,51 +1,13 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<ListBucketResult xmlns='http://doc.s3.amazonaws.com/2006-03-01'>
+<ListBucketResult xmlns="http://doc.s3.amazonaws.com/2006-03-01">
 	<Name>repoz-test</Name>
-	<Prefix>a/</Prefix>
-	<Marker></Marker>
+	<Prefix />
+	<Marker />
+	<Delimiter>/</Delimiter>
 	<IsTruncated>false</IsTruncated>
-	<Contents>
-		<Key>a/config/x.txt</Key>
-		<Generation>1403111708269000</Generation>
-		<MetaGeneration>1</MetaGeneration>
-		<LastModified>2014-06-18T17:15:08.269Z</LastModified>
-		<ETag>"eebd95c108e8a3c95939d6c6bcea2e65"</ETag>
-		<Size>13</Size>
-		<Owner>
-			<ID>00b4903a977d7d0c35a1ec272f6ab6f00da11d4b40e9cfbd6874ea259d1e0765</ID>
-		</Owner>
-	</Contents>
-	<Contents>
-		<Key>a/docs/file.txt</Key>
-		<Generation>1403111707684000</Generation>
-		<MetaGeneration>1</MetaGeneration>
-		<LastModified>2014-06-18T17:15:07.684Z</LastModified>
-		<ETag>"d5f7207442f43ed7f7d63cf012fcc499"</ETag>
-		<Size>12</Size>
-		<Owner>
-			<ID>00b4903a977d7d0c35a1ec272f6ab6f00da11d4b40e9cfbd6874ea259d1e0765</ID>
-		</Owner>
-	</Contents>
-	<Contents>
-		<Key>a/docs/some/dir/other.txt</Key>
-		<Generation>1403111707941000</Generation>
-		<MetaGeneration>1</MetaGeneration>
-		<LastModified>2014-06-18T17:15:07.941Z</LastModified>
-		<ETag>"eebd95c108e8a3c95939d6c6bcea2e65"</ETag>
-		<Size>13</Size>
-		<Owner>
-			<ID>00b4903a977d7d0c35a1ec272f6ab6f00da11d4b40e9cfbd6874ea259d1e0765</ID>
-		</Owner>
-	</Contents>
-	<Contents>
-		<Key>a/other.txt</Key>
-		<Generation>1403111708611000</Generation>
-		<MetaGeneration>1</MetaGeneration>
-		<LastModified>2014-06-18T17:15:08.611Z</LastModified>
-		<ETag>"eebd95c108e8a3c95939d6c6bcea2e65"</ETag>
-		<Size>13</Size>
-		<Owner>
-			<ID>00b4903a977d7d0c35a1ec272f6ab6f00da11d4b40e9cfbd6874ea259d1e0765</ID>
-		</Owner>
-	</Contents>
+	<CommonPrefixes>
+		<Prefix>a/</Prefix>
+	</CommonPrefixes>
+	<CommonPrefixes>
+		<Prefix>b/</Prefix>
+	</CommonPrefixes>
 </ListBucketResult>
