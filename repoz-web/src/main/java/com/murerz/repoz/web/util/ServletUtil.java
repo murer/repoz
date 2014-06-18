@@ -248,4 +248,13 @@ public class ServletUtil {
 		}
 
 	}
+
+	public static String mediaType(HttpServletRequest req) {
+		String ret = Util.str(req.getContentType());
+		if (ret == null) {
+			return null;
+		}
+		ret = ret.replaceAll(";.*$", "");
+		return ret;
+	}
 }

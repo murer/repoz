@@ -83,9 +83,9 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-		String mediaType = RepozUtil.mediaType(path);
+		String mediaType = ServletUtil.mediaType(req);
 		if (mediaType == null) {
-			mediaType = req.getContentType();
+			mediaType = RepozUtil.mediaType(path);
 		}
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();

@@ -64,9 +64,9 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals(new Integer(404), a.code("GET", "/r/with/some/dir/other"));
 		assertEquals(new Integer(404), a.code("GET", "/r/file.texinfo"));
 
-		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.txt").contentType("application/octet-stream").content("my text file".getBytes())).code());
+		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.txt").contentType("").content("my text file".getBytes())).code());
 		assertEquals(new Integer(200), a.code("PUT", "/r/with/some/dir/other", "text/plain;charset=UTF-8", "my other file"));
-		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.texinfo").contentType("application/octet-stream").content("my text info".getBytes())).code());
+		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/file.texinfo").contentType("").content("my text info".getBytes())).code());
 
 		assertResp(Request.create("GET", "/r/file.txt"), 200, "text/plain", null, "my text file");
 		assertResp(Request.create("GET", "/r/with/some/dir/other"), 200, "text/plain", "UTF-8", "my other file");

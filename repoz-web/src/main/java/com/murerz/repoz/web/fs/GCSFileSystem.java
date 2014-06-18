@@ -26,10 +26,12 @@ public class GCSFileSystem implements FileSystem {
 			if (resp.getStatusCode() == 404) {
 				return null;
 			}
+			String type = resp.getContentType();
+			String charset = resp.getContentEncoding();
 			StreamRepozFile ret = new StreamRepozFile().setIn(resp.getContent());
 			ret.setPath(path);
-			ret.setMediaType("text/plain");
-			ret.setCharset("UTF-8");
+			ret.setMediaType(type);
+			ret.setCharset(charset);
 			return ret;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -40,7 +42,8 @@ public class GCSFileSystem implements FileSystem {
 		try {
 			HttpRequestFactory factory = GCSHandler.me().getFactory();
 			GenericUrl url = GCSHandler.me().createURL(file.getPath());
-			InputStreamContent content = new InputStreamContent(file.getContentType(), file.getIn());
+			String contentType = file.getContentType();
+			InputStreamContent content = new InputStreamContent(contentType, file.getIn());
 			HttpRequest req = factory.buildPutRequest(url, content);
 			executeCheck(req, 200);
 		} catch (IOException e) {
@@ -72,10 +75,19 @@ public class GCSFileSystem implements FileSystem {
 	}
 
 	public void delete(String path) {
+		deleteFile(path);
+		Set<String> list = listRecursively(path);
+		for (String p : list) {
+			deleteFile(p);
+		}
+	}
+
+	private void deleteFile(String path) {
 		try {
 			HttpRequestFactory factory = GCSHandler.me().getFactory();
 			GenericUrl url = GCSHandler.me().createURL(path);
 			HttpRequest req = factory.buildDeleteRequest(url);
+			req.setThrowExceptionOnExecuteError(false);
 			executeCheck(req, 204, 404);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -84,13 +96,13 @@ public class GCSFileSystem implements FileSystem {
 
 	public void deleteAll() {
 		Set<String> list = listRecursively("/");
-		for (String path : list) {
-			delete(path);
+		for (String p : list) {
+			deleteFile(p);
 		}
 	}
 
 	public Set<String> listRepositories() {
-		return null;
+		return list("/");
 	}
 
 	public Set<String> list(String path) {
