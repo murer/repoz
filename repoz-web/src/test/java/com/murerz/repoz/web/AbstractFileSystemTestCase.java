@@ -45,11 +45,11 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
 	@Test
 	public void testListFiles() {
-		assertEquals(new Integer(200), a.code("PUT", "/r/a/docs/file.txt", "text/plain;charset=UTF-8", "my text file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/a/docs/some/dir/other.txt", "text/plain;charset=UTF-8", "my other file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/a/config/x.txt", "text/plain;charset=UTF-8", "my other file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/a/other.txt", "text/plain;charset=UTF-8", "my other file"));
-		assertEquals(new Integer(200), a.code("PUT", "/r/b/other.txt", "text/plain;charset=UTF-8", "my other file"));
+//		assertEquals(new Integer(200), a.code("PUT", "/r/a/docs/file.txt", "text/plain;charset=UTF-8", "my text file"));
+//		assertEquals(new Integer(200), a.code("PUT", "/r/a/docs/some/dir/other.txt", "text/plain;charset=UTF-8", "my other file"));
+//		assertEquals(new Integer(200), a.code("PUT", "/r/a/config/x.txt", "text/plain;charset=UTF-8", "my other file"));
+//		assertEquals(new Integer(200), a.code("PUT", "/r/a/other.txt", "text/plain;charset=UTF-8", "my other file"));
+//		assertEquals(new Integer(200), a.code("PUT", "/r/b/other.txt", "text/plain;charset=UTF-8", "my other file"));
 
 		assertResp(Request.create("GET", "/r/a/docs?l=true"), 200, "text/plain", "UTF-8", "/a/docs/file.txt\n/a/docs/some\n");
 		assertResp(Request.create("GET", "/r/a/config?l=true"), 200, "text/plain", "UTF-8", "/a/config/x.txt\n");

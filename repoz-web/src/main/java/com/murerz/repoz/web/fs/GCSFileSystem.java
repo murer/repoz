@@ -1,8 +1,10 @@
 package com.murerz.repoz.web.fs;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.murerz.repoz.web.util.Util;
+import com.murerz.repoz.web.util.XMLQuery;
 
 public class GCSFileSystem implements FileSystem {
 
@@ -96,11 +100,56 @@ public class GCSFileSystem implements FileSystem {
 	}
 
 	public Set<String> list(String path) {
-		return null;
+		String sb = convertToPrefix(path);
+		try {
+			HttpRequestFactory factory = GCSHandler.me().getFactory();
+			GenericUrl url = GCSHandler.me().createURL("/?delimiter=/&prefix=" + sb);
+			HttpRequest req = factory.buildGetRequest(url);
+			HttpResponse resp = executeCheck(req, 200);
+			return parseFileNames(sb, resp);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Set<String> listRecursively(String path) {
-		return null;
+		String sb = convertToPrefix(path);
+		try {
+			HttpRequestFactory factory = GCSHandler.me().getFactory();
+			GenericUrl url = GCSHandler.me().createURL("/?prefix=" + sb);
+			HttpRequest req = factory.buildGetRequest(url);
+			HttpResponse resp = executeCheck(req, 200);
+			return parseFileNames(sb, resp);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private Set<String> parseFileNames(String sb, HttpResponse resp) throws IOException {
+		InputStream in = null;
+		try {
+			in = resp.getContent();
+			XMLQuery query = XMLQuery.parse(in, false);
+			XMLQuery list = query.find("//Contents/Key/text()");
+			Set<String> ret = new TreeSet<String>();
+			for (int i = 0; i < list.size(); i++) {
+				ret.add("/" + list.get(i).getContent());
+			}
+			System.out.println(ret);
+			return ret;
+		} finally {
+			Util.close(in);
+		}
+	}
+
+	private String convertToPrefix(String path) {
+		if (!path.startsWith("/")) {
+			throw new RuntimeException("wrong: " + path);
+		}
+		StringBuilder sb = new StringBuilder().append(path);
+		sb.deleteCharAt(0);
+		sb.append("/");
+		return sb.toString();
 	}
 
 }
