@@ -42,6 +42,9 @@ public class GCSHandler {
 	private void prepare() {
 		try {
 			InputStream stream = getClass().getClassLoader().getResourceAsStream("gcs.p12");
+			if (stream == null) {
+				throw new RuntimeException("private key gcs.p12 not found");
+			}
 			PrivateKey key = SecurityUtils.loadPrivateKeyFromKeyStore(SecurityUtils.getPkcs12KeyStore(), stream, "notasecret", "privatekey", "notasecret");
 
 			NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
