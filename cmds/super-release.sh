@@ -34,7 +34,7 @@ if [ "x$STOP" == "x0" ]; then
 	git push origin repoz-$CLOSE_VERSION
  
 	mvn clean install -Dmaven.test.skip.exec
-	mvn deploy -e -DreleaseMail -Dmaven.test.skip.exec
+	mvn deploy -e -Dmaven.test.skip.exec
 
 	mvn versions:set -DnewVersion=$SNAPSHOT_VERSION -DgenerateBackupPoms=false
 	git commit -am "releasing repoz-$CLOSE_VERSION"
