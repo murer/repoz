@@ -5,8 +5,6 @@ SNAPSHOT_VERSION="$2"
 
 STOP=0
 
-source env/dextra/env.sh
-
 if [ "x$CLOSE_VERSION" == "x" ]; then 
 	STOP=1;
 fi;
