@@ -69,4 +69,14 @@ public class Config {
 		return reqProperty("repoz.google.secret");
 	}
 
+	public static void reset() {
+		if (me != null) {
+			synchronized (MUTEX) {
+				if (me != null) {
+					me = null;
+				}
+			}
+		}
+	}
+
 }

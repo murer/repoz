@@ -10,6 +10,8 @@ import com.googlecode.mycontainer.commons.http.HttpClientRequestService;
 import com.googlecode.mycontainer.commons.http.Request;
 import com.googlecode.mycontainer.commons.http.RequestAdapter;
 import com.googlecode.mycontainer.commons.http.Response;
+import com.murerz.repoz.web.fs.FileSystemFactory;
+import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.util.CryptUtil;
 
 public class AbstractTestCase {
@@ -38,6 +40,8 @@ public class AbstractTestCase {
 
 	@After
 	public void tearDown() {
+		FileSystemFactory.reset();
+		Config.reset();
 		if (mycontainer != null) {
 			mycontainer.unbindPort(port);
 			mycontainer.tearDown();

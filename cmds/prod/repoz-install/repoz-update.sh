@@ -10,6 +10,7 @@ cp -v repoz-repo/gcs.p12 packs/WEB-INF/classes/gcs.p12
 cd packs
 
 jar uvf repoz.war WEB-INF/classes/repoz.properties
+jar uvf repoz.war WEB-INF/classes/gcs.p12
 
 cd -
 
