@@ -5,6 +5,7 @@ source /etc/bash.bashrc.repoz
 cat > packs/repoz.war
 
 cp -v repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties 
+cp -v repoz-repo/gcs.p12 packs/WEB-INF/classes/gcs.p12
 
 cd packs
 
