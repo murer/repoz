@@ -17,7 +17,7 @@ if ! gcutil --project docs-manager listdisks --zone us-central1-a --filter="name
 fi;
 
 if ! gcutil --project docs-manager listinstances --zone us-central1-a --filter="name eq 'repoz-prod'" | grep repoz-prod; then
-	gcutil --project docs-manager addinstance repoz-prod --zone us-central1-a --machine_type n1-standard-1 --disk=repoz-root,mode=READ_WRITE,boot --external_ip_address=108.59.84.254 --disk=repoz-prod,deviceName=repoz-repository,mode=READ_WRITE --authorized_ssh_keys=repoz:gen/prod/id_rsa.pub
+	gcutil --project docs-manager addinstance repoz-prod --zone us-central1-a --machine_type n1-standard-1 --disk=repoz-root,mode=READ_WRITE,boot --external_ip_address=108.59.84.254 --disk=repoz-prod,deviceName=repoz-repository,mode=READ_WRITE --authorized_ssh_keys=repoz:$HOME/.ssh/id_rsa.pub
 fi
 
 while ! cmds/prod/connect.sh pwd; do
