@@ -117,6 +117,16 @@
 				<version>2.2.3</version>
 			</dependency>
 			<dependency>
+				<groupId>com.google.apis</groupId>
+				<artifactId>google-api-services-storage</artifactId>
+				<version>v1beta2-rev47-1.18.0-rc</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.http-client</groupId>
+				<artifactId>google-http-client-jackson2</artifactId>
+				<version>1.18.0-rc</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
