@@ -10,7 +10,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>VersionServlet</servlet-name>
-		<url-pattern>/version</url-pattern>
+		<url-pattern>/version.properties</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
