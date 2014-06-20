@@ -79,14 +79,14 @@
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
 								<propertyregex property="managed.project.version" input="${project.version}" regexp="\." replace="-" global="true" />
 								<lower />
-								<echo file="${project.build.outputDirectory}/br/com/portaldedocumentos/repoz.build.properties" />
+								<echo file="${project.build.outputDirectory}/repoz.build.properties" />
 								<tstamp>
-									<format property="portal.now" pattern="yyyy-MM-dd-HH-mm-ss" locale="en,US" />
+									<format property="repoz.now" pattern="yyyy-MM-dd-HH-mm-ss" locale="en,US" />
 								</tstamp>
-								<propertyfile file="${project.build.outputDirectory}/br/com/portaldedocumentos/repoz.build.properties" comment="Generated File">
+								<propertyfile file="${project.build.outputDirectory}/repoz.build.properties" comment="Generated File">
 									<entry key="repoz.build.version" value="${project.version}" />
 									<entry key="repoz.build.version.managed" value="${managed.project.version}" />
-									<entry key="repoz.build.build.date" value="${portal.now}" />
+									<entry key="repoz.build.build.date" value="${repoz.now}" />
 								</propertyfile>
 							</target>
 						</configuration>
