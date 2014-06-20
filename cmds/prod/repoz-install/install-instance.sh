@@ -22,6 +22,9 @@ chmod -v 600 repoz-repo/repoz.passwd
 sudo sed -i.sedbak "s/^PasswordAuthentication .*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 sudo service ssh reload
 
+# Public Keys
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPGpAUfOPunVPuW+Kfb4rgmx5DNogD9gzktWWfWRqGUrMqChzM439d90dfhXY1Yc1pa00arGRJyDg/1qj5HtD6WGpkmRKBNvA+7/DoijC6a9wzhbdtJX6MJXpX7hv+gM3RT7pz5Neq6/+GTy1/njJBuBo2qGxhQ3LlCXgwVuCFar+8r9vI8L99xyeezp8hTJI+00CWeBx9sEJAGNo+L0tBcExh0iE30AegvEBWriZfwJHw460Xf/r0t/D0S8CjZMVxqCOe4dlGSFzZHo80+Xak8OzrCM5aZaLTd80zk1di44me1fIdiTj4HDVLhemkAXsutvPnucl6mu01TLYVf+b3 murer@frostnova" >> .ssh/authorized_keys
+
 ############
 REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
 if [ "x$REPOZ_PASSWORD" == "x" ]; then
