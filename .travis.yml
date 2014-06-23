@@ -1,6 +1,9 @@
 language: java
 jdk:
   - oraclejdk7
-before:
-  - echo abc
+install: "mvn clean install -B"
+before_script:
+ - "echo abc"
+ - "export JAVA_OPTS=-Xmx512m"
+script: "mvn test -B"
 
