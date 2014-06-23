@@ -6,7 +6,7 @@ import com.murerz.repoz.web.fs.GCSFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.GrantAccessManager;
 
-public class GCSRepoTestManual extends AbstractFileSystemTestCase {
+public class GCSRepoTest extends AbstractFileSystemTestCase {
 
 	@Override
 	public void setUp() {

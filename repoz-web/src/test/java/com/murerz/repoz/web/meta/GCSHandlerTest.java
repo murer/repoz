@@ -11,7 +11,7 @@ import com.google.api.client.http.HttpResponse;
 import com.murerz.repoz.web.AbstractTestCase;
 import com.murerz.repoz.web.fs.GCSHandler;
 
-public class GCSHandlerTestManual extends AbstractTestCase {
+public class GCSHandlerTest extends AbstractTestCase {
 
 	@Test
 	public void testLicense() throws Exception {
