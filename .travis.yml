@@ -7,4 +7,5 @@ before_script:
 install: "echo we do not need install"
 script: "mvn clean install -B"
 env:
-  - REPOZSECRET=mno
+  - secure: "gFAXvgwnWvg6cRSHYRHXZyRJzUd9TqH5NRMxiapsDW3pCesDob6onIr2bN5LH3sYxpjKEciMJAuM26kev6YErTZo2rxPBkRgc+/iJhtDAXOGvUSxdFLqN5gPsjqU8T5ynX9N3GzuZMgR01zFmFzLpy3K9ER8KiRdVvh9zWKg5e8="
+
