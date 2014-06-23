@@ -3,7 +3,7 @@ jdk:
   - oraclejdk7
 install: "mvn clean install -B"
 before_script:
- - "echo abc"
+ - secure: "NVyyYabBS/hVhrwlF7jqBOqo5uBmcraE+9R3LIqwuTEcOEMmkrOHoD25cBDUHOUYTyJ09R0ZQoSLg3UEWz/YK8Fc4M/4m1Fja/d9BTqLy0ed6HZx/HBZ2xBicxUqbQ1fOosyZcmhFGXry1XQtJrq2T6xbWOxAHjuVIGxc/5Z4Bk="
  - "export JAVA_OPTS=-Xmx512m"
 script: "mvn test -B"
 
