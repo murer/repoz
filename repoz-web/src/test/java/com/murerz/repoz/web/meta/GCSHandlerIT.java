@@ -1,6 +1,7 @@
 package com.murerz.repoz.web.meta;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -16,12 +17,12 @@ public class GCSHandlerIT extends AbstractTestCase {
 	@Test
 	public void testLicense() throws Exception {
 		HttpRequestFactory factory = GCSHandler.me().getFactory();
-		HttpRequest req = factory.buildGetRequest(new GenericUrl("https://storage.googleapis.com/repoz-test"));
+		String bucket = Config.me().getProperty("repoz.gcs.bucket");
+		assertNotNull(bucket);
+		HttpRequest req = factory.buildGetRequest(new GenericUrl("https://storage.googleapis.com/" + bucket));
 		HttpResponse resp = req.execute();
 		assertEquals("application/xml; charset=UTF-8", resp.getContentType());
 		String str = resp.parseAsString();
 		System.out.println(str);
-
-		System.out.println(req.getHeaders().get("Authorization"));
 	}
 }
