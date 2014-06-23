@@ -259,5 +259,37 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>it</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>it</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>test</phase>
+								<goals>
+									<goal>test</goal>
+								</goals>
+								<configuration>
+									<includes>
+										<include>**/*IT.java</include>
+									</includes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 
 </project>
