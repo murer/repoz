@@ -2,10 +2,10 @@ language: java
 jdk:
   - oraclejdk7
 before_script:
-  - "echo A: $REPOZSECRET"
+  - "decrypt.sh"
   - "export JAVA_OPTS=-Xmx512m"
 install: "echo we do not need install"
 script: "mvn clean install -B"
 env:
-  - secure: "gFAXvgwnWvg6cRSHYRHXZyRJzUd9TqH5NRMxiapsDW3pCesDob6onIr2bN5LH3sYxpjKEciMJAuM26kev6YErTZo2rxPBkRgc+/iJhtDAXOGvUSxdFLqN5gPsjqU8T5ynX9N3GzuZMgR01zFmFzLpy3K9ER8KiRdVvh9zWKg5e8="
+  - secure: "I4sXfGqH8nmVfQ4a4jC0zqMaXj4x58i/p7sQki0E/JoLPSWdWKoR661ZnBtrd5FgMRtEwg2BvCrezwb6r5f6tJpntn0qVdAmL5GUtOJa3Qk6UW6Fcw8rQ+tIu+NMOxPdkzbTCMrZeBxZVAaTNRWUMzYngXI5b93WXqZ9HKP4YHQ="
 
