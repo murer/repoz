@@ -2,9 +2,9 @@ language: java
 jdk:
   - oraclejdk7
 before_script:
-  - "echo A: $REPOZ-SECRET"
+  - "echo A: $REPOZSECRET"
   - "export JAVA_OPTS=-Xmx512m"
 install: "echo we do not need install"
 script: "mvn clean install -B"
 env:
-  - REPOZ-SECRET=mno
+  - REPOZSECRET=mno
