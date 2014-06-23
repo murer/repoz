@@ -21,5 +21,7 @@ public class GCSHandlerTestManual extends AbstractTestCase {
 		assertEquals("application/xml; charset=UTF-8", resp.getContentType());
 		String str = resp.parseAsString();
 		System.out.println(str);
+
+		System.out.println(req.getHeaders().get("Authorization"));
 	}
 }
