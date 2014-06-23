@@ -7,5 +7,5 @@ before_script:
 install: "echo we do not need install"
 script: "mvn clean install -B"
 env:
-  - secure: "I4sXfGqH8nmVfQ4a4jC0zqMaXj4x58i/p7sQki0E/JoLPSWdWKoR661ZnBtrd5FgMRtEwg2BvCrezwb6r5f6tJpntn0qVdAmL5GUtOJa3Qk6UW6Fcw8rQ+tIu+NMOxPdkzbTCMrZeBxZVAaTNRWUMzYngXI5b93WXqZ9HKP4YHQ="
+  - secure: "XB/Qdy+PDrAFFweCJ3D/kNM1fzy8CX3BVTli3F039kKDxFmqNsppzvrwQjpf0Cq98dwK7a6wTIbjdfJZNaeq9eAZYs7nPuj0u8c/3y+v/P/VBppUKw9ql9d5PmZ4LvbSkBvKvnHZmDu5dPf0L4fEOw8Fy3bdSKNG2YvgCVzAG+E="
 
