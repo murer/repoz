@@ -2,6 +2,6 @@
 
 find -name "*.repoz-crypt" | while read k; do 
 	echo "decrypt: $k";
-	openssl enc -aes-256-cbc -salt -in "$k" -out $(echo "$k" | sed "s/\.repoz-crypt$//g") -d -pass pass:$REPOZSECRET; 
+	openssl enc -aes-256-cbc -salt -in "$k" -out "$(echo "$k" | sed "s/\.repoz-crypt$//g")" -d -pass pass:$REPOZSECRET; 
 done
 
