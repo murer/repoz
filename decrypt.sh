@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 find -name "*.repoz-crypt" | while read k; do 
 	echo "decrypt: $k";
