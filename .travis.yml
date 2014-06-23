@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk7
 before_script:
-  - "decrypt.sh"
+  - "./decrypt.sh"
   - "export JAVA_OPTS=-Xmx512m"
 install: "echo we do not need install"
 script: "mvn clean install -B"
