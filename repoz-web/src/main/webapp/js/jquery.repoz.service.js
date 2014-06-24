@@ -67,13 +67,17 @@
 
 		});
 	}
-	
+
 	$.repoz.saveUser = function(serial, c) {
 		$.repoz.service('POST', 'access', null, serial, c);
 	}
-	
+
 	$.repoz.deleteUser = function(data, c) {
 		$.repoz.service('DELETE', 'access?path=' + data.repo + '&user=' + data.user, null, null, c);
+	}
+
+	$.repoz.deleteRepository = function(repo, c) {
+		$.repoz.service('DELETE', 'access?path=' + repo, null, null, c);
 	}
 
 })(jQuery);

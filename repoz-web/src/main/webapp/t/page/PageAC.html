@@ -25,7 +25,13 @@
 
 				function doDelete(repo) {
 					return function() {
-						alert('delete: ' + repo);
+						var msg = window.prompt('Type delete to confirm ' + repo + ' delete');
+						if (!msg || msg.toLowerCase() != 'delete') {
+							return false;
+						}
+						$.repoz.deleteRepository(repo, function() {
+							open();
+						});
 						return false;
 					}
 				}
