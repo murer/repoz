@@ -1,0 +1,54 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="acMain">
+			<h1>Access Control</h1>
+			<table>
+				<thead>
+					<tr>
+						<th>Repository</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		windfury.req([ 't/templ/base.html' ], function($, wf, base) {
+			var main = wf.text('.main');
+
+			function open() {
+				var page = $(main());
+				base.open(page);
+
+				function doDelete(repo) {
+					return function() {
+						alert('delete: ' + repo);
+						return false;
+					}
+				}
+
+				function showRepos(repos) {
+					var row = '<tr><td class="repo"/><td><a href="#" class="users">Users</a><button class="delete">delete</button></td></tr>';
+					for (var i = 0; $.oplt(i, repos.length); i++) {
+						var repo = repos[i];
+						var r = $(row);
+						page.find('table tbody').append(r);
+						r.find('.repo').text(repo);
+						r.find('.users').attr('href', '#ACUsers?path=' + repo);
+						r.find('.delete').click(doDelete(repo));
+					}
+				}
+
+				$.repoz.listRepositories(showRepos);
+			}
+
+			wf.def({
+				open : open
+			});
+		});
+	</script>
+
+</section>

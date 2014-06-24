@@ -1,0 +1,30 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="base">
+			<div class="header"></div>
+			<div class="face"></div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		windfury.req([], function($, wf) {
+			var main = wf.text('.main');
+			
+			function open(f) {
+				var face = $('.face');
+				if(face.length == 0) {
+					var page = $(main());
+					$('#wrapper').html(page);
+					face = $('.face');
+				}
+				page.html(f);
+			}
+
+			wf.def({
+				open : open
+			});
+		});
+	</script>
+
+</section>

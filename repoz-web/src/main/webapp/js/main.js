@@ -4,7 +4,7 @@
 		var hash = this.location.hash || '#';
 		hash = $.trim(hash);
 		if (!hash || hash == '#') {
-			this.location.hash = '#Access';
+			this.location.hash = '#AC';
 			return;
 		}
 		var p = hash.substring(1);

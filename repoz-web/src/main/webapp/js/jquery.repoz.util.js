@@ -1,5 +1,14 @@
 (function($) {
 
+	$.windfury.spec.req = function(ctx) {
+		return function(modules, callback) {
+			$.wf(modules, function() {
+				var loads = $.makeArray(arguments);
+				callback.apply(window, [ $, ctx.wf ].concat(loads));
+			});
+		}
+	};
+
 	$(window).ready(function() {
 		ready = true
 	});
@@ -141,7 +150,7 @@
 	$.getYears = function() {
 		var currentYear = new Date().getFullYear() + 1;
 		var years = [];
-		while(currentYear >= 1950){
+		while (currentYear >= 1950) {
 			years.push(currentYear--);
 		}
 		return years;
