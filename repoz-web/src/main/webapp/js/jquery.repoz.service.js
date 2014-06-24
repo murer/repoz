@@ -71,5 +71,9 @@
 	$.repoz.saveUser = function(serial, c) {
 		$.repoz.service('POST', 'access', null, serial, c);
 	}
+	
+	$.repoz.deleteUser = function(data, c) {
+		$.repoz.service('DELETE', 'access?path=' + data.repo + '&user=' + data.user, null, null, c);
+	}
 
 })(jQuery);

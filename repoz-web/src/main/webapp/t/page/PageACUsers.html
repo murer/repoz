@@ -16,8 +16,7 @@
 				<tbody></tbody>
 			</table>
 			<div class="buttons">
-				<a href="#AC">Back</a>
-				<a href="#" class="add">Add</a>
+				<a href="#AC">Back</a> <a href="#" class="add">Add</a>
 			</div>
 		</div>
 	</section>
@@ -33,7 +32,15 @@
 
 				function doDelete(user) {
 					return function() {
-						alert('delete: ' + user.user);
+						if(!window.confirm('Delete ' + repo + ' ' + user.user + '?')) {
+							return false;
+						}
+						$.repoz.deleteUser({
+							repo : repo,
+							user : user.user
+						}, function() {
+							open();
+						});
 						return false;
 					}
 				}
@@ -54,6 +61,7 @@
 
 				page.find('.buttons .add').attr('href', '#ACUserNew?repo=' + repo)
 				$.repoz.listRepoUsers(repo, showUsers);
+
 			}
 
 			wf.def({
