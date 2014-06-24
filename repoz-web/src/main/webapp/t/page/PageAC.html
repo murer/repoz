@@ -2,7 +2,7 @@
 
 	<section class="main">
 		<div class="acMain">
-			<h1>Access Control</h1>
+			<h1>Repositories Access Control</h1>
 			<table>
 				<thead>
 					<tr>
@@ -31,14 +31,14 @@
 				}
 
 				function showRepos(repos) {
-					var row = '<tr><td class="repo"/><td><a href="#" class="users">Users</a><button class="delete">delete</button></td></tr>';
+					var row = '<tr><td class="repo"/><td><a href="#" class="users">Users</a><button class="remove">Remove</button></td></tr>';
 					for (var i = 0; $.oplt(i, repos.length); i++) {
 						var repo = repos[i];
 						var r = $(row);
 						page.find('table tbody').append(r);
 						r.find('.repo').text(repo);
 						r.find('.users').attr('href', '#ACUsers?path=' + repo);
-						r.find('.delete').click(doDelete(repo));
+						r.find('.remove').click(doDelete(repo));
 					}
 				}
 
