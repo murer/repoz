@@ -12,6 +12,9 @@
 				</thead>
 				<tbody></tbody>
 			</table>
+			<div class="buttons">
+				<button class="add">Add</button>
+			</div>
 		</div>
 	</section>
 
@@ -48,6 +51,18 @@
 					}
 				}
 
+				function addNew() {
+					var msg = window.prompt('Enter with repository name');
+					if (msg) {
+						msg = $.trim(msg);
+					}
+					if (!msg) {
+						return false;
+					}
+					location = '#ACUsers?repo=' + msg;
+				}
+
+				page.find('.add').click(addNew);
 				$.repoz.listRepositories(showRepos);
 			}
 
