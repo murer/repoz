@@ -28,7 +28,7 @@
 
 				function doDelete(repo) {
 					return function() {
-						var msg = window.prompt('Type delete to confirm ' + repo + ' delete');
+						var msg = window.prompt('Type delete to confirm ' + repo + ' repository deletion');
 						if (!msg || msg.toLowerCase() != 'delete') {
 							return false;
 						}
