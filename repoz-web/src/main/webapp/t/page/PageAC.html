@@ -37,7 +37,7 @@
 						var r = $(row);
 						page.find('table tbody').append(r);
 						r.find('.repo').text(repo);
-						r.find('.users').attr('href', '#ACUsers?path=' + repo);
+						r.find('.users').attr('href', '#ACUsers?repo	=' + repo);
 						r.find('.remove').click(doDelete(repo));
 					}
 				}

@@ -67,5 +67,9 @@
 
 		});
 	}
+	
+	$.repoz.saveUser = function(serial, c) {
+		$.repoz.service('POST', 'access', null, serial, c);
+	}
 
 })(jQuery);

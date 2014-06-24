@@ -2,7 +2,7 @@
 
 	<section class="main">
 		<div class="acUserMain">
-			<h1>Repository USers</h1>
+			<h1>Repository Users</h1>
 			<table>
 				<thead>
 					<tr>
@@ -15,6 +15,10 @@
 				</thead>
 				<tbody></tbody>
 			</table>
+			<div class="buttons">
+				<a href="#AC">Back</a>
+				<a href="#" class="add">Add</a>
+			</div>
 		</div>
 	</section>
 
@@ -23,7 +27,7 @@
 			var main = wf.text('.main');
 
 			function open() {
-				var path = $.querystring().get('path');
+				var repo = $.querystring().get('repo');
 				var page = $(main());
 				base.open(page);
 
@@ -48,7 +52,8 @@
 					}
 				}
 
-				$.repoz.listRepoUsers(path, showUsers);
+				page.find('.buttons .add').attr('href', '#ACUserNew?repo=' + repo)
+				$.repoz.listRepoUsers(repo, showUsers);
 			}
 
 			wf.def({
