@@ -9,5 +9,5 @@ h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted; }
 .content p { padding: 5px 30px; }
 .content p.highlighted { font-weight: bold; }
 
-.code { white-space: pre; padding: 5px 30px; margin: 0px 30px; background-color: #ccc; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; width: 800px}
+.code { white-space: pre; padding: 5px 30px; margin: 0px 30px; background-color: #ccc; font: 13px Consolas, "Liberation Mono", Menlo, Courier, monospace; width: 800px}
 
