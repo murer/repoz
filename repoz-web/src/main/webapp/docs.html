@@ -26,17 +26,35 @@
 			</ul>
 		</div>
 		<div class="topic">
+			<a name="overview"></a>
 			<h2>Overview</h2>
 			<div class="content">
 				<p>Repoz is simple http repository. You PUT/POST files and GET them.</p>
+				<p>First thing you need to do is configure a repository access</p> 
+				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way is using it by url: http://[user]:[pass]@domain.com/repoz/r/any/...</p>
+			</div>
+		</div>
+		
+		<div class="topic">
+			<a name="Configure"></a>
+			<h2>Configuring repository access</h2>
+			<div class="content">
+				<p>You need to configure a user to a repository.</p>
+				<p>This user and password is a http basic authentication</p> 
+				<p>You should do it on <a href="panel.html">Panel</a></p>
+				<p>The resitory request should be do at:</p>
+				<div class="code url">
+					
+				</div>
 			</div>
 		</div>
 		
 		
 		<div class="topic">
-			<h2>PUT/POST file</h2>
+			<a name="uploadingfile"></a>
+			<h2>Uploading file</h2>
 			<div class="content">
-				<p>Upload file.</p>
+				<p>Upload should be done with PUT or POST http methods</p>
 				<p>PUT and POST is handled by the same way</p>
 				<div class="code">
 PUT /repository/any/struct/myfile.txt
@@ -49,14 +67,15 @@ murer
 				</div>
 			</div>
 			<p>The file will be created and the response http code should be 200.</p>
-			<p>If Content-Type was not given, repoz will try do resolve them by file extension.<p>
+			<p>If Content-Type was not given, repoz will try do resolve it by file extension.<p>
 		</div>
 		
 		
 		<div class="topic">
-			<h2>DELETE file</h2>
+			<a name="deletingfile"></a>
+			<h2>Deleting file</h2>
 			<div class="content">
-				<p>Delete file.</p>
+				<p>Delete should be done with DELETE http method.</p>
 				<p class="highlighted">Deletes are always recursively</p>
 				<div class="code">
 DELETE /repository/any/struct/myfile.txt
@@ -67,6 +86,47 @@ DELETE /repository/any/struct/myfile.txt
 			<p>The file will be deleted and the response http code should be 200.</p>
 		</div>
 		
+		
+		<div class="topic">
+			<a name="downloading"></a>
+			<h2>Downloading file</h2>
+			<div class="content">
+				<p>Download should be done with GET http method.</p>
+				<div class="code">
+GET /repository/any/struct/myfile.txt
+
+200 Ok
+Content-Length: 5
+Content-Type: text/plain;charset=UTF-8
+
+murer
+				</div>
+			</div>
+			<p>See <a href="#uploadingfile">upload section</a> to understand how repoz handle Content-Type.</p>
+		</div>
+		
+		
+		<div class="topic">
+			<a name="downloading"></a>
+			<h2>Listing file</h2>
+			<div class="content">
+				<p>Download should be done with GET http method.</p>
+				<p>You need to add l=true to perform a listing</p>
+				<p>You can add r=true to make it recursively</p> 
+				<div class="code">
+GET /repository/any?l=true&r=true
+
+200 Ok
+Content-Type: text/plain;charset=UTF-8
+
+struct/file.txt
+other.zip
+
+				</div>
+			</div>
+			<p>Response code should be 200 Ok</p>
+			<p>The content should be a text/plain with a entry per line</p>
+		</div>
 	</div>
 </body>
 </html>
