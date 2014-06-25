@@ -55,7 +55,7 @@
 				<p>Upload should be done with PUT or POST http methods</p>
 				<p>PUT and POST is handled by the same way</p>
 				<textarea class="code" readonly="readonly" wrap="off">
-PUT /repository/any/struct/myfile.txt
+PUT /repository/any/struct/myfile.txt HTTP/1.1
 Content-Type: text/plain;charset=UTF-8
 Content-Length: 5
 
@@ -76,7 +76,7 @@ murer
 				<p>Delete should be done with DELETE http method.</p>
 				<p class="highlighted">Deletes are always recursively</p>
 				<textarea class="code" readonly="readonly" wrap="off">
-DELETE /repository/any/struct/myfile.txt
+DELETE /repository/any/struct/myfile.txt HTTP/1.1
 
 200 Ok
 				</textarea>
@@ -91,7 +91,7 @@ DELETE /repository/any/struct/myfile.txt
 			<div class="content">
 				<p>Download should be done with GET http method.</p>
 				<textarea class="code" readonly="readonly" wrap="off">
-GET /repository/any/struct/myfile.txt
+GET /repository/any/struct/myfile.txt HTTP/1.1
 
 200 Ok
 Content-Length: 5
@@ -112,7 +112,7 @@ murer
 				<p>You need to add l=true to perform a listing</p>
 				<p>You can add r=true to make it recursively</p> 
 				<textarea class="code" readonly="readonly" wrap="off">
-GET /repository/any?l=true&r=true
+GET /repository/any?l=true&r=true HTTP/1.1
 
 200 Ok
 Content-Type: text/plain;charset=UTF-8
