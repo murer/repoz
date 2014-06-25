@@ -16,6 +16,8 @@ import com.googlecode.mycontainer.kernel.boot.ContainerBuilder;
 import com.googlecode.mycontainer.web.ContextWebServer;
 import com.googlecode.mycontainer.web.FilterDesc;
 import com.googlecode.mycontainer.web.jetty.JettyServerDeployer;
+import com.murerz.repoz.web.fs.GCSFileSystem;
+import com.murerz.repoz.web.util.Util;
 
 public class MycontainerHelper {
 
@@ -45,6 +47,13 @@ public class MycontainerHelper {
 	private void boot() {
 		try {
 			System.setProperty("java.naming.factory.initial", "com.googlecode.mycontainer.kernel.naming.MyContainerContextFactory");
+
+			String repo = Util.str(System.getProperty("gcs"));
+			if (repo != null) {
+				System.setProperty("repoz.filesystem.impl", GCSFileSystem.class.getName());
+				System.setProperty("repoz.gcs.bucket", "repoz-test");
+			}
+
 			builder = new ContainerBuilder();
 			builder.deployVMShutdownHook();
 
@@ -61,16 +70,15 @@ public class MycontainerHelper {
 		webServer = builder.createDeployer(JettyServerDeployer.class);
 		webServer.setName("WebServer");
 		ContextWebServer webContext = webServer.createContextWebServer();
-		
-		
-		if(new File("repoz-web/src/main/webapp").exists()) {
+
+		if (new File("repoz-web/src/main/webapp").exists()) {
 			webContext.setContext("/repoz");
-			webContext.setResources("repoz-web/src/main/webapp");	
+			webContext.setResources("repoz-web/src/main/webapp");
 		} else {
 			webContext.setContext("/");
 			webContext.setResources("src/main/webapp");
 		}
-		
+
 		webContext.getFilters().add(new FilterDesc(LogFilter.class, "/*"));
 		webServer.deploy();
 	}
