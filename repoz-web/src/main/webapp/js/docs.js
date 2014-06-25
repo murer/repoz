@@ -13,11 +13,23 @@
 			$(this).find('h2').text(title)
 		});
 	}
+	
+
+	function textarea() {
+		$('.topic textarea').each(function(i) {
+			var rows = $(this).val().split('\n').length;
+			$(this).attr('rows', rows);
+			var text = $(this).val();
+			text = text.replace(/\[baseurl\]/g, baseurl);
+			$(this).val(text);
+		});
+	}
 
 	$(window).ready(function() {
 		$('.code.url').text(baseurl + 'r/');
 
 		summary();
+		textarea();
 	});
 
 })(jQuery);
