@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"></meta>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+<meta name="HandheldFriendly" content="true"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+<link rel="stylesheet" type="text/css" href="css/docs.css" media="all" />
+
+<script type="text/javascript" src="js/lib/jquery.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/lib/doT.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/docs.js" charset="utf-8"></script>
+
+<title>Repoz Docs</title>
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="summary">
+			<ul>
+				<li><a href="#">aaaa</a></li>
+				<li><a href="#">bbbb</a></li>
+				<li><a href="#">cccc</a></li>
+			</ul>
+		</div>
+		<div class="topic">
+			<h2>Overview</h2>
+			<div class="content">
+				<p>Repoz is simple http repository. You PUT/POST files and GET them.</p>
+			</div>
+		</div>
+		<div class="topic">
+			<h2>PUT file</h2>
+			<div class="content">
+				<p>Uploading a file.</p>
+				<div class="code">
+PUT /repository/any/struct/myfile.txt
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 5
+
+murer
+				</div>
+			</div>
+			<p>The file will be created and the response http code should be 200.</p>
+			<p>If Content-Type was not given, repoz will try do resolve them by file extension.<p>
+		</div>
+	</div>
+</body>
+</html>
