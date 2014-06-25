@@ -4,10 +4,14 @@ h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted; }
 
 h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted; }
 
-#wrapper { max-width: 1000px; min-width: 200px; margin: 0 auto; }
+#wrapper { max-width: 1000px; min-width: 200px; margin: 0 auto; padding-bottom: 200px }
+
+.summary { padding-left: 30px }
+
+.summary li { padding: 5px 0 }
 
 .content p { padding: 5px 30px; }
 .content p.highlighted { font-weight: bold; }
 
-.code { white-space: pre; padding: 5px 30px; margin: 0px 30px; background-color: #ccc; font: 13px Consolas, "Liberation Mono", Menlo, Courier, monospace; width: 800px}
+.code { background-color: #EEEEEE; border: 1px dotted #AAAAAA; color: #444444; font: 15px Consolas,"Liberation Mono",Menlo,Courier,monospace; margin: 0 30px; padding: 5px 30px; white-space: pre; width: 800px; }
 
