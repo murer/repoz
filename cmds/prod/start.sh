@@ -13,7 +13,7 @@ fi;
 
 # Create repo disk if it does not exist
 if ! gcutil --project docs-manager listdisks --zone us-central1-a --filter="name eq 'repoz-prod'" | grep repoz-prod; then
-	gcutil --project docs-manager adddisk repoz-prod --size_gb 200	 --zone us-central1-a # --source_image projects/debian-cloud/global/images/debian-7-wheezy-v20131120 
+	gcutil --project docs-manager adddisk repoz-prod --size_gb 30 --zone us-central1-a
 fi;
 
 if ! gcutil --project docs-manager listinstances --zone us-central1-a --filter="name eq 'repoz-prod'" | grep repoz-prod; then
