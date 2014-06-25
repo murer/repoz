@@ -31,21 +31,42 @@
 				<p>Repoz is simple http repository. You PUT/POST files and GET them.</p>
 			</div>
 		</div>
+		
+		
 		<div class="topic">
-			<h2>PUT file</h2>
+			<h2>PUT/POST file</h2>
 			<div class="content">
-				<p>Uploading a file.</p>
+				<p>Upload file.</p>
+				<p>PUT and POST is handled by the same way</p>
 				<div class="code">
 PUT /repository/any/struct/myfile.txt
 Content-Type: text/plain;charset=UTF-8
 Content-Length: 5
 
 murer
+
+200 Ok
 				</div>
 			</div>
 			<p>The file will be created and the response http code should be 200.</p>
 			<p>If Content-Type was not given, repoz will try do resolve them by file extension.<p>
 		</div>
+		
+		
+		<div class="topic">
+			<h2>DELETE file</h2>
+			<div class="content">
+				<p>Delete file.</p>
+				<p class="highlighted">Deletes are always recursively</p>
+				<div class="code">
+DELETE /repository/any/struct/myfile.txt
+
+200 Ok
+				</div>
+			</div>
+			<p>The file will be deleted and the response http code should be 200.</p>
+		</div>
+		
 	</div>
 </body>
 </html>
