@@ -3,6 +3,8 @@ body { font: 15px arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe U
 a,
 a:visited { color: #0000CC }
 
+a:hover { text-decoration: underline; }
+
 h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted; }
 
 h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted; }
