@@ -1,10 +1,13 @@
-body { font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
-
-#wrapper { padding-left: 10px; padding-top: 10px }
+body { font: 15px arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
 
 h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted; }
 
-.content p { padding: 5px 30px; }
+h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted; }
 
-.code { white-space: pre; padding: 5px 30px; background-color: #ccc; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+#wrapper { max-width: 1000px; min-width: 200px; margin: 0 auto; }
+
+.content p { padding: 5px 30px; }
+.content p.highlighted { font-weight: bold; }
+
+.code { white-space: pre; padding: 5px 30px; margin: 0px 30px; background-color: #ccc; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; width: 800px}
 

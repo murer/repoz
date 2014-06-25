@@ -19,6 +19,7 @@
 
 <body>
 	<div id="wrapper">
+		<h1>Repoz Documentation</h1>
 		<div id="summary">
 			<ul>
 				<li><a href="#">aaaa</a></li>
@@ -30,20 +31,21 @@
 			<a name="overview"></a>
 			<h2>Overview</h2>
 			<div class="content">
-				<p>Repoz is simple http repository. You PUT/POST files and GET them.</p>
+				<p>Repoz is a simple http repository. You PUT/POST files and GET them.</p>
 				<p>First thing you need to do is configure a repository access</p> 
-				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way is using it by url: http://[user]:[pass]@domain.com/repoz/r/any/...</p>
+				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way:</p>
+				<div class="code">http://[user]:[pass]@domain.com/repoz/r/any/...</div>
 			</div>
 		</div>
 		
 		<div class="topic">
 			<a name="Configure"></a>
-			<h2>Configuring repository access</h2>
+			<h2>Configuring the repository access</h2>
 			<div class="content">
 				<p>You need to configure a user to a repository.</p>
 				<p>This user and password is a http basic authentication</p> 
 				<p>You should do it on <a href="panel.html">Panel</a></p>
-				<p>The resitory request should be do at:</p>
+				<p>The base url to a repository is:</p>
 				<div class="code url">
 					
 				</div>
@@ -111,7 +113,7 @@ murer
 			<a name="downloading"></a>
 			<h2>Listing file</h2>
 			<div class="content">
-				<p>Download should be done with GET http method.</p>
+				<p>List files should be done with GET http method.</p>
 				<p>You need to add l=true to perform a listing</p>
 				<p>You can add r=true to make it recursively</p> 
 				<div class="code">
@@ -125,7 +127,7 @@ other.zip
 
 				</div>
 				<p>Response code should be 200 Ok</p>
-				<p>The content should be a text/plain with a entry per line</p>
+				<p>The response should be a text/plain with a entry per line</p>
 			</div>
 		</div>
 	</div>
