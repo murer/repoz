@@ -7,6 +7,7 @@
 <meta name="HandheldFriendly" content="true"></meta>
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
 
+<link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
 <link rel="stylesheet" type="text/css" href="css/docs.css" media="all" />
 
 <script type="text/javascript" src="js/lib/jquery.js" charset="utf-8"></script>
@@ -65,9 +66,9 @@ murer
 
 200 Ok
 				</div>
+				<p>The file will be created and the response http code should be 200.</p>
+				<p>If Content-Type was not given, repoz will try do resolve it by file extension.<p>
 			</div>
-			<p>The file will be created and the response http code should be 200.</p>
-			<p>If Content-Type was not given, repoz will try do resolve it by file extension.<p>
 		</div>
 		
 		
@@ -82,8 +83,8 @@ DELETE /repository/any/struct/myfile.txt
 
 200 Ok
 				</div>
+				<p>The file will be deleted and the response http code should be 200.</p>
 			</div>
-			<p>The file will be deleted and the response http code should be 200.</p>
 		</div>
 		
 		
@@ -123,9 +124,9 @@ struct/file.txt
 other.zip
 
 				</div>
+				<p>Response code should be 200 Ok</p>
+				<p>The content should be a text/plain with a entry per line</p>
 			</div>
-			<p>Response code should be 200 Ok</p>
-			<p>The content should be a text/plain with a entry per line</p>
 		</div>
 	</div>
 </body>
