@@ -12,7 +12,7 @@
 				<tbody></tbody>
 			</table>
 			<div class="buttons">
-				<button class="add">Add</button>
+				<button class="btn add">Add</button>
 			</div>
 		</div>
 	</section>
@@ -39,7 +39,7 @@
 				}
 
 				function showRepos(repos) {
-					var row = '<tr><td class="repo"/><td class="action"><a href="#" class="users">Users</a><button class="remove">Remove</button></td></tr>';
+					var row = '<tr><td class="repo"/><td class="action"><a href="#" class="btn users">Users</a><button class="btn remove">Remove</button></td></tr>';
 					for (var i = 0; $.oplt(i, repos.length); i++) {
 						var repo = repos[i];
 						var r = $(row);

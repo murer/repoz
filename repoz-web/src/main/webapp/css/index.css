@@ -24,9 +24,15 @@ textarea.code { background-color: #EEEEEE; border: 1px dotted #AAAAAA; color: #4
 
 .face { padding-top: 30px  }
 
-.grid { text-align: left; }
+.grid { text-align: left; border-bottom: 1px dotted #ccc; margin-bottom: 20px; width: 80% }
 .grid th { font-weight: bold; border-bottom: 1px dotted #ccc;}
 .grid th,
 .grid td { padding: 10px }
 .grid tr { margin-bottom: 1px }
 
+button.btn { background-color: transparent; border: 0; color: #0000CC; cursor: pointer; text-align: left; padding: 0 }
+button.btn:hover { text-decoration: underline; }
+
+.btn { margin-right: 10px }
+
+.buttons { padding: 10px }

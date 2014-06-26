@@ -15,7 +15,7 @@
 				<tbody></tbody>
 			</table>
 			<div class="buttons">
-				<a href="#AC">Back</a> <a href="#" class="add">Add</a>
+				<a href="#AC" class="btn">Back</a> <a href="#" class="btn add">Add</a>
 			</div>
 		</div>
 	</section>
@@ -45,7 +45,7 @@
 				}
 
 				function showUsers(users) {
-					var row = '<tr><td class="repo"/><td class="user"/><td class="type"/><td class="pass"/><td class="action"><button class="remove">Remove</button></td></tr>"';
+					var row = '<tr><td class="repo"/><td class="user"/><td class="type"/><td class="pass"/><td class="action"><button class="btn remove">Remove</button></td></tr>"';
 					for (var i = 0; $.oplt(i, users.length); i++) {
 						var user = users[i];
 						var r = $(row);
