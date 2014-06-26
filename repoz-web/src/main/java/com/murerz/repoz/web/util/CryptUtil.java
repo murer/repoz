@@ -32,7 +32,7 @@ public class CryptUtil {
 		}
 	}
 
-	public static String hash(String password) {
+	public static String sha256(String password) {
 		try {
 			String ret = DigestUtils.sha256Hex(password.getBytes("UTF-8"));
 			return ret;

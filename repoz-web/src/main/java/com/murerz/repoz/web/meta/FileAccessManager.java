@@ -42,7 +42,7 @@ public class FileAccessManager implements AccessManager {
 	}
 
 	private boolean checkPassword(String password, String pass) {
-		String hashed = CryptUtil.hash(password);
+		String hashed = CryptUtil.sha256(password);
 		return hashed.equals(pass);
 	}
 
@@ -96,7 +96,7 @@ public class FileAccessManager implements AccessManager {
 	}
 
 	public void save(User user) {
-		String pass = CryptUtil.hash(user.getPass());
+		String pass = CryptUtil.sha256(user.getPass());
 		user.setPass(pass);
 		String path = user.getPath();
 		String repo = repository(path);
