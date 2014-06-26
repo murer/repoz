@@ -2,6 +2,7 @@
 
 	<section class="main">
 		<div class="acUserMain">
+			<h3></h3>
 			<table class="grid">
 				<thead>
 					<tr>
@@ -12,7 +13,9 @@
 						<th>Actions</th>
 					</tr>
 				</thead>
-				<tbody></tbody>
+				<tbody>
+					<tr><td colspan="5">Loading...</td></tr>
+				</tbody>
 			</table>
 			<div class="buttons">
 				<a href="#AC" class="btn">Back</a> <a href="#" class="btn add">Add</a>
@@ -34,6 +37,7 @@
 						if(!window.confirm('Delete ' + repo + ' ' + user.user + '?')) {
 							return false;
 						}
+						page.find('table tbody').html('<tr><td colspan="5">Deleting...</td></tr>');
 						$.repoz.deleteUser({
 							repo : repo,
 							user : user.user
@@ -46,6 +50,7 @@
 
 				function showUsers(users) {
 					var row = '<tr><td class="repo"/><td class="user"/><td class="type"/><td class="pass"/><td class="action"><button class="btn remove" type="button">Remove</button></td></tr>"';
+					page.find('table tbody').html('');
 					for (var i = 0; $.oplt(i, users.length); i++) {
 						var user = users[i];
 						var r = $(row);
@@ -58,6 +63,7 @@
 					}
 				}
 
+				page.find('h3').text(baseurl + 'r' + repo);
 				page.find('.buttons .add').attr('href', '#ACUserNew?repo=' + repo)
 				$.repoz.listRepoUsers(repo, showUsers);
 

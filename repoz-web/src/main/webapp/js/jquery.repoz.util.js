@@ -1,5 +1,8 @@
 (function($) {
 
+	baseurl = '' + location;
+	baseurl = baseurl.replace(/[a-zA-Z0-9]+\.html.*/g, '');
+	
 	$.windfury.spec.req = function(ctx) {
 		return function(modules, callback) {
 			$.wf(modules, function() {

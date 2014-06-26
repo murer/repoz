@@ -1,8 +1,5 @@
 (function($) {
 
-	var baseurl = '' + location;
-	baseurl = baseurl.replace(/docs\.html.*/g, '');
-
 	function summary() {
 		$('.topic').each(function(i) {
 			var title = $(this).find('h2').text();

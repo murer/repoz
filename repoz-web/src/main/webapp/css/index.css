@@ -5,6 +5,8 @@ a:visited { color: #0000CC }
 
 a:hover { text-decoration: underline; }
 
+h3 { font-size: 20px; padding: 10px 10px; border-bottom: 1px dotted #333; }
+
 h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted #333; }
 
 h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted #333; }

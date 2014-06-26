@@ -2,6 +2,7 @@
 
 	<section class="main">
 		<div class="acUserNewMain">
+			<h3></h3>
 			<form action="#">
 				<input type="hidden" name="path" class="path"/>
 				<fieldset>
@@ -48,12 +49,14 @@
 				
 				function addUser() {
 					var serial = $(this).serialize();
+					$(this).closest('form').text('Sending...');
 					$.repoz.saveUser(serial, function() {
 						location = '#ACUsers?repo=' + repo;
 					});
 					return false;
 				}
 				
+				page.find('h3').text(baseurl + 'r' + repo);
 				page.find('.path').val(repo);
 				page.find('.cancel').attr('href', '#ACUsers?repo=' + repo);
 				page.find('form').submit(addUser);
