@@ -36,3 +36,12 @@ button.btn:hover { text-decoration: underline; }
 .btn { margin-right: 10px }
 
 .buttons { padding: 10px }
+
+form { margin-left: 10px; padding-left: 20px }
+
+form fieldset li { padding: 10px 0 }
+
+form fieldset li span { display: block; padding-bottom: 5px }
+
+form fieldset li input,
+form fieldset li select { width: 200px }
