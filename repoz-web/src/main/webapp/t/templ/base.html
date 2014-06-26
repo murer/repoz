@@ -2,7 +2,14 @@
 
 	<section class="main">
 		<div class="base">
-			<div class="header"></div>
+			<h1>Repoz</h1>
+			<div class="menu">
+				<a href=".">About</a>
+				<a href="panel.html#AC">Panel</a>
+				<a href="docs.html">Docs</a>
+				<a href="https://github.com/murer/repoz">Source</a>
+				<a href="version.properties">Version</a>
+			</div>
 			<div class="face"></div>
 		</div>
 	</section>
@@ -11,14 +18,16 @@
 		windfury.req([], function($, wf) {
 			var main = wf.text('.main');
 			
-			function open(f) {
-				var face = $('.face');
-				if(face.length == 0) {
+			function open(f, title) {
+				title = title || 'Repoz';
+				var base = $('.base');
+				if(base.length == 0) {
 					var page = $(main());
 					$('#wrapper').html(page);
-					face = $('.face');
+					base = $('.base');
 				}
-				page.html(f);
+				base.find('h1:first').text(title);
+				base.find('.face').html(f);
 			}
 
 			wf.def({

@@ -5,9 +5,9 @@ a:visited { color: #0000CC }
 
 a:hover { text-decoration: underline; }
 
-h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted; }
+h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted #333; }
 
-h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted; }
+h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted #333; }
 
 #wrapper { max-width: 1000px; min-width: 200px; margin: 0 auto; padding-bottom: 200px }
 
@@ -23,4 +23,10 @@ textarea.code { background-color: #EEEEEE; border: 1px dotted #AAAAAA; color: #4
 .menu a { padding: 0 20px }
 
 .face { padding-top: 30px  }
+
+.grid { text-align: left; }
+.grid th { font-weight: bold; border-bottom: 1px dotted #ccc;}
+.grid th,
+.grid td { padding: 10px }
+.grid tr { margin-bottom: 1px }
 

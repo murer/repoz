@@ -2,7 +2,6 @@
 
 	<section class="main">
 		<div class="acUserNewMain">
-			<h1>Repository User</h1>
 			<form action="#">
 				<input type="hidden" name="path" class="path"/>
 				<fieldset>
@@ -45,7 +44,7 @@
 			function open() {
 				var repo = $.querystring().get('repo');
 				var page = $(main());
-				base.open(page);
+				base.open(page, 'Repoz User');
 				
 				function addUser() {
 					var serial = $(this).serialize();

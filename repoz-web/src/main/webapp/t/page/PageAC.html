@@ -2,8 +2,7 @@
 
 	<section class="main">
 		<div class="acMain">
-			<h1>Repositories Access Control</h1>
-			<table>
+			<table class="grid">
 				<thead>
 					<tr>
 						<th>Repository</th>
@@ -24,7 +23,7 @@
 
 			function open() {
 				var page = $(main());
-				base.open(page);
+				base.open(page, 'Repoz Access Control');
 
 				function doDelete(repo) {
 					return function() {
@@ -40,7 +39,7 @@
 				}
 
 				function showRepos(repos) {
-					var row = '<tr><td class="repo"/><td><a href="#" class="users">Users</a><button class="remove">Remove</button></td></tr>';
+					var row = '<tr><td class="repo"/><td class="action"><a href="#" class="users">Users</a><button class="remove">Remove</button></td></tr>';
 					for (var i = 0; $.oplt(i, repos.length); i++) {
 						var repo = repos[i];
 						var r = $(row);
