@@ -10,6 +10,7 @@ import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StaticRepozFile;
+import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.Util;
 
@@ -31,13 +32,18 @@ public class FileAccessManager implements AccessManager {
 
 		User saved = auths.get(username);
 
-		if (saved == null || !password.equals(saved.getPass())) {
+		if (saved == null || !checkPassword(password, saved.getPass())) {
 			return 401;
 		}
 		if ("write".equals(type) && "read".equals(saved.getType())) {
 			return 403;
 		}
 		return 200;
+	}
+
+	private boolean checkPassword(String password, String pass) {
+		String hashed = CryptUtil.hash(password);
+		return hashed.equals(pass);
 	}
 
 	private String repository(String path) {
@@ -90,6 +96,8 @@ public class FileAccessManager implements AccessManager {
 	}
 
 	public void save(User user) {
+		String pass = CryptUtil.hash(user.getPass());
+		user.setPass(pass);
 		String path = user.getPath();
 		String repo = repository(path);
 		RepozAuths auths = loadFile(repo);
