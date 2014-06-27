@@ -5,5 +5,7 @@ repoz
 
 Repoz is a simple http repository.
 
+[Getting Started](http://murer.github.io/repoz/)
+
 Developed by [@murer](https://github.com/murer) and powered by [Dextra](http://www.dextra.com.br/)
 
