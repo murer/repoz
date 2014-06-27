@@ -1,0 +1,71 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="acUserNewMain">
+			<h3></h3>
+			<form action="#">
+				<input type="hidden" name="path" class="path"/>
+				<fieldset>
+					<ul>
+						<li>
+							<label>
+								<span class="user">User</span>
+								<input type="text" name="user" />
+							</label>
+						</li>
+						<li>
+							<label>
+								<span class="pass">Pass</span>
+								<input type="text" name="pass" />
+							</label>
+						</li>
+						<li>
+							<label>
+								<span class="type">Type</span>
+								<select name="type">
+									<option value="read">read</option>
+									<option value="write">write</option>
+								</select>
+							</label>
+						</li>
+						<li class="buttons">
+							<a href="#" class="btn cancel">Cancel</a>
+							<button class="btn">Add</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		windfury.req([ 't/templ/base.html' ], function($, wf, base) {
+			var main = wf.text('.main');
+
+			function open() {
+				var repo = $.querystring().get('repo');
+				var page = $(main());
+				base.open(page, 'Repoz User');
+				
+				function addUser() {
+					var serial = $(this).serialize();
+					$(this).closest('form').text('Sending...');
+					$.repoz.saveUser(serial, function() {
+						location = '#ACUsers?repo=' + repo;
+					});
+					return false;
+				}
+				
+				page.find('h3').text(baseurl + 'r' + repo);
+				page.find('.path').val(repo);
+				page.find('.cancel').attr('href', '#ACUsers?repo=' + repo);
+				page.find('form').submit(addUser);
+			}
+
+			wf.def({
+				open : open
+			});
+		});
+	</script>
+
+</section>

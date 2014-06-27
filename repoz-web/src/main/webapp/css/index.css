@@ -1,0 +1,49 @@
+body { font: 15px arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+
+a,
+a:visited { color: #0000CC }
+
+a:hover { text-decoration: underline; }
+
+h3 { font-size: 20px; padding: 10px 10px; border-bottom: 1px dotted #333; }
+
+h2 { font-size: 23px; padding: 10px 0; border-bottom: 1px dotted #333; }
+
+h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted #333; }
+
+#wrapper { max-width: 1000px; min-width: 200px; margin: 0 auto; padding-bottom: 200px }
+
+.summary { padding-left: 30px }
+
+.summary li { padding: 5px 0 }
+
+.content p { padding: 5px 30px; }
+.content p.highlighted { font-weight: bold; }
+
+textarea.code { overflow: hidden; background-color: #EEEEEE; border: 1px dotted #AAAAAA; color: #444444; font: 15px Consolas,"Liberation Mono",Menlo,Courier,monospace; margin: 0 30px; resize: none; white-space: pre; width: 900px; padding-top: 19px; padding-left: 10px }
+
+.menu a { padding: 0 20px }
+
+.face { padding-top: 30px  }
+
+.grid { text-align: left; border-bottom: 1px dotted #ccc; margin-bottom: 20px; width: 80% }
+.grid th { font-weight: bold; border-bottom: 1px dotted #ccc;}
+.grid th,
+.grid td { padding: 10px }
+.grid tr { margin-bottom: 1px }
+
+button.btn { background-color: transparent; border: 0; color: #0000CC; cursor: pointer; text-align: left; padding: 0; font-size: 15px; }
+button.btn:hover { text-decoration: underline; }
+
+.btn { margin-right: 10px }
+
+.buttons { padding: 10px }
+
+form { margin-left: 10px; padding-left: 20px }
+
+form fieldset li { padding: 10px 0 }
+
+form fieldset li span { display: block; padding-bottom: 5px }
+
+form fieldset li input,
+form fieldset li select { width: 200px }

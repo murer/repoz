@@ -1,0 +1,39 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="base">
+			<h1>Repoz</h1>
+			<div class="menu">
+				<a href=".">About</a>
+				<a href="panel.html#AC">Panel</a>
+				<a href="docs.html">Docs</a>
+				<a href="https://github.com/murer/repoz">Source</a>
+				<a href="version.properties">Version</a>
+			</div>
+			<div class="face"></div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		windfury.req([], function($, wf) {
+			var main = wf.text('.main');
+			
+			function open(f, title) {
+				title = title || 'Repoz';
+				var base = $('.base');
+				if(base.length == 0) {
+					var page = $(main());
+					$('#wrapper').html(page);
+					base = $('.base');
+				}
+				base.find('h1:first').text(title);
+				base.find('.face').html(f);
+			}
+
+			wf.def({
+				open : open
+			});
+		});
+	</script>
+
+</section>

@@ -1,0 +1,617 @@
+package com.murerz.repoz.web.util;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.CharArrayWriter;
+import java.io.Closeable;
+import java.io.Console;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.channels.FileChannel;
+import java.text.DateFormat;
+import java.text.Normalizer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.text.MaskFormatter;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Util {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Util.class);
+
+	public static void close(AutoCloseable resource) {
+		if (resource != null) {
+			try {
+				resource.close();
+			} catch (Exception e) {
+				LOG.info("Error closing", e);
+			}
+		}
+	}
+
+	public static void close(Closeable resource) {
+		if (resource != null) {
+			try {
+				resource.close();
+			} catch (Exception e) {
+				LOG.info("Error closing", e);
+			}
+		}
+	}
+
+	public static String encodeURI(String str) {
+		try {
+			return URLEncoder.encode(str, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String dateToString(Date data, String format) {
+		try {
+			DateFormat df = new SimpleDateFormat(format);
+			return df.format(data.getTime());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Date stringToDate(String data) {
+		try {
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			return df.parse(data);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static List<String> newList(Collection<String> c) {
+		if (c == null) {
+			return new ArrayList<String>();
+		}
+		return new ArrayList<String>(c);
+	}
+
+	public static String join(String delimiter, Object... args) {
+		StringBuilder ret = new StringBuilder();
+		for (int i = 0; i < args.length; i++) {
+			Object value = args[i];
+			if (value == null) {
+				value = "";
+			}
+			if (i > 0) {
+				ret.append(delimiter);
+			}
+			ret.append(value);
+		}
+		return ret.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Collection<String>> T extract(T ret, String regex, String str) {
+		if (ret == null) {
+			ret = (T) new ArrayList<String>();
+		}
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(str);
+		while (matcher.find()) {
+			ret.add(matcher.group());
+		}
+		return ret;
+	}
+
+	public static Long max(Long... values) {
+		if (values == null || values.length == 0) {
+			return null;
+		}
+		Long ret = values[0];
+		for (int i = 1; i < values.length; i++) {
+			if (ret == null || (values[i] != null && ret < values[i])) {
+				ret = values[i];
+			}
+		}
+		return ret;
+	}
+
+	public static void exists(Collection<?> coll) {
+		if (coll == null) {
+			throw new RuntimeException("it is required");
+		}
+		for (Object object : coll) {
+			if (object == null) {
+				throw new RuntimeException("it is required");
+			}
+			if (object instanceof String && ((String) object).trim().length() == 0) {
+				throw new RuntimeException("it is required");
+			}
+		}
+	}
+
+	public static String str(Object words) {
+		if (words == null) {
+			return null;
+		}
+		String ret = words.toString().trim();
+		return ret.length() == 0 ? null : ret;
+	}
+
+	public static String stringfy(Object words) {
+		String str = str(words);
+		return str == null ? "" : str;
+	}
+
+	public static Properties classpathProperties(String path) {
+		URL url = classpath(path);
+		return properties(url);
+	}
+
+	public static Properties properties(URL url) {
+		if (url == null) {
+			return null;
+		}
+		Reader in = null;
+		try {
+			in = new InputStreamReader(new BufferedInputStream(url.openStream()), "utf-8");
+			Properties ret = new Properties();
+			ret.load(in);
+			return ret;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(in);
+		}
+	}
+
+	public static URL classpath(String path) {
+		return Util.class.getResource(path);
+	}
+
+	public static void sleep(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static byte[] readAll(InputStream in) {
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			copyAll(in, out);
+			out.close();
+			return out.toByteArray();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void copyAll(InputStream in, OutputStream out) {
+		try {
+			IOUtils.copyLarge(in, out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String classpathString(String path, String enc) {
+		URL url = classpath(path);
+		if (url == null) {
+			return null;
+		}
+		Reader in = null;
+		try {
+			in = new InputStreamReader(new BufferedInputStream(url.openStream()), "utf-8");
+			String ret = readAll(in);
+			return ret;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(in);
+		}
+	}
+
+	public static String readAll(Reader in) {
+		CharArrayWriter writer = new CharArrayWriter();
+		copyAll(in, writer);
+		return writer.toString();
+	}
+
+	public static void copyAll(Reader in, Writer out) {
+		try {
+			IOUtils.copy(in, out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String read(Console console, String label, String def) {
+		String ret = console.readLine(label, def);
+		if (ret == null) {
+			ret = "";
+		}
+		ret = ret.trim();
+		if (ret.length() == 0) {
+			return def;
+		}
+		return ret;
+	}
+
+	public static String read(URL url, String charset) {
+		InputStreamReader inputStreamReader = null;
+		try {
+			inputStreamReader = new InputStreamReader(url.openStream(), charset);
+			return readAll(inputStreamReader);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (inputStreamReader != null) {
+				close(inputStreamReader);
+			}
+		}
+	}
+
+	public static Properties argsToProperties(String[] args) {
+		if (args == null || args.length % 2 != 0) {
+			throw new RuntimeException("requires pairs of values");
+		}
+		Properties ret = new Properties();
+		for (int i = 0; i < args.length; i += 2) {
+			String name = str(args[i]);
+			String value = str(args[i + 1]);
+			if (name == null) {
+				throw new RuntimeException("name is required");
+			}
+			ret.put(name, value);
+		}
+		return ret;
+	}
+
+	public static String[] trim(Object[] array) {
+		String[] ret = new String[array.length];
+		for (int i = 0; i < array.length; i++) {
+			ret[i] = stringfy(array[i]);
+		}
+		return ret;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> int compare(Comparable<T> a, Comparable<T> b) {
+		if (a == null || b == null) {
+			return a == b ? 0 : a == null ? -1 : 1;
+		}
+		return a.compareTo((T) b);
+	}
+
+	public static byte[] toBytes(String content, String enc) {
+		try {
+			return content.getBytes(enc);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String getStack(Throwable e) {
+		StringWriter str = new StringWriter();
+		PrintWriter writer = new PrintWriter(str);
+		e.printStackTrace(writer);
+		writer.close();
+		return str.toString();
+	}
+
+	public static String toString(byte[] buffer, String enc) {
+		try {
+			return new String(buffer, enc);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean isWindows() {
+		String property = System.getProperty("os.name", "");
+		return (property.toLowerCase().indexOf("win") >= 0);
+	}
+
+	public static boolean isIOS() {
+		String property = System.getProperty("os.name", "");
+		return (property.toLowerCase().indexOf("mac") >= 0);
+	}
+
+	public static String getPathFileSystem() {
+		if (Util.isWindows()) {
+			return "C:/remessas/";
+		} else if (Util.isIOS()) {
+			return "/Users/felipeyudi/Documents/remessas/";
+		} else {
+			return "/home/projetos/remessas/";
+		}
+	}
+
+	public static String getPathFileImobiliario() {
+		if (Util.isWindows()) {
+			return "C:/imobiliario/";
+		} else if (Util.isIOS()) {
+			return "/Users/felipeyudi/Documents/imobiliario/";
+		} else {
+			return "/home/projetos/imobiliario/";
+		}
+	}
+
+	public static String getPathContratoFileSystem() {
+		if (Util.isWindows()) {
+			return "C:/contrato-protesto/";
+		} else {
+			return "/home/projetos/contrato/";
+		}
+	}
+
+	public static void copyFile(File source, File destination) {
+		if (!destination.exists()) {
+			// destination.mkdirs();
+		}
+		FileChannel sourceChannel = null;
+		FileChannel destinationChannel = null;
+
+		try {
+			sourceChannel = new FileInputStream(source).getChannel();
+			destinationChannel = new FileOutputStream(destination).getChannel();
+
+			sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+
+			if (sourceChannel != null && sourceChannel.isOpen()) {
+				sourceChannel.close();
+			}
+			if (destinationChannel != null && destinationChannel.isOpen()) {
+				destinationChannel.close();
+			}
+		} catch (FileNotFoundException e1) {
+			throw new RuntimeException(e1);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String getOS() {
+		if (isWindows()) {
+			return "Windows";
+		} else {
+			return "Linux";
+		}
+	}
+
+	public static String removeAccentuation(String str) {
+		str = Normalizer.normalize(str, Normalizer.Form.NFD);
+		return (str.replaceAll("[^\\p{ASCII}]", ""));
+	}
+
+	public static int randomInt(int min, int max) {
+		Random rand = new Random();
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		return randomNum;
+	}
+
+	public static Date[] beetwenHorario(Date date) {
+
+		Date[] hoje = new Date[2];
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		hoje[0] = cal.getTime();
+
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 0);
+		hoje[1] = cal.getTime();
+
+		return hoje;
+	}
+
+	public static Date removerHorario(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
+
+	public static String formatCpfCNPJ(String str) {
+
+		str = str.replaceAll("[\\D]", "");
+
+		String pattern;
+		if (str.length() <= 11) {
+			str = String.format("%011d", Long.parseLong(str));
+			pattern = "###.###.###-##";
+		} else {
+			str = String.format("%014d", Long.parseLong(str));
+			pattern = "##.###.###/####-##";
+		}
+
+		try {
+			MaskFormatter mask = new MaskFormatter(pattern);
+			mask.setValueContainsLiteralCharacters(false);
+			return mask.valueToString(str);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String padRight(String texto, int tamanhoCampo) {
+		return String.format("%-" + tamanhoCampo + "s", texto);
+	}
+
+	public static String addZero(String texto, int tamanhoCampo) {
+		while (texto.length() < tamanhoCampo) {
+			texto = "0" + texto;
+		}
+		return texto;
+	}
+
+	public static Date addMonth(Date date, int mes) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.MONTH, mes);
+		return calendar.getTime();
+	}
+
+	public static String formatCEP(String str) {
+
+		str = str.replaceAll("[\\D]", "");
+		try {
+			str = String.format("%08d", Long.parseLong(str));
+			String pattern = "#####-###";
+			try {
+				MaskFormatter mask = new MaskFormatter(pattern);
+				mask.setValueContainsLiteralCharacters(false);
+				return mask.valueToString(str);
+			} catch (ParseException e) {
+				throw new RuntimeException(e);
+			}
+		} catch (NumberFormatException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static List<String> names(Enum<?>... values) {
+		if (values == null) {
+			return null;
+		}
+		List<String> ret = new ArrayList<String>(values.length);
+		for (Enum<?> value : values) {
+			ret.add(value == null ? null : value.name());
+		}
+		return ret;
+	}
+
+	public static String onlyNumbers(String str) {
+
+		return str.replaceAll("[\\D]", "");
+	}
+
+	public static String extention(String path) {
+		path = str(path);
+		String ret = path.replaceAll("^.*\\.([^//.]*)$", "$1");
+		return str(ret);
+	}
+
+	public static String generateString(String str, int size) {
+		StringBuilder ret = new StringBuilder(str.length() * size);
+		for (int i = 0; i < size; i++) {
+			ret.append(str);
+		}
+		return ret.toString();
+	}
+
+	public static void validateUsascii(CharSequence sb) {
+		for (int i = 0; i < sb.length(); i++) {
+			int b = 0xFFFFFF & sb.charAt(i);
+			if (b < 0 || b > 127) {
+				throw new RuntimeException("invalid char: " + b);
+			}
+		}
+	}
+
+	public static void deleteChildsRecursively(File base) {
+		try {
+			File[] files = base.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					FileUtils.deleteDirectory(file);
+				} else {
+					if (!file.delete()) {
+						throw new RuntimeException("can not be deleted: " + file);
+					}
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void deleteRecursively(File f) {
+		try {
+			if (f.isDirectory()) {
+				FileUtils.deleteDirectory(f);
+			} else {
+				if (!f.delete()) {
+					throw new RuntimeException("can not be deleted: " + f);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void write(File meta, String format) {
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(meta);
+			out.write(format.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(out);
+		}
+	}
+
+	public static String mountURL(String url, String... params) {
+		if (params == null) {
+			params = new String[0];
+		}
+		if (params.length % 2 != 0) {
+			throw new RuntimeException("wrong: " + params.length);
+		}
+		StringBuilder builder = new StringBuilder();
+		builder.append(url);
+		if (params.length > 0) {
+			builder.append("?");
+		}
+		for (int i = 0; i < params.length; i += 2) {
+			String name = params[i];
+			String value = params[i + 1];
+			builder.append(name).append("=");
+			builder.append(encodeURI(value));
+			if (i + 2 < params.length) {
+				builder.append("&");
+			}
+		}
+		return builder.toString();
+	}
+
+}

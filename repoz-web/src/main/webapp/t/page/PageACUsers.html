@@ -1,0 +1,78 @@
+<section class="windfury">
+
+	<section class="main">
+		<div class="acUserMain">
+			<h3></h3>
+			<table class="grid">
+				<thead>
+					<tr>
+						<th>Path</th>
+						<th>User</th>
+						<th>Type</th>
+						<th>Pass</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td colspan="5">Loading...</td></tr>
+				</tbody>
+			</table>
+			<div class="buttons">
+				<a href="#AC" class="btn">Back</a> <a href="#" class="btn add">Add</a>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		windfury.req([ 't/templ/base.html' ], function($, wf, base) {
+			var main = wf.text('.main');
+
+			function open() {
+				var repo = $.querystring().get('repo');
+				var page = $(main());
+				base.open(page, 'Repoz Users');
+
+				function doDelete(user) {
+					return function() {
+						if(!window.confirm('Delete ' + repo + ' ' + user.user + '?')) {
+							return false;
+						}
+						page.find('table tbody').html('<tr><td colspan="5">Deleting...</td></tr>');
+						$.repoz.deleteUser({
+							repo : repo,
+							user : user.user
+						}, function() {
+							open();
+						});
+						return false;
+					}
+				}
+
+				function showUsers(users) {
+					var row = '<tr><td class="repo"/><td class="user"/><td class="type"/><td class="pass"/><td class="action"><button class="btn remove" type="button">Remove</button></td></tr>"';
+					page.find('table tbody').html('');
+					for (var i = 0; $.oplt(i, users.length); i++) {
+						var user = users[i];
+						var r = $(row);
+						page.find('table tbody').append(r);
+						r.find('.repo').text(user.repo);
+						r.find('.user').text(user.user);
+						r.find('.type').text(user.type);
+						r.find('.pass').text(user.pass);
+						r.find('.remove').click(doDelete(user));
+					}
+				}
+
+				page.find('h3').text(baseurl + 'r' + repo);
+				page.find('.buttons .add').attr('href', '#ACUserNew?repo=' + repo)
+				$.repoz.listRepoUsers(repo, showUsers);
+
+			}
+
+			wf.def({
+				open : open
+			});
+		});
+	</script>
+
+</section>

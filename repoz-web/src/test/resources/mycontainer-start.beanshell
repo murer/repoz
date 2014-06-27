@@ -1,0 +1,20 @@
+
+import com.murerz.repoz.web.*;
+
+print("x: " + MycontainerHelper.class.getResource("/org/apache/http/client/entity/UrlEncodedFormEntity.class"));
+
+try {
+	mycontainer = MycontainerHelper.me();
+	mycontainer.setUp();
+	port = 8080;
+	mycontainer.bind(port);
+
+	mycontainer.waitFor();
+
+	mycontainer.unbind(port);	
+	mycontainer.tearDown();
+	
+	mycontainer.shutdown();
+} catch (Exception e) {
+	e.printStackTrace();
+}

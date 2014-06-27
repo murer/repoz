@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"></meta>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+<meta name="HandheldFriendly" content="true"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+<link rel="stylesheet" type="text/css" href="css/reset.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/index.css" media="all" />
+
+<script type="text/javascript" src="js/lib/jquery.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/lib/jquery.windfury.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/jquery.repoz.util.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/docs.js" charset="utf-8"></script>
+
+<title>Repoz Docs</title>
+</head>
+
+<body>
+	<div id="wrapper">
+		<h1>Repoz Documentation</h1>
+		<div class="menu">
+			<a href=".">About</a>
+			<a href="panel.html#AC">Panel</a>
+			<a href="docs.html">Docs</a>
+			<a href="https://github.com/murer/repoz">Source</a>
+			<a href="version.properties">Version</a>
+		</div>
+		<div class="face">
+		<div class="summary">
+			<ul>
+			</ul>
+		</div>
+		<div class="topic">
+			<a name="overview"></a>
+			<h2>Overview</h2>
+			<div class="content">
+				<p>Repoz is a simple http repository. You PUT/POST files and GET them.</p>
+				<p>First thing you need to do is configure a repository access</p> 
+				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way:</p>
+				<textarea class="code" readonly="readonly">http://[user]:[pass]@domain.com/repoz/r/any/...</textarea>
+			</div>
+		</div>
+		
+		<div class="topic">
+			<a name="Configure"></a>
+			<h2>Configuring the repository access</h2>
+			<div class="content">
+				<p>You need to configure a user to a repository.</p>
+				<p>This user and password is a http basic authentication.</p>
+				<p>You should do it on <a href="panel.html">Panel</a></p>
+				<p>You can make a repository do not require authentication adding a user "anonymous" and password "anonymous". Remeber to select "read" access to him.</p>
+				<p>The base url to a repository is:</p>
+				<textarea class="code url" readonly="readonly" wrap="off"></textarea>
+			</div>
+		</div>
+		
+		
+		<div class="topic">
+			<a name="uploadingfile"></a>
+			<h2>Uploading file</h2>
+			<div class="content">
+				<p>Upload should be done with PUT or POST http methods</p>
+				<p>PUT and POST is handled by the same way</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+PUT /repository/any/struct/myfile.txt HTTP/1.1
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 5
+
+murer
+
+200 Ok
+				</textarea>
+				<p>The file will be created and the response http code should be 200.</p>
+				<p>If Content-Type was not given, repoz will try do resolve it by file extension.<p>
+			</div>
+		</div>
+		
+		
+		<div class="topic">
+			<a name="deletingfile"></a>
+			<h2>Deleting file</h2>
+			<div class="content">
+				<p>Delete should be done with DELETE http method.</p>
+				<p class="highlighted">Deletes are always recursively</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+DELETE /repository/any/struct/myfile.txt HTTP/1.1
+
+200 Ok
+				</textarea>
+				<p>The file will be deleted and the response http code should be 200.</p>
+			</div>
+		</div>
+		
+		
+		<div class="topic">
+			<a name="downloading"></a>
+			<h2>Downloading file</h2>
+			<div class="content">
+				<p>Download should be done with GET http method.</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+GET /repository/any/struct/myfile.txt HTTP/1.1
+
+200 Ok
+Content-Length: 5
+Content-Type: text/plain;charset=UTF-8
+
+murer
+				</textarea>
+				<p>See <a href="#uploadingfile">upload section</a> to understand how repoz handle Content-Type.</p>
+			</div>
+		</div>
+		
+		
+		<div class="topic">
+			<a name="downloading"></a>
+			<h2>Listing file</h2>
+			<div class="content">
+				<p>List files should be done with GET http method.</p>
+				<p>You need to add l=true to perform a listing</p>
+				<p>You can add r=true to make it recursively</p> 
+				<textarea class="code" readonly="readonly" wrap="off">
+GET /repository/any?l=true&r=true HTTP/1.1
+
+200 Ok
+Content-Type: text/plain;charset=UTF-8
+
+struct/file.txt
+other.zip
+				</textarea>
+				<p>Response code should be 200 Ok</p>
+				<p>The response should be a text/plain with a entry per line</p>
+			</div>
+		</div>
+		
+		<div class="topic">
+			<a name="maven"></a>
+			<h2>Configuring maven repository</h2>
+			<div class="content">
+				<p>pom.xml: Configuring repositotory</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+<repositories>
+	<repository>
+		<id>mysamplerepository</id>
+		<name>My Sample Repository</name>
+		<url>[baseurl]mysamplerepostory/snapshot</url>
+	</repository>
+</repositories>
+<pluginRepositories>
+	<repositories>
+		<repository>	
+			<id>mysamplerepository</id>
+			<name>My Sample Repository</name>
+			<url>[baseurl]mysamplerepostory/snapshot</url>
+		</repository>
+	</repositories>
+</pluginRepositories>
+  				</textarea>
+				<p>pom.xml: Configuring distributionManagement</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+<distributionManagement>
+		<repository>
+			<id>mysamplerepository</id>
+			<name>My Sample Repository</name>
+			<url>[baseurl]mysamplerepostory/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>mysamplerepository</id>
+			<name>My Sample Repository</name>
+			<url>[baseurl]mysamplerepostory/snapshots</url>
+		</snapshotRepository>
+</distributionManagement>				
+				</textarea>
+				<p>settings.xml: Configuring user and password if non-anonymous</p>
+				<textarea class="code" readonly="readonly" wrap="off">
+<servers>
+	<server>
+		<id>mysamplerepository</id>
+		<username>user-configured-on-panel</username>
+		<password>pass-configured-on-panel</password>
+	</server>
+</servers>
+				</textarea>
+			</div>
+		</div>
+		</div>
+	</div>
+</body>
+</html>
