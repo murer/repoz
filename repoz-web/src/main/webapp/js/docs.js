@@ -25,6 +25,18 @@
 	$(window).ready(function() {
 		$('.code.url').text(baseurl + 'r/');
 
+		$('a.service').hide();
+		$.ajax({
+			url: 'version.properties',
+			dataType: 'text',
+			success: function(text) {
+				text = $.trim(text);
+				if(text) {
+					$('a.service').show();
+				}
+			}
+		});
+		
 		summary();
 		textarea();
 	});
