@@ -6,6 +6,8 @@ before_script:
   - "export JAVA_OPTS=-Xmx512m"
 install: 
   - "echo we do not need install"
+  - "ls ~/.ssh/id_rsa.pub"
+  - "ls ~/.ssh/id_rsa"
 script: "mvn clean install -B -Dit -Drepoz.gcs.bucket=repoz-test-travisci"
 env:
   - secure: "CXixpO++4Dw+zk4G3S2lG4Sl0BrldPnSg2tAuyJAsyRPd2chToYS+NBJQY7FjAQScnsrcGcs56ymnqOnWdgrcAyJSCEDeuBTF0pq1A3IiXcIYM3JY4rx4oYYncu5rNG2MUN4avcdp6IdfWOem1cvzOCThxktBKi4Jn773OdVcwo="
