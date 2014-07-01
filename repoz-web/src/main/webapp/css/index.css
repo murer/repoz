@@ -20,6 +20,8 @@ h1 { font-size: 37px; padding: 10px 0; border-bottom: 1px dotted #333; }
 .content p { padding: 5px 30px; }
 .content p.highlighted { font-weight: bold; }
 
+.codeBtns { margin: 5px 60px }
+
 textarea.code { overflow: auto; -ms-overflow-y: hidden; overflow-y: hidden; background-color: #EEEEEE; border: 1px dotted #AAAAAA; color: #444444; font: 15px Consolas,"Liberation Mono",Menlo,Courier,monospace; margin: 0 30px; resize: none; white-space: pre; width: 900px; padding-top: 19px; padding-left: 10px; }
 
 .menu a { padding: 0 20px }

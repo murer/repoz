@@ -22,6 +22,21 @@
 			$(this).val(text);
 		});
 	}
+	
+	function codePanels() {
+		$('.topic .codePanel .codeBtns .http').click(function() {
+			var panel = $(this).closest('.codePanel');
+			panel.find('textarea.curl').hide();
+			panel.find('textarea.http').show();
+		});
+		$('.topic .codePanel .codeBtns .curl').click(function() {
+			var panel = $(this).closest('.codePanel');
+			panel.find('textarea.http').hide();
+			panel.find('textarea.curl').show();
+		});
+		$('.topic textarea.http').show();
+		$('.topic textarea.curl').hide();
+	}
 
 	$(window).ready(function() {
 		$('.code.url').text(baseurl + 'r/');
@@ -40,6 +55,7 @@
 		
 		summary();
 		textarea();
+		codePanels();
 	});
 
 })(jQuery);
