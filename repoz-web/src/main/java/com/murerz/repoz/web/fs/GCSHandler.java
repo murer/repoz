@@ -69,7 +69,16 @@ public class GCSHandler {
 
 	public GenericUrl createURL(String path) {
 		String bucket = Config.me().reqProperty("repoz.gcs.bucket");
-		return new GenericUrl("https://" + bucket + ".storage.googleapis.com" + path);
+		String base = Config.me().getGoogleCloudStorageBase();
+		if (base.length() > 0) {
+			base = "/" + base;
+		}
+		return new GenericUrl("https://" + bucket + ".storage.googleapis.com" + base + path);
+	}
+
+	public GenericUrl createListURL(String query) {
+		String bucket = Config.me().reqProperty("repoz.gcs.bucket");
+		return new GenericUrl("https://" + bucket + ".storage.googleapis.com" + query);
 	}
 
 }

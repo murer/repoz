@@ -614,4 +614,12 @@ public class Util {
 		return builder.toString();
 	}
 
+	public static long randomPositiveLong() {
+		long ret = new Random().nextLong();
+		if (ret < 0) {
+			ret = ret * -1;
+		}
+		return ret;
+	}
+
 }

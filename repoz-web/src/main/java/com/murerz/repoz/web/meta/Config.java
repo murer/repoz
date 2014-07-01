@@ -79,4 +79,12 @@ public class Config {
 		}
 	}
 
+	public String getGoogleCloudStorageBase() {
+		String ret = getProperty("repoz.gcs.base");
+		if (ret == null) {
+			return "";
+		}
+		return ret;
+	}
+
 }

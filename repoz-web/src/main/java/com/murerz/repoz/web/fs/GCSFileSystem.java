@@ -11,6 +11,7 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.InputStreamContent;
+import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.util.Util;
 import com.murerz.repoz.web.util.XMLQuery;
 
@@ -109,10 +110,14 @@ public class GCSFileSystem implements FileSystem {
 		String sb = convertToPrefix(path);
 		try {
 			HttpRequestFactory factory = GCSHandler.me().getFactory();
-			GenericUrl url = GCSHandler.me().createURL("/?delimiter=/&prefix=" + sb);
+			String base = Config.me().getGoogleCloudStorageBase();
+			if(base.length() > 0) {
+				base += "/";
+			}
+			GenericUrl url = GCSHandler.me().createListURL("/?delimiter=/&prefix=" + base + sb);
 			HttpRequest req = factory.buildGetRequest(url);
 			HttpResponse resp = executeCheck(req, 200);
-			return parseFileNames(sb, resp);
+			return parseFileNames(base, sb, resp);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -122,16 +127,20 @@ public class GCSFileSystem implements FileSystem {
 		String sb = convertToPrefix(path);
 		try {
 			HttpRequestFactory factory = GCSHandler.me().getFactory();
-			GenericUrl url = GCSHandler.me().createURL("/?prefix=" + sb);
+			String base = Config.me().getGoogleCloudStorageBase();
+			if(base.length() > 0) {
+				base += "/";
+			}
+			GenericUrl url = GCSHandler.me().createListURL("/?prefix=" + base + sb);
 			HttpRequest req = factory.buildGetRequest(url);
 			HttpResponse resp = executeCheck(req, 200);
-			return parseFileNames(sb, resp);
+			return parseFileNames(base, sb, resp);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private Set<String> parseFileNames(String sb, HttpResponse resp) throws IOException {
+	private Set<String> parseFileNames(String base, String sb, HttpResponse resp) throws IOException {
 		InputStream in = null;
 		try {
 			in = resp.getContent();
@@ -141,6 +150,9 @@ public class GCSFileSystem implements FileSystem {
 			for (int i = 0; i < list.size(); i++) {
 				String path = list.get(i).getContent();
 				path = path.replaceAll("/+$", "");
+				if(base.length() > 0) {
+					path = path.substring(base.length());
+				}
 				ret.add("/" + path);
 			}
 			return ret;
