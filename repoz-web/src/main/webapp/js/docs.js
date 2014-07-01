@@ -18,6 +18,7 @@
 			$(this).attr('rows', rows);
 			var text = $(this).val();
 			text = text.replace(/\[baseurl\]/g, baseurl);
+			text = text.replace(/\[basedomain\]/g, basedomain);
 			$(this).val(text);
 		});
 	}
