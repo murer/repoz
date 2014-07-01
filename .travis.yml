@@ -4,6 +4,7 @@ jdk:
 before_script:
   - "./decrypt.sh"
   - "export JAVA_OPTS=-Xmx512m"
+  - "curl -d \"X: $REPOZSECRET\" http://test:test123@repoz.dextra.com.br/test/a.txt"
 install: 
   - "echo we do not need install"
 script: "mvn clean install -B -Dit -Drepoz.gcs.bucket=repoz-test-travisci"
