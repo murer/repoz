@@ -2,6 +2,7 @@
 
 	baseurl = '' + location;
 	baseurl = baseurl.replace(/[a-zA-Z0-9]+\.html.*/g, '');
+	basedomain = baseurl.replace(/^http.?:\/\//g, '');
 	
 	$.windfury.spec.req = function(ctx) {
 		return function(modules, callback) {
