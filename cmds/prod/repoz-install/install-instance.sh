@@ -22,7 +22,11 @@ chmod -v 600 repoz-repo/repoz.passwd
 sudo sed -i.sedbak "s/^PasswordAuthentication .*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 sudo service ssh reload
 
+cp cmds/prod/repoz-install/keys/id_rsa.pub ~/.ssh
+cp cmds/prod/repoz-install/keys/id_rsa ~/.ssh
+
 # Public Keys
+cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPGpAUfOPunVPuW+Kfb4rgmx5DNogD9gzktWWfWRqGUrMqChzM439d90dfhXY1Yc1pa00arGRJyDg/1qj5HtD6WGpkmRKBNvA+7/DoijC6a9wzhbdtJX6MJXpX7hv+gM3RT7pz5Neq6/+GTy1/njJBuBo2qGxhQ3LlCXgwVuCFar+8r9vI8L99xyeezp8hTJI+00CWeBx9sEJAGNo+L0tBcExh0iE30AegvEBWriZfwJHw460Xf/r0t/D0S8CjZMVxqCOe4dlGSFzZHo80+Xak8OzrCM5aZaLTd80zk1di44me1fIdiTj4HDVLhemkAXsutvPnucl6mu01TLYVf+b3 murer@frostnova" >> .ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApof0ZqvZPwq04ul4RS27elpp4WoeCH9tKBJMO9z8EJ09mfZCDAjAmLOjzED2aiNRXSs43ixDTraUtdlRdfR9ozJx07yDJ06f062v/vvasVld0NsLkBKyrk4jTrPf1aFYvhiXKaSbDXaXy7rW/ALB8PC12yYXbnnsxaUtIfPEjgCQG9tznjByeYZvFrdgu+w7sfkU5A4bSwsBb7KAo3//iCbmDDCEJ6T9D16h2vhKiEeg/taB4SEVpGYTAI5lTJ+JtI5h307nHdFb8srX4pIcT+tka38hnGRmZNsAscEQA0ijNOr2Vt/P/DgNob9I2iEUmoBLJ42691X/36qPYry5dQ== murer@dls185" >> .ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCgCuiIVAUJjSIvEv+MCT7AWLhsyIH7elZYFiN5lGJNbD3aIz/HJ5he+D9XC8o9mNpqhIgEhFhgYTZTZMUUMsHsmUkb4ZxMfdbPYP6Qts7TgXWicOTu1eoGssNE/xz+pzALqKlrokWyxlCNJ6txOgpGuqGUILurS2IMniANv/XjZQ== travis" >> .ssh/authorized_keys
