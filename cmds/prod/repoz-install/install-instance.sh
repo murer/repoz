@@ -78,7 +78,7 @@ source /etc/bash.bashrc.repoz
 java -version
 
 ############
-sudo a2enmod proxy proxy_http ssl
+sudo a2enmod proxy proxy_http ssl headers
 sudo htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
 sudo rm /etc/apache2/sites-enabled/000-default
@@ -106,6 +106,7 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
         Order allow,deny
         allow from all
     </Directory>
+    RequestHeader unset Authorization
 </VirtualHost>
 EOF
 sudo tee /etc/apache2/sites-available/repoz-ssl <<-EOF
