@@ -7,6 +7,7 @@ import com.googlecode.mycontainer.commons.http.Request;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.GCSFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
+import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.meta.GrantAccessManager;
 import com.murerz.repoz.web.util.Util;
 
@@ -20,6 +21,7 @@ public class GCSRepoIT extends AbstractFileSystemTestCase {
 		System.setProperty(FileSystemFactory.PROPERTY, GCSFileSystem.class.getName());
 		System.setProperty(AccessManagerFactory.PROPERTY, GrantAccessManager.class.getName());
 		System.setProperty("repoz.gcs.base", "test-" + Util.randomPositiveLong());
+		Config.reset();
 
 		FileSystemFactory.create().deleteAll();
 	}

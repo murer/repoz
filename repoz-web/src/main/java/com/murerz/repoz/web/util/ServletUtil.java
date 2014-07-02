@@ -189,6 +189,14 @@ public class ServletUtil {
 		}
 	}
 
+	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req, String msg) {
+		try {
+			resp.sendError(HttpServletResponse.SC_FORBIDDEN, msg);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req) {
 		try {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -256,5 +264,18 @@ public class ServletUtil {
 		}
 		ret = ret.replaceAll(";.*$", "");
 		return ret;
+	}
+
+	public static boolean isHttps(HttpServletRequest req) {
+		String scheme = req.getScheme();
+		if (scheme != null) {
+			scheme = scheme.toLowerCase();
+		}
+		return "https".equals(scheme);
+	}
+
+	public static boolean isReadMethod(HttpServletRequest req) {
+		String m = req.getMethod().toUpperCase();
+		return "GET".equals(m) || "HEAD".equals(m);
 	}
 }

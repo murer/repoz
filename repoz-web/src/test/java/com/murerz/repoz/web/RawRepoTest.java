@@ -4,6 +4,7 @@ import com.googlecode.mycontainer.commons.http.Request;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.RawFileSystem;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
+import com.murerz.repoz.web.meta.Config;
 import com.murerz.repoz.web.meta.GrantAccessManager;
 
 public class RawRepoTest extends AbstractFileSystemTestCase {
@@ -13,6 +14,7 @@ public class RawRepoTest extends AbstractFileSystemTestCase {
 		super.setUp();
 		System.setProperty(FileSystemFactory.PROPERTY, RawFileSystem.class.getName());
 		System.setProperty(AccessManagerFactory.PROPERTY, GrantAccessManager.class.getName());
+		Config.reset();
 
 		FileSystemFactory.create().deleteAll();
 	}
