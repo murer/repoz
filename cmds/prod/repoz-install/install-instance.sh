@@ -78,8 +78,7 @@ source /etc/bash.bashrc.repoz
 java -version
 
 ############
-sudo a2enmod proxy proxy_http
-
+sudo a2enmod proxy proxy_http ssl
 sudo htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
 sudo rm /etc/apache2/sites-enabled/000-default
@@ -109,11 +108,66 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     </Directory>
 </VirtualHost>
 EOF
+sudo tee /etc/apache2/sites-available/repoz-ssl <<-EOF
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+	<Directory "/usr/lib/cgi-bin">
+		AllowOverride None
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+
+	SSLEngine on
+	SSLProtocol all -SSLv2
+	SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
+
+	SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz-ssl.crt
+	SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz-ssl.key
+	SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
+
+	<FilesMatch "\.(cgi|shtml|phtml|php)$">
+		SSLOptions +StdEnvVars
+	</FilesMatch>
+	<Directory /usr/lib/cgi-bin>
+		SSLOptions +StdEnvVars
+	</Directory>
+
+	BrowserMatch "MSIE [2-6]" \
+		nokeepalive ssl-unclean-shutdown \
+		downgrade-1.0 force-response-1.0
+	BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+</VirtualHost>
+</IfModule>
+EOF
 sudo cp /var/www/index.html /var/www/index.html.old
 sudo tee /var/www/index.html <<-EOF
 <html><head><title>Repoz</title></head><body onload="location='repoz';"></body></html>
 EOF
 sudo ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
+sudo ln -s /etc/apache2/sites-available/repoz-ssl /etc/apache2/sites-enabled/repoz-ssl
 sudo service apache2 restart
 
 cd -
