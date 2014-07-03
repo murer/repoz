@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.murerz.repoz.web.meta.AccessManager;
 import com.murerz.repoz.web.meta.AccessManagerFactory;
 import com.murerz.repoz.web.meta.User;
+import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.UserPass;
@@ -59,6 +60,9 @@ public class AccessRepoFilter implements Filter {
 			}
 			if (code != 200) {
 				throw new RuntimeException("unexpected: " + code);
+			}
+			if (auth != null) {
+				CTX.set("username", auth.getUsername());
 			}
 			chain.doFilter(req, resp);
 		} catch (IOException e) {
