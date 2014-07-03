@@ -8,12 +8,12 @@ mkdir -p repoz-repo packs/WEB-INF/classes
 sudo mount /dev/disk/by-id/google-repoz-repository repoz-repo
 chown -R repoz:repoz $HOME
 if [ ! -f repoz-repo/repoz.passwd ]; then
-	echo "File not found: repoz.passwd"
-	exit 1;
+    echo "File not found: repoz.passwd"
+    exit 1;
 fi
 if [ ! -f repoz-repo/repoz.properties ]; then
-	echo "No repoz.properties found in repoz-repo/repoz.properties"
-	exit 1;
+    echo "No repoz.properties found in repoz-repo/repoz.properties"
+    exit 1;
 fi
 
 ############
@@ -34,8 +34,8 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCgCuiIVAUJjSIvEv+MCT7AWLhsyIH7elZYFi
 ############
 REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
 if [ "x$REPOZ_PASSWORD" == "x" ]; then
-	echo "repoz.access.root not found in repoz-repo/repoz.properties";
-	exit 1;
+    echo "repoz.access.root not found in repoz-repo/repoz.properties";
+    exit 1;
 fi
 mkdir repoz-repo/repository | cat
 cp repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties
@@ -83,12 +83,6 @@ sudo htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
 sudo rm /etc/apache2/sites-enabled/000-default
 sudo tee /etc/apache2/sites-available/repoz <<-EOF
-<Location /repoz>
-    ProxyPass http://localhost:8080/repoz
-    ProxyPassReverse http://localhost:8080/repoz
-    RequestHeader unset Authorization
-    RequestHeader set X-Repoz-Schema "https"
-</Location>
 <Location /home/repoz>
     AuthType Basic
     AuthName "repoz"
@@ -96,10 +90,16 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     Require user root
 </Location>
 <VirtualHost *:80>
+    <Location /repoz>
+        ProxyPass http://localhost:8080/repoz
+        ProxyPassReverse http://localhost:8080/repoz
+        RequestHeader unset Authorization
+        RequestHeader set X-Repoz-Schema "http"
+    </Location>
     <Location /repozhttp>
         ProxyPass http://localhost:8080/repoz
         ProxyPassReverse http://localhost:8080/repoz
-    	RequestHeader set X-Repoz-Schema "http"
+        RequestHeader set X-Repoz-Schema "http"
     </Location>
 
     DocumentRoot /var/www
@@ -120,53 +120,59 @@ EOF
 sudo tee /etc/apache2/sites-available/repoz-ssl <<-EOF
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
-	ServerAdmin webmaster@localhost
+    <Location /repoz>
+        ProxyPass http://localhost:8080/repoz
+        ProxyPassReverse http://localhost:8080/repoz
+        RequestHeader set X-Repoz-Schema "https"
+    </Location>
 
-	DocumentRoot /var/www
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-	</Directory>
+    ServerAdmin webmaster@localhost
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-	<Directory "/usr/lib/cgi-bin">
-		AllowOverride None
-		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-		Order allow,deny
-		Allow from all
-	</Directory>
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
 
-	LogLevel warn
+    ErrorLog ${APACHE_LOG_DIR}/error.log
 
-	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+    LogLevel warn
 
-	SSLEngine on
-	SSLProtocol all -SSLv2
-	SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
+    CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
 
-	SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz-ssl.crt
-	SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz-ssl.key
-	SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
 
-	<FilesMatch "\.(cgi|shtml|phtml|php)$">
-		SSLOptions +StdEnvVars
-	</FilesMatch>
-	<Directory /usr/lib/cgi-bin>
-		SSLOptions +StdEnvVars
-	</Directory>
+    SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz-ssl.crt
+    SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz-ssl.key
+    SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
 
-	BrowserMatch "MSIE [2-6]" \
-		nokeepalive ssl-unclean-shutdown \
-		downgrade-1.0 force-response-1.0
-	BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
+
+    BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+    BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
 
 </VirtualHost>
 </IfModule>
