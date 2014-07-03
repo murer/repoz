@@ -91,7 +91,7 @@ public class RepozUtil {
 
 	public static RepozFile createStaticFile(RepozFile file) {
 		byte[] data = Util.readAll(file.getIn());
-		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType());
+		return new StaticRepozFile().setData(data).setPath(file.getPath()).setCharset(file.getCharset()).setMediaType(file.getMediaType()).setParams(file.getParams());
 	}
 
 	public static void sendHtmlError(HttpServletResponse resp, String error) {

@@ -3,6 +3,7 @@ package com.murerz.repoz.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -50,6 +51,9 @@ public class RepoServlet extends HttpServlet {
 				resp.setCharacterEncoding(charset);
 			}
 
+			Map<String, String> params = file.getParams();
+			ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+
 			in = file.getIn();
 			OutputStream out = resp.getOutputStream();
 
@@ -91,6 +95,9 @@ public class RepoServlet extends HttpServlet {
 		InputStream in = req.getInputStream();
 
 		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
+
+		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
+		file.setParams(params);
 
 		fs.save(file);
 	}

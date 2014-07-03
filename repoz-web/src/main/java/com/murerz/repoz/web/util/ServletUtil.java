@@ -5,7 +5,12 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -277,5 +282,31 @@ public class ServletUtil {
 	public static boolean isReadMethod(HttpServletRequest req) {
 		String m = req.getMethod().toUpperCase();
 		return "GET".equals(m) || "HEAD".equals(m);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, String> headers(HttpServletRequest req, String pre) {
+		pre = pre.toLowerCase();
+		Enumeration<String> names = req.getHeaderNames();
+		Map<String, String> ret = new HashMap<String, String>();
+		while (names.hasMoreElements()) {
+			String name = names.nextElement();
+			if (name.toLowerCase().startsWith(pre)) {
+				String n = name.substring(pre.length());
+				String v = req.getHeader(name);
+				ret.put(n, v);
+			}
+		}
+		return ret;
+	}
+
+	public static void setHeaders(HttpServletResponse resp, String pre, Map<String, String> params) {
+		Set<Entry<String, String>> set = params.entrySet();
+		for (Entry<String, String> entry : set) {
+			String v = entry.getValue();
+			String n = entry.getKey();
+			String name = pre.toString() + n;
+			resp.addHeader(name, v);
+		}
 	}
 }

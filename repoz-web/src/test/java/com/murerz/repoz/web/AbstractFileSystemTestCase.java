@@ -1,6 +1,7 @@
 package com.murerz.repoz.web;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -101,4 +102,37 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals("/b", resp.content().text().trim());
 	}
 
+	@Test
+	public void testParams() {
+		assertEquals(
+				new Integer(200),
+				s.execute(
+						Request.create("PUT", "/r/f1.txt").header("X-Repoz-Param-any", "b1").header("X-Repoz-Param-other", "c1").contentType("text/plain;charset=UTF-8")
+								.content("m1")).code());
+		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/f2.txt").header("X-Repoz-Param-any", "b2").contentType("text/plain;charset=UTF-8").content("m2")).code());
+
+		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
+		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
+		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("m1", resp.content().text());
+
+		resp = a.success(Request.create("GET", "/r/f2.txt"));
+		assertEquals("b2", resp.headers().first("X-Repoz-Param-any"));
+		assertNull(resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("m2", resp.content().text());
+
+		assertEquals(
+				new Integer(200),
+				s.execute(
+						Request.create("PUT", "/r/f2.txt").header("X-Repoz-Param-any", "b3").header("X-Repoz-Param-other", "c3").contentType("text/plain;charset=UTF-8")
+								.content("m3")).code());
+
+		resp = a.success(Request.create("GET", "/r/f2.txt"));
+		assertEquals("b3", resp.headers().first("X-Repoz-Param-any"));
+		assertEquals("c3", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("m3", resp.content().text());
+
+		assertEquals(new Integer(200), a.code("DELETE", "/r/f1.txt"));
+		assertEquals(new Integer(404), a.code("GET", "/r/f1.txt"));
+	}
 }

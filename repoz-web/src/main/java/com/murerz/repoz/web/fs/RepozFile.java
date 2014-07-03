@@ -1,6 +1,9 @@
 package com.murerz.repoz.web.fs;
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class RepozFile {
 
@@ -9,6 +12,8 @@ public abstract class RepozFile {
 	private String mediaType;
 
 	private String charset;
+
+	private Map<String, String> params = new TreeMap<String, String>();
 
 	public String getPath() {
 		return path;
@@ -50,4 +55,17 @@ public abstract class RepozFile {
 		}
 		return "" + mediaType + "; charset=" + charset;
 	}
+
+	public RepozFile setParams(Map<String, String> params) {
+		this.params.clear();
+		if (params != null) {
+			this.params.putAll(params);
+		}
+		return this;
+	}
+
+	public Map<String, String> getParams() {
+		return Collections.unmodifiableMap(params);
+	}
+
 }
