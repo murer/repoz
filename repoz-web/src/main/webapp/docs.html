@@ -41,7 +41,7 @@
 				<p>Repoz is a simple http repository. You PUT/POST files and GET them.</p>
 				<p>First thing you need to do is configure a repository access</p> 
 				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way:</p>
-				<textarea class="code" readonly="readonly">http://[user]:[pass]@domain.com/repoz/r/any/...</textarea>
+				<textarea class="code" readonly="readonly">https://[user]:[pass]@domain.com/repoz/r/any/...</textarea>
 			</div>
 		</div>
 		
@@ -81,15 +81,15 @@ murer
 200 Ok
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl http://username:password@[basedomain]r/repository/any/struct/myfile.txt \
+curl https://username:password@[basedomain]r/repository/any/struct/myfile.txt \
     -d "@myfile.txt" -H "Expect: " -H "Content-Type: "
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl http://username:password@[basedomain]r/repository/any/struct/myfile.txt \
+curl https://username:password@[basedomain]r/repository/any/struct/myfile.txt \
     -d "murer" -H "Expect: " -H "Content-Type: "
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl http://username:password@[basedomain]r/repository/any/struct/myfile.apk \
+curl https://username:password@[basedomain]r/repository/any/struct/myfile.apk \
     --data-binary "@myfile.apk" -H "Expect: " -H "Content-Type: "
 					</textarea>
 				</div>
@@ -116,7 +116,7 @@ DELETE /repository/any/struct/myfile.txt HTTP/1.1
 200 Ok
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl -X DELETE http://username:password@[basedomain]r/repository/any/struct/myfile.txt
+curl -X DELETE https://username:password@[basedomain]r/repository/any/struct/myfile.txt
 					</textarea>
 				</div>				
 				<p>The file will be deleted and the response http code should be 200.</p>
@@ -144,7 +144,7 @@ Content-Type: text/plain;charset=UTF-8
 murer
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl http://username:password@[basedomain]r/repository/any/struct/myfile.txt
+curl https://username:password@[basedomain]r/repository/any/struct/myfile.txt
 					</textarea>
 				</div>				
 				<p>See <a href="#uploadingfile">upload section</a> to understand how repoz handle Content-Type.</p>
@@ -174,7 +174,7 @@ struct/file.txt
 other.zip
 					</textarea>
 					<textarea class="code curl" readonly="readonly" wrap="off">
-curl "http://username:password@[basedomain]r/repository/any?l=true&r=true"
+curl "https://username:password@[basedomain]r/repository/any?l=true&r=true"
 					</textarea>
 				</div>				
 				<p>Response code should be 200 Ok</p>
