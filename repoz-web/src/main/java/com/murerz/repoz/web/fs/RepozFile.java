@@ -68,4 +68,9 @@ public abstract class RepozFile {
 		return Collections.unmodifiableMap(params);
 	}
 
+	public RepozFile setParam(String n, String v) {
+		params.put(n, v);
+		return this;
+	}
+
 }

@@ -12,4 +12,8 @@ public class CTX {
 		return ThreadContextFilter.ctx().get(name);
 	}
 
+	public static String getAsString(String name) {
+		return (String) get(name);
+	}
+
 }

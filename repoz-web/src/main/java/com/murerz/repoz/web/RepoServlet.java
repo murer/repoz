@@ -15,6 +15,7 @@ import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StreamRepozFile;
+import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.Util;
@@ -95,6 +96,7 @@ public class RepoServlet extends HttpServlet {
 		InputStream in = req.getInputStream();
 
 		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
+		file.setParam("username", CTX.getAsString("username"));
 
 		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
 		file.setParams(params);

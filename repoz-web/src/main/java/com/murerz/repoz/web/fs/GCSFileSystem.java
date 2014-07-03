@@ -20,6 +20,8 @@ import com.murerz.repoz.web.util.XMLQuery;
 
 public class GCSFileSystem implements FileSystem {
 
+	private static final String X_GOOG_META_X = "x-goog-meta-p-";
+
 	public RepozFile read(String path) {
 		try {
 			HttpRequestFactory factory = GCSHandler.me().getFactory();
@@ -50,8 +52,8 @@ public class GCSFileSystem implements FileSystem {
 		HashMap<String, String> params = new HashMap<String, String>();
 		Set<String> paramNames = resp.getHeaders().keySet();
 		for (String paramName : paramNames) {
-			if (paramName.toLowerCase().startsWith("x-goog-meta-")) {
-				String name = paramName.substring("x-goog-meta-".length());
+			if (paramName.toLowerCase().startsWith(X_GOOG_META_X)) {
+				String name = paramName.substring(X_GOOG_META_X.length());
 				String value = resp.getHeaders().getFirstHeaderStringValue(paramName);
 				params.put(name, value);
 			}
@@ -68,7 +70,7 @@ public class GCSFileSystem implements FileSystem {
 			HttpRequest req = factory.buildPutRequest(url, content);
 			Set<Entry<String, String>> params = file.getParams().entrySet();
 			for (Entry<String, String> entry : params) {
-				req.getHeaders().set("x-goog-meta-" + entry.getKey(), entry.getValue());
+				req.getHeaders().set(X_GOOG_META_X + entry.getKey(), entry.getValue());
 			}
 			executeCheck(req, 200);
 		} catch (IOException e) {
