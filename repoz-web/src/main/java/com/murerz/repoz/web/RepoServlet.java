@@ -96,10 +96,10 @@ public class RepoServlet extends HttpServlet {
 		InputStream in = req.getInputStream();
 
 		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
-		file.setParam("username", CTX.getAsString("username"));
-
+		
 		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
 		file.setParams(params);
+		file.setParam("username", CTX.getAsString("username"));
 
 		fs.save(file);
 	}
