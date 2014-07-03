@@ -86,6 +86,8 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
 <Location /repoz>
     ProxyPass http://localhost:8080/repoz
     ProxyPassReverse http://localhost:8080/repoz
+    RequestHeader unset Authorization
+    RequestHeader set X-Repoz-Schema "https"
 </Location>
 <Location /home/repoz>
     AuthType Basic
@@ -94,6 +96,12 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     Require user root
 </Location>
 <VirtualHost *:80>
+    <Location /repozhttp>
+        ProxyPass http://localhost:8080/repoz
+        ProxyPassReverse http://localhost:8080/repoz
+    	RequestHeader set X-Repoz-Schema "http"
+    </Location>
+
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
@@ -106,8 +114,8 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
         Order allow,deny
         allow from all
     </Directory>
-    RequestHeader unset Authorization
 </VirtualHost>
+
 EOF
 sudo tee /etc/apache2/sites-available/repoz-ssl <<-EOF
 <IfModule mod_ssl.c>
