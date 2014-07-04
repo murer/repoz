@@ -91,6 +91,7 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
 </Location>
 <VirtualHost *:80>
     RewriteEngine on
+    RewriteRule ^/repoz/access - [F]
     RewriteRule ^/repoz/panel\.html https://%{HTTP_HOST}/repoz/panel.html
 
     <Location /repoz>
@@ -99,9 +100,9 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
         RequestHeader unset Authorization
         RequestHeader set X-Repoz-Schema "http"
     </Location>
-    <Location /repozhttp>
-        ProxyPass http://localhost:8080/repoz
-        ProxyPassReverse http://localhost:8080/repoz
+    <Location /repozix/r>
+        ProxyPass http://localhost:8080/repoz/r
+        ProxyPassReverse http://localhost:8080/repoz/r
         RequestHeader set X-Repoz-Schema "http"
     </Location>
 
