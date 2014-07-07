@@ -322,6 +322,9 @@ public class Util {
 	}
 
 	public static String getStack(Throwable e) {
+		if(e == null) {
+			return null;
+		}
 		StringWriter str = new StringWriter();
 		PrintWriter writer = new PrintWriter(str);
 		e.printStackTrace(writer);
@@ -625,7 +628,7 @@ public class Util {
 	}
 
 	public static String nowZ() {
-		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new Date());
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date());
 	}
 
 	public static File gzip(File file) {

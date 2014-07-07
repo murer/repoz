@@ -61,12 +61,9 @@ public class AccessLogger {
 	}
 
 	public void log(List<Object> list, Exception exp) {
-		if (exp != null) {
-			list = new ArrayList<Object>(list.size() + 1);
-			String str = Util.getStack(exp);
-			list.addAll(list);
-			list.add(str);
-		}
+		list = new ArrayList<Object>(list);
+		String str = Util.getStack(exp);
+		list.add(str);
 		String json = FlexJson.instance().format(list);
 		write(json, exp);
 	}

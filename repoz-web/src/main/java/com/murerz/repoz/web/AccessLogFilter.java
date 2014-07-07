@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.murerz.repoz.web.util.AccessLogger;
 import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.LogResponse;
+import com.murerz.repoz.web.util.Util;
 
 public class AccessLogFilter implements Filter {
 
@@ -55,11 +56,8 @@ public class AccessLogFilter implements Filter {
 
 	private Collection<? extends Object> toLogString(LogResponse resp) {
 		List<Object> list = new ArrayList<Object>();
-		Integer code = resp.getCode();
-		if (code == null) {
-			code = 200;
-		}
-		list.add(code);
+		list.add(Util.nowZ());
+		list.add(resp.getCode());
 		list.add(resp.getContentType());
 		list.add(resp.getLen());
 		return list;
@@ -67,6 +65,7 @@ public class AccessLogFilter implements Filter {
 
 	private List<Object> toLogString(HttpServletRequest req) {
 		List<Object> list = new ArrayList<Object>();
+		list.add(Util.nowZ());
 		list.add(CTX.getAsString("username"));
 		list.add(req.getRemoteAddr());
 		list.add(req.getHeader("X-Forwarded-For"));
