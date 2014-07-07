@@ -70,6 +70,7 @@ public class AccessLogFilter implements Filter {
 		list.add(CTX.getAsString("username"));
 		list.add(req.getRemoteAddr());
 		list.add(req.getHeader("X-Forwarded-For"));
+		list.add(req.getHeader("X-Repoz-Schema"));
 		list.add(req.getMethod());
 		list.add(req.getRequestURI());
 		list.add(req.getContentType());
