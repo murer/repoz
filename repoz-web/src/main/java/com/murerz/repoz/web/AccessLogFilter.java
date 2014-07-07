@@ -73,6 +73,7 @@ public class AccessLogFilter implements Filter {
 		list.add(req.getHeader("X-Repoz-Schema"));
 		list.add(req.getMethod());
 		list.add(req.getRequestURI());
+		list.add(req.getQueryString());
 		list.add(req.getContentType());
 		list.add(req.getContentLength());
 		list.add(req.getHeader("User-Agent"));
