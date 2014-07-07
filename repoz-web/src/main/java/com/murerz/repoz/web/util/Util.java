@@ -1,6 +1,7 @@
 package com.murerz.repoz.web.util;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.Closeable;
@@ -34,6 +35,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 
 import javax.swing.text.MaskFormatter;
 
@@ -620,6 +622,27 @@ public class Util {
 			ret = ret * -1;
 		}
 		return ret;
+	}
+
+	public static String nowZ() {
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(new Date());
+	}
+
+	public static File gzip(File file) {
+		File f = new File(file.getPath() + ".gz");
+		InputStream in = null;
+		OutputStream out = null;
+		try {
+			out = new GZIPOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
+			in = new BufferedInputStream(new FileInputStream(file));
+			copyAll(in, out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Util.close(in);
+			Util.close(out);
+		}
+		return f;
 	}
 
 }

@@ -99,6 +99,20 @@
 		<url-pattern>/r/*</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>AccessLogFilter</filter-name>
+		<filter-class>com.murerz.repoz.web.AccessLogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AccessLogFilter</filter-name>
+		<url-pattern>/access</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>AccessLogFilter</filter-name>
+		<url-pattern>/r/*</url-pattern>
+	</filter-mapping>
+
+
 	<error-page>
 		<error-code>401</error-code>
 		<location>/error/401.html</location>

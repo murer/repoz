@@ -87,4 +87,8 @@ public class Config {
 		return ret;
 	}
 
+	public int reqPropertyInt(String key) {
+		return Integer.parseInt(reqProperty(key));
+	}
+
 }
