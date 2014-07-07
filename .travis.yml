@@ -5,7 +5,7 @@ before_script:
   - "./decrypt.sh"
   - "export JAVA_OPTS=-Xmx512m"
 install: 
-  - "echo we do not need install"
+  - ./cmds/ci/install.sh
 script:
   - "mvn clean install -B -Dit -Drepoz.gcs.bucket=repoz-test-travisci"
 env:
