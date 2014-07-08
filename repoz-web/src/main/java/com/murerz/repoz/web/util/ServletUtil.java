@@ -254,7 +254,8 @@ public class ServletUtil {
 			resp.setCharacterEncoding("UTF-8");
 			PrintWriter out = resp.getWriter();
 			for (Object o : rows) {
-				out.println(o);
+				out.print(o);
+				out.print("\n");
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
