@@ -183,6 +183,41 @@ curl "https://username:password@[basedomain]r/repository/any?l=true&r=true"
 		</div>
 		
 		<div class="topic">
+			<a name="metadata"></a>
+			<h2>Metadata</h2>
+			<div class="content">
+				<p>You can store metadata with files.</p>
+				<p>You should pass a headers started with X-Repoz-Param-</p>
+				<p>And this header will be returned at GET request.</p>
+				<div class="codePanel">
+					<textarea class="code http" readonly="readonly" wrap="off">
+PUT /[repository]/any/struct/myfile.txt HTTP/1.1
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 5
+X-Repoz-Param-anyparam: anyvalue
+X-Repoz-Param-otherparam: othervalue
+
+murer
+
+200 Ok
+					</textarea>
+					<textarea class="code http" readonly="readonly" wrap="off">
+GET /[repository]/any/struct/myfile.txt HTTP/1.1
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+
+200 Ok
+Content-Type: text/plain;charset=UTF-8
+X-Repoz-Param-anyparam: anyvalue
+X-Repoz-Param-otherparam: othervalue
+
+murer
+					</textarea>
+				</div>
+			</div>
+		</div>		
+		
+		<div class="topic">
 			<a name="maven"></a>
 			<h2>Configuring maven repository</h2>
 			<div class="content">
