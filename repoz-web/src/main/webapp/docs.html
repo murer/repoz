@@ -186,9 +186,8 @@ curl "https://username:password@[basedomain]r/repository/any?l=true&r=true"
 			<a name="metadata"></a>
 			<h2>Metadata</h2>
 			<div class="content">
-				<p>You can store metadata with files.</p>
-				<p>You should pass a headers started with X-Repoz-Param-</p>
-				<p>And this header will be returned at GET request.</p>
+				<p>It is possible to store metadata with files as headers started with X-Repoz-Param-</p>
+				<p>If you pass these headers on PUT/POST you will receive them on GET.</p>
 				<div class="codePanel">
 					<textarea class="code http" readonly="readonly" wrap="off">
 PUT /[repository]/any/struct/myfile.txt HTTP/1.1
