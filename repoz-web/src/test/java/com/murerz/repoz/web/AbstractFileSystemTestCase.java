@@ -104,12 +104,8 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
 	@Test
 	public void testParams() {
-		assertEquals(
-				new Integer(200),
-				s.execute(
-						Request.create("PUT", "/r/f1.txt").header("X-Repoz-Param-any", "b1").header("X-Repoz-Param-other", "c1").contentType("text/plain;charset=UTF-8")
-								.content("m1")).code());
-		assertEquals(new Integer(200), s.execute(Request.create("PUT", "/r/f2.txt").header("X-Repoz-Param-any", "b2").contentType("text/plain;charset=UTF-8").content("m2")).code());
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", "c1").code());
+		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m2", "X-Repoz-Param-any", "b2").code());
 
 		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
 		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
@@ -121,11 +117,7 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertNull(resp.headers().first("X-Repoz-Param-other"));
 		assertEquals("m2", resp.content().text());
 
-		assertEquals(
-				new Integer(200),
-				s.execute(
-						Request.create("PUT", "/r/f2.txt").header("X-Repoz-Param-any", "b3").header("X-Repoz-Param-other", "c3").contentType("text/plain;charset=UTF-8")
-								.content("m3")).code());
+		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m3", "X-Repoz-Param-any", "b3", "X-Repoz-Param-other", "c3").code());
 
 		resp = a.success(Request.create("GET", "/r/f2.txt"));
 		assertEquals("b3", resp.headers().first("X-Repoz-Param-any"));
@@ -135,4 +127,23 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		assertEquals(new Integer(200), a.code("DELETE", "/r/f1.txt"));
 		assertEquals(new Integer(404), a.code("GET", "/r/f1.txt"));
 	}
+
+	@Test
+	public void testHead() {
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", "c1").code());
+		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
+		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
+		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("m1", resp.content().text());
+
+		resp = a.success(Request.create("HEAD", "/r/f1.txt"));
+		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
+		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertNull(resp.headers().first("Content-Length"));
+		assertNull(resp.content());
+
+		assertEquals(new Integer(405), a.code("HEAD", "/r/abc?l=true"));
+		assertEquals(new Integer(404), a.code("HEAD", "/r/abc"));
+	}
+
 }

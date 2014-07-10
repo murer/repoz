@@ -75,7 +75,7 @@ public class AccessRepoFilter implements Filter {
 
 	private String accessType(HttpServletRequest req, HttpServletResponse resp) {
 		String method = req.getMethod();
-		if ("GET".equals(method)) {
+		if ("GET".equals(method) || "HEAD".equals(method)) {
 			return "read";
 		}
 		if ("POST".equals(method) || "PUT".equals(method) || "DELETE".equals(method)) {

@@ -25,6 +25,38 @@ public class RepoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
+	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String path = RepozUtil.path(req);
+		boolean list = ServletUtil.paramBoolean(req, "l");
+		if (list) {
+			ServletUtil.sendMethodNotAllowed(req, resp);
+			return;
+		}
+
+		FileSystem fs = FileSystemFactory.create();
+
+		RepozFile file = fs.read(path);
+		if (file == null) {
+			ServletUtil.sendNotFound(req, resp);
+			return;
+		}
+
+		String contentType = file.getMediaType();
+		String charset = file.getCharset();
+		if (contentType != null) {
+			resp.setContentType(contentType);
+		}
+		if (charset != null) {
+			resp.setCharacterEncoding(charset);
+		}
+		
+		Map<String, String> params = file.getParams();
+		ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+		
+		resp.flushBuffer();
+	}
+
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		InputStream in = null;
 		try {
@@ -96,7 +128,7 @@ public class RepoServlet extends HttpServlet {
 		InputStream in = req.getInputStream();
 
 		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
-		
+
 		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
 		file.setParams(params);
 		file.setParam("username", CTX.getAsString("username"));
