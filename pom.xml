@@ -8,7 +8,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mycontainer.version>1.4.11-SNAPSHOT</mycontainer.version>
+		<mycontainer.version>1.4.11</mycontainer.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<appengine.target.plugin.version>1.8.2</appengine.target.plugin.version>
 		<main.basedir>${project.basedir}</main.basedir>
