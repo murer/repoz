@@ -75,7 +75,8 @@ public class RepoServlet extends HttpServlet {
 				ServletUtil.sendNotFound(req, resp);
 				return;
 			}
-
+			in = file.getIn();
+			
 			String contentType = file.getMediaType();
 			String charset = file.getCharset();
 			if (contentType != null) {
@@ -88,7 +89,6 @@ public class RepoServlet extends HttpServlet {
 			Map<String, String> params = file.getParams();
 			ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
 
-			in = file.getIn();
 			OutputStream out = resp.getOutputStream();
 
 			Util.copyAll(in, out);

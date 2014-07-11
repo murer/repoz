@@ -1,5 +1,6 @@
 package com.murerz.repoz.web.util;
 
+import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -7,11 +8,17 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.api.client.http.HttpResponse;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StaticRepozFile;
 import com.murerz.repoz.web.meta.Config;
 
 public class RepozUtil {
+
+	private static final Logger LOG = LoggerFactory.getLogger(RepozUtil.class);
 
 	public static final String REPOZMETA = ".repozmeta";
 	public static final String ACCESS = ".repozauth.txt";
@@ -108,5 +115,15 @@ public class RepozUtil {
 
 	public static String getOauthCallback(HttpServletRequest req) {
 		return getUrl(req, "/oauth2google");
+	}
+
+	public static void close(HttpResponse resp) {
+		if (resp != null) {
+			try {
+				resp.disconnect();
+			} catch (IOException e) {
+				LOG.error("error closing", e);
+			}
+		}
 	}
 }
