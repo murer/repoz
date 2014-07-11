@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
+import com.murerz.repoz.web.fs.MetaFile;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StreamRepozFile;
 import com.murerz.repoz.web.util.CTX;
@@ -35,7 +36,7 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-		RepozFile file = fs.read(path);
+		MetaFile file = fs.head(path);
 		if (file == null) {
 			ServletUtil.sendNotFound(req, resp);
 			return;
@@ -49,10 +50,10 @@ public class RepoServlet extends HttpServlet {
 		if (charset != null) {
 			resp.setCharacterEncoding(charset);
 		}
-		
+
 		Map<String, String> params = file.getParams();
 		ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
-		
+
 		resp.flushBuffer();
 	}
 
@@ -127,7 +128,7 @@ public class RepoServlet extends HttpServlet {
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
+		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
 
 		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
 		file.setParams(params);

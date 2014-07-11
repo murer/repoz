@@ -199,4 +199,30 @@ public class GCSFileSystem implements FileSystem {
 		return ret;
 	}
 
+	public MetaFile head(String path) {
+		try {
+			HttpRequestFactory factory = GCSHandler.me().getFactory();
+			GenericUrl url = GCSHandler.me().createURL(path);
+			HttpRequest req = factory.buildHeadRequest(url);
+			req.setThrowExceptionOnExecuteError(false);
+			HttpResponse resp = executeCheck(req, 200, 404);
+			if (resp.getStatusCode() == 404) {
+				return null;
+			}
+			String type = resp.getContentType();
+			String charset = resp.getContentEncoding();
+
+			Map<String, String> params = parseParams(resp);
+
+			MetaFile ret = new MetaFile();
+			ret.setPath(path);
+			ret.setMediaType(type);
+			ret.setCharset(charset);
+			ret.setParams(params);
+			return ret;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }
