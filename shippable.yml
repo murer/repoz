@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk7
+before_script:
+  - "./decrypt.sh"
+  - "export JAVA_OPTS=-Xmx512m"
+install: 
+  - ./cmds/ci/install.sh
+script:
+  - "mvn test -B -Dit -Drepoz.gcs.bucket=repoz-test-travisci"
+env:
+
