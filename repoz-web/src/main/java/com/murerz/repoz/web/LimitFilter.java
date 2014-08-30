@@ -17,7 +17,7 @@ import com.murerz.repoz.web.util.Util;
 
 public class LimitFilter implements Filter {
 
-	private BigInteger maxLength = new BigInteger("157286400");
+	private BigInteger maxLength = new BigInteger("262144000");
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		String len = Util.str(System.getProperty("repoz.post.maxLength"));
