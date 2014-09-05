@@ -83,7 +83,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static void addCookie(HttpServletResponse resp, String name, String value, String path, int maxAge) {
+	public static void addCookie(HttpServletResponse resp, String name,
+			String value, String path, int maxAge) {
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath(path);
 		cookie.setMaxAge(maxAge);
@@ -102,12 +103,15 @@ public class ServletUtil {
 	public static void checkLength(HttpServletRequest req) {
 		final Integer tamanho = 1024 * 1024;
 		if (req.getContentLength() > tamanho) {
-			throw new RuntimeException("Conteudo do Request maior que " + tamanho + "Bytes");
+			throw new RuntimeException("Conteudo do Request maior que "
+					+ tamanho + "Bytes");
 		}
 	}
 
-	public static void checkContentType(HttpServletRequest req, String contentType) {
-		if (req.getContentType() == null || !req.getContentType().contains(contentType)) {
+	public static void checkContentType(HttpServletRequest req,
+			String contentType) {
+		if (req.getContentType() == null
+				|| !req.getContentType().contains(contentType)) {
 			throw new RuntimeException("Content Type Invalido");
 		}
 	}
@@ -132,11 +136,13 @@ public class ServletUtil {
 
 	public static void checkHasMoreThan(Collection<?> collection, Long limit) {
 		if (collection.size() > limit) {
-			throw new RuntimeException("Nao e permitido salvar mais que " + limit + " registros por vez");
+			throw new RuntimeException("Nao e permitido salvar mais que "
+					+ limit + " registros por vez");
 		}
 	}
 
-	public static void writeBytes(HttpServletResponse resp, String contentType, String charset, byte[] content) {
+	public static void writeBytes(HttpServletResponse resp, String contentType,
+			String charset, byte[] content) {
 		try {
 			resp.setContentType(contentType);
 			if (charset != null) {
@@ -150,7 +156,8 @@ public class ServletUtil {
 	}
 
 	public static String getHostPort(HttpServletRequest req) {
-		return new StringBuilder().append(req.getRemoteAddr()).append(":").append(req.getRemotePort()).toString();
+		return new StringBuilder().append(req.getRemoteAddr()).append(":")
+				.append(req.getRemotePort()).toString();
 	}
 
 	public static UserPass getBasicInfo(HttpServletRequest req) {
@@ -169,7 +176,8 @@ public class ServletUtil {
 		return new UserPass().setUsername(username).setPassword(password);
 	}
 
-	public static void sendMethodNotAllowed(HttpServletRequest req, HttpServletResponse resp) {
+	public static void sendMethodNotAllowed(HttpServletRequest req,
+			HttpServletResponse resp) {
 		try {
 			resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			resp.getWriter().println(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -178,7 +186,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static void sendNotFound(HttpServletRequest req, HttpServletResponse resp) {
+	public static void sendNotFound(HttpServletRequest req,
+			HttpServletResponse resp) {
 		try {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not found");
 		} catch (IOException e) {
@@ -186,7 +195,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static void sendUnauthorized(HttpServletResponse resp, HttpServletRequest req) {
+	public static void sendUnauthorized(HttpServletResponse resp,
+			HttpServletRequest req) {
 		try {
 			resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		} catch (IOException e) {
@@ -194,7 +204,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req, String msg) {
+	public static void sendForbidden(HttpServletResponse resp,
+			HttpServletRequest req, String msg) {
 		try {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN, msg);
 		} catch (IOException e) {
@@ -202,7 +213,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static void sendForbidden(HttpServletResponse resp, HttpServletRequest req) {
+	public static void sendForbidden(HttpServletResponse resp,
+			HttpServletRequest req) {
 		try {
 			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
 		} catch (IOException e) {
@@ -210,7 +222,8 @@ public class ServletUtil {
 		}
 	}
 
-	public static BigInteger headerBigInteger(HttpServletRequest req, String name) {
+	public static BigInteger headerBigInteger(HttpServletRequest req,
+			String name) {
 		String str = Util.str(req.getHeader(name));
 		if (str == null) {
 			return null;
@@ -218,15 +231,18 @@ public class ServletUtil {
 		return new BigInteger(str);
 	}
 
-	public static void sendRequestEntityTooLarge(HttpServletResponse response, String max, String len) {
+	public static void sendRequestEntityTooLarge(HttpServletResponse response,
+			String max, String len) {
 		try {
-			response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "max: " + max + ", but was: " + len);
+			response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,
+					"max: " + max + ", but was: " + len);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static void sendRedirect(HttpServletResponse resp, String url, String... params) {
+	public static void sendRedirect(HttpServletResponse resp, String url,
+			String... params) {
 		try {
 			String fullURL = Util.mountURL(url, params);
 			resp.sendRedirect(fullURL);
@@ -248,7 +264,8 @@ public class ServletUtil {
 		return "true".equals(param(req, name));
 	}
 
-	public static void writeTextLines(HttpServletResponse resp, Collection<?> rows) {
+	public static void writeTextLines(HttpServletResponse resp,
+			Collection<?> rows) {
 		try {
 			resp.setContentType("text/plain");
 			resp.setCharacterEncoding("UTF-8");
@@ -301,7 +318,8 @@ public class ServletUtil {
 		return ret;
 	}
 
-	public static void setHeaders(HttpServletResponse resp, String pre, Map<String, String> params) {
+	public static void setHeaders(HttpServletResponse resp, String pre,
+			Map<String, String> params) {
 		Set<Entry<String, String>> set = params.entrySet();
 		for (Entry<String, String> entry : set) {
 			String v = entry.getValue();
@@ -309,5 +327,14 @@ public class ServletUtil {
 			String name = pre.toString() + n;
 			resp.addHeader(name, v);
 		}
+	}
+
+	public static void setContentLength(HttpServletResponse resp, String length) {
+		int contentLength = Integer.parseInt(length);
+		if (Integer.toString(contentLength).toString().equals(length)) {
+			resp.setContentLength(contentLength);
+			return;
+		}
+		resp.setHeader("Content-Length", length);
 	}
 }

@@ -35,6 +35,7 @@ public class GCSFileSystem implements FileSystem {
 			}
 			String type = resp.getContentType();
 			String charset = resp.getContentEncoding();
+			String length = Util.str(resp.getHeaders().getFirstHeaderStringValue("Content-Length"));
 
 			Map<String, String> params = parseParams(resp);
 
@@ -42,6 +43,7 @@ public class GCSFileSystem implements FileSystem {
 			ret.setPath(path);
 			ret.setMediaType(type);
 			ret.setCharset(charset);
+			ret.setLength(length);
 			ret.setParams(params);
 			return ret;
 		} catch (IOException e) {
@@ -222,6 +224,7 @@ public class GCSFileSystem implements FileSystem {
 			}
 			String type = resp.getContentType();
 			String charset = resp.getContentEncoding();
+			String length = Util.str(resp.getHeaders().getFirstHeaderStringValue("Content-Length"));
 
 			Map<String, String> params = parseParams(resp);
 
@@ -229,6 +232,7 @@ public class GCSFileSystem implements FileSystem {
 			ret.setPath(path);
 			ret.setMediaType(type);
 			ret.setCharset(charset);
+			ret.setLength(length);
 			ret.setParams(params);
 			return ret;
 		} catch (IOException e) {

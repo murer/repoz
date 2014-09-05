@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.googlecode.mycontainer.commons.http.Request;
 import com.googlecode.mycontainer.commons.http.Response;
+import com.murerz.repoz.web.util.Util;
 
 public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
@@ -139,11 +140,24 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 		resp = a.success(Request.create("HEAD", "/r/f1.txt"));
 		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
 		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
-		assertNull(resp.headers().first("Content-Length"));
+		assertEquals("2", resp.headers().first("Content-Length"));
 		assertNull(resp.content());
 
 		assertEquals(new Integer(405), a.code("HEAD", "/r/abc?l=true"));
 		assertEquals(new Integer(404), a.code("HEAD", "/r/abc"));
 	}
 
+	@Test
+	public void testContentLength() {
+		String data = Util.generateString("a", maxLimit);
+
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", data).code());
+		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
+		assertEquals("2", resp.headers().first("Content-Length"));
+		assertEquals(2, resp.content().text().length());
+
+		resp = a.success(Request.create("HEAD", "/r/f1.txt"));
+		assertEquals("2", resp.headers().first("Content-Length"));
+		assertNull(resp.content());
+	}
 }

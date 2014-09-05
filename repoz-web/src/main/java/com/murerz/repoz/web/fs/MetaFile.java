@@ -12,6 +12,8 @@ public class MetaFile {
 
 	private String charset;
 
+	private String length;
+
 	private Map<String, String> params = new TreeMap<String, String>();
 
 	public String getPath() {
@@ -67,6 +69,15 @@ public class MetaFile {
 
 	public MetaFile setParam(String n, String v) {
 		params.put(n, v);
+		return this;
+	}
+
+	public String getLength() {
+		return length;
+	}
+
+	public MetaFile setLength(String length) {
+		this.length = length;
 		return this;
 	}
 

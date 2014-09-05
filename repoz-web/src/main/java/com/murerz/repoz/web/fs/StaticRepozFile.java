@@ -17,6 +17,9 @@ public class StaticRepozFile extends RepozFile {
 	}
 
 	public StaticRepozFile setData(byte[] data) {
+		if (data != null) {
+			setLength(Integer.toString(data.length));
+		}
 		this.data = data;
 		return this;
 	}
