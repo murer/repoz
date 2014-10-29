@@ -2,7 +2,7 @@ repoz
 =====
 
 
-[![Build Status](https://travis-ci.org/murer/repoz.png)](https://travis-ci.org/murer/repoz)
+[![Build Status](https://api.shippable.com/projects/540e7e663479c5ea8f9edacf/badge?branchName=master&no=1414605832953)]https://api.shippable.com/projects/540e7e663479c5ea8f9edacf/badge?branchName=master&no=1414605832953)
 
 Repoz is a simple http repository.
 
