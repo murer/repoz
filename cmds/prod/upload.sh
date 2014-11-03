@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-EXT_IP=108.59.84.254
+EXT_IP=130.211.143.253
 #while [ "x$EXT_IP" == "x" ]; do
 #	EXT_IP="$(gcutil --project docs-manager listinstances  --zone us-central1-a  --filter="name eq 'repoz-prod'" | cut -d"|" -f6 | tail -n +4 | head -n 1| sed "s/\s\+//g")"
 #done

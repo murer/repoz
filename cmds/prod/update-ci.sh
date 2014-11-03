@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-EXT_IP=108.59.84.254
+EXT_IP=130.211.143.253
 FILENAME=repoz-web/target/repoz-web.war
 
 chmod 600 cmds/prod/repoz-install/keys/id_rsa 
