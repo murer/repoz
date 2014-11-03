@@ -92,7 +92,7 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
 <VirtualHost *:80>
     RewriteEngine on
     RewriteRule ^/repoz/access - [F]
-    RewriteRule ^/repoz/panel\.html https://%{HTTP_HOST}/repoz/panel.html
+    #RewriteRule ^/repoz/panel\.html https://%{HTTP_HOST}/repoz/panel.html
 
     <Location /repoz>
         ProxyPass http://localhost:8080/repoz

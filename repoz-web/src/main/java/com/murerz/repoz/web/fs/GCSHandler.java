@@ -46,7 +46,7 @@ public class GCSHandler {
 				throw new RuntimeException("private key gcs.p12 not found");
 			}
 			PrivateKey key = SecurityUtils.loadPrivateKeyFromKeyStore(SecurityUtils.getPkcs12KeyStore(), stream, "notasecret", "privatekey", "notasecret");
-
+			System.out.println("X: " + email());
 			NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 			GoogleCredential credential = new GoogleCredential.Builder().setTransport(httpTransport).setJsonFactory(JSON_FACTORY).setServiceAccountId(email())
 					.setServiceAccountScopes(Arrays.asList("https://www.googleapis.com/auth/devstorage.full_control", "https://www.googleapis.com/auth/devstorage.read_write"))

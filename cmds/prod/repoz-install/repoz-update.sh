@@ -13,9 +13,9 @@ jar uvf repoz.war WEB-INF/classes/gcs.p12
 cd -
 
 killall java | cat 
-sleep 3
+sleep 1
 killall -9 java | cat
-sleep 3;
+sleep 1;
 
 rm -rf opt/jboss/standalone/tmp | cat
 rm -rf opt/jboss/standalone/log | cat
