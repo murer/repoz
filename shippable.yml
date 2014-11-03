@@ -7,7 +7,7 @@ before_script:
 install: 
   - ./cmds/ci/install.sh
 script:
-  - "mvn test -B -Dit -Drepoz.gcs.bucket=repoz-test-travisci"
+  - "mvn test -B -Dit -Drepoz.gcs.bucket=cz-repoz-test-travisci"
 env:
   secure: XzeL3qu0aBk61fo2v9tTqVMdoZXtRRcXU1/LGoSKNJZsBGEy1xBN/morstFvUd8tKOHz1XyqAcCwRSbw0y0ivC4U43xuwuwrj3wqo/XSJjgCshz2q7JWNpnc4w8YkacFWK+XDrueb4hE808g/2rdYeDUKHE7p4Qk29XiQaB24TEsTmch3CvKxTnInPVEfVMHhcfxX7s0w8odg3NnnSWEgbEVXX0QW4NIvZdxNp9sSHUUmarWSQc4qdFjSOfOCWJ10xLfTHroiZpoqSsZ3472/JqK2z26aa1Fyu0PC+mW1WHSjRk4Hyaohuw6PCHwaAyeCop+prGENno+o4KwWZ9DmQ==
 
