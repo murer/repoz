@@ -4,8 +4,9 @@ export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
 ############
-mkdir -p repoz-repo packs/WEB-INF/classes 
-sudo mount /dev/disk/by-id/google-repoz-repository repoz-repo
+gsutil -m cp -r gs://cz-repoz-config/repoz-repo .
+
+mkdir -p packs/WEB-INF/classes 
 chown -R repoz:repoz $HOME
 if [ ! -f repoz-repo/repoz.passwd ]; then
     echo "File not found: repoz.passwd"
