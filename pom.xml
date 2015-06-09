@@ -4,7 +4,7 @@
 	<artifactId>repoz</artifactId>
 	<packaging>pom</packaging>
 	<name>repoz</name>
-	<version>1.0.19-SNAPSHOT</version>
+	<version>1.0.19</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
