@@ -4,6 +4,20 @@ export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
 ############
+adduser --disabled-password --gecos "" repoz
+
+mkdir /home/repoz/.ssh || true
+ssh-keygen -t rsa -N "" -f /home/repoz/.ssh/id_rsa
+cp /home/repoz/.ssh/id_rsa.pub /home/repoz/.ssh/authorized_keys
+
+cd /home/repoz
+
+############
+mkdir -p cmds/prod/repoz-install
+curl -H 'Metadata-Flavor: Google' 'http://metadata/computeMetadata/v1/instance/attributes/repoz-update' > cmds/prod/repoz-install/repoz-update.sh
+chmod +x cmds/prod/repoz-install/repoz-update.sh
+
+############
 gsutil -m cp -r gs://cz-repoz-config/repoz-repo .
 
 mkdir -p packs/WEB-INF/classes
@@ -190,6 +204,8 @@ gsutil cp gs://cz-repoz/pub/jboss/jboss-as-7.1.1.Final.zip jboss.zip
 unzip jboss.zip
 ln -s jboss-as-7.1.1.Final jboss
 
-cd -
+chown -R repoz:repoz /home/repoz
+
+sleep 3
 
 echo "install-instance done"
