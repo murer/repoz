@@ -243,9 +243,9 @@ public class GCSFileSystem implements FileSystem {
 		}
 	}
 
-	public String redirect(String path) {
+	public String redirect(String method, String path) {
 		long expires = (new Date().getTime() / 1000) + 60;
-		return GCSHandler.me().createSignedURL(path, expires);
+		return GCSHandler.me().createSignedURL(method, path, expires);
 	}
 
 }

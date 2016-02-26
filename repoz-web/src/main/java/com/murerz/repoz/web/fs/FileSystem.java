@@ -20,6 +20,6 @@ public interface FileSystem {
 
 	MetaFile head(String path);
 
-	String redirect(String path);
+	String redirect(String method, String path);
 
 }

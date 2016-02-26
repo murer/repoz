@@ -36,6 +36,13 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
+		String redirect = fs.redirect("HEAD", path);
+		if (redirect != null) {
+			System.out.println("signed: " + redirect);
+			resp.sendRedirect(redirect);
+			return;
+		}
+		
 		MetaFile file = fs.head(path);
 		if (file == null) {
 			ServletUtil.sendNotFound(req, resp);
@@ -56,7 +63,7 @@ public class RepoServlet extends HttpServlet {
 		}
 
 		Map<String, String> params = file.getParams();
-		ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+		ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
 
 		resp.flushBuffer();
 	}
@@ -74,7 +81,7 @@ public class RepoServlet extends HttpServlet {
 
 			FileSystem fs = FileSystemFactory.create();
 
-			String redirect = fs.redirect(path);
+			String redirect = fs.redirect("GET", path);
 			if (redirect != null) {
 				System.out.println("signed: " + redirect);
 				resp.sendRedirect(redirect);
@@ -102,7 +109,7 @@ public class RepoServlet extends HttpServlet {
 			}
 
 			Map<String, String> params = file.getParams();
-			ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+			ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
 
 			OutputStream out = resp.getOutputStream();
 
@@ -146,7 +153,7 @@ public class RepoServlet extends HttpServlet {
 		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType)
 				.setCharset(charset);
 
-		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
+		Map<String, String> params = ServletUtil.headers(req, "x-goog-meta-p-");
 		file.setParams(params);
 		file.setParam("username", CTX.getAsString("username"));
 

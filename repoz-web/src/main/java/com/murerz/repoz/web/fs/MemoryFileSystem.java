@@ -91,7 +91,7 @@ public class MemoryFileSystem implements FileSystem {
 		return read(path);
 	}
 
-	public String redirect(String path) {
+	public String redirect(String method, String path) {
 		return null;
 	}
 

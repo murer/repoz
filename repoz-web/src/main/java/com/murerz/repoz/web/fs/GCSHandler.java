@@ -121,11 +121,11 @@ public class GCSHandler {
 		}
 	}
 
-	public String createSignedURL(String path, long expires) {
+	public String createSignedURL(String method, String path, long expires) {
 		try {
 			String fullPath = createFullPath(path);
 			StringBuilder content = new StringBuilder();
-			content.append("GET\n\n\n");
+			content.append(method).append("\n\n\n");
 			content.append(expires).append("\n");
 			content.append(fullPath);
 			String sign = sign(content.toString());
