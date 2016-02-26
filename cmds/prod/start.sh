@@ -12,4 +12,4 @@ gcloud compute instances create repoz \
 
 while ! gcloud compute ssh repoz --project cloudcontainerz --zone us-central1-a --command whoami; do sleep 2; done
 
-gcloud compute ssh repoz --project cloudcontainerz --zone us-central1-a --command 'tail -f /var/log/startupscript.log'
+gcloud compute ssh repoz --project cloudcontainerz --zone us-central1-a --command 'tail -n 1000 -f /var/log/startupscript.log'
