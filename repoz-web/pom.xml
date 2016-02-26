@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.murerz.repoz</groupId>
 		<artifactId>repoz</artifactId>
-		<version>1.0.21-SNAPSHOT</version>
+		<version>1.2.0</version>
 	</parent>
 
 	<dependencies>
