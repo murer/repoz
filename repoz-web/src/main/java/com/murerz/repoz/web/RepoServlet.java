@@ -38,7 +38,6 @@ public class RepoServlet extends HttpServlet {
 
 		String redirect = fs.redirect("HEAD", path);
 		if (redirect != null) {
-			System.out.println("signed: " + redirect);
 			resp.sendRedirect(redirect);
 			return;
 		}
@@ -80,10 +79,9 @@ public class RepoServlet extends HttpServlet {
 			}
 
 			FileSystem fs = FileSystemFactory.create();
-
+			
 			String redirect = fs.redirect("GET", path);
 			if (redirect != null) {
-				System.out.println("signed: " + redirect);
 				resp.sendRedirect(redirect);
 				return;
 			}
