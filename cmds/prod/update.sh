@@ -13,11 +13,9 @@ fi
 
 #$CAT "$FILENAME" | cmds/prod/connect.sh ./cmds/prod/repoz-install/repoz-update.sh
 
-cmds/prod/upload.sh "$FILENAME" packs/repoz.war
+gcloud compute copy-files --project cloudcontainerz --zone us-central1-a "$FILENAME" repoz@repoz:packs/repoz.war
+gcloud compute ssh repoz@repoz --project cloudcontainerz --zone us-central1-a --command './cmds/prod/repoz-install/repoz-update.sh'
 
-cmds/prod/connect.sh ./cmds/prod/repoz-install/repoz-update.sh
+#cmds/prod/upload.sh "$FILENAME" packs/repoz.war
 
-
-
-
-
+#cmds/prod/connect.sh ./cmds/prod/repoz-install/repoz-update.sh
