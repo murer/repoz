@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-useradd repoz
+adduser --disabled-password --gecos "" repoz
 
 mkdir /home/repoz/.ssh || true
 ssh-keygen -t rsa -N "" -f /home/repoz/.ssh/id_rsa
