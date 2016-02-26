@@ -21,7 +21,6 @@ chmod +x cmds/prod/repoz-install/repoz-update.sh
 gsutil -m cp -r gs://cz-repoz-config/repoz-repo .
 
 mkdir -p packs/WEB-INF/classes
-chown -R repoz:repoz $HOME
 if [ ! -f repoz-repo/repoz.properties ]; then
     echo "No repoz.properties found in repoz-repo/repoz.properties"
     exit 1;
