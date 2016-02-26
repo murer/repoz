@@ -36,11 +36,11 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-		String redirect = fs.redirect("HEAD", path);
-		if (redirect != null) {
-			resp.sendRedirect(redirect);
-			return;
-		}
+//		String redirect = fs.redirect("HEAD", path);
+//		if (redirect != null) {
+//			resp.sendRedirect(redirect);
+//			return;
+//		}
 		
 		MetaFile file = fs.head(path);
 		if (file == null) {
@@ -80,11 +80,11 @@ public class RepoServlet extends HttpServlet {
 
 			FileSystem fs = FileSystemFactory.create();
 			
-			String redirect = fs.redirect("GET", path);
-			if (redirect != null) {
-				resp.sendRedirect(redirect);
-				return;
-			}
+//			String redirect = fs.redirect("GET", path);
+//			if (redirect != null) {
+//				resp.sendRedirect(redirect);
+//				return;
+//			}
 
 			RepozFile file = fs.read(path);
 			if (file == null) {
