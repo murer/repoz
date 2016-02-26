@@ -4,7 +4,7 @@ export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
 ############
-adduser --disabled-password --gecos "" repoz
+adduser --disabled-password --gecos "" repoz || true
 
 mkdir /home/repoz/.ssh || true
 ssh-keygen -t rsa -N "" -f /home/repoz/.ssh/id_rsa
