@@ -5,5 +5,5 @@ EXT_IP=130.211.143.253
 #	EXT_IP="$(gcutil --project cloudcontainerz listinstances  --zone us-central1-a  --filter="name eq 'repoz'" | cut -d"|" -f6 | tail -n +4 | head -n 1| sed "s/\s\+//g")"
 #done
 
-scp -o ConnectTimeout=15 -o UserKnownHostsFile=/dev/null -o CheckHostIP=no -o StrictHostKeyChecking=no "$1" "repoz@$EXT_IP:$2"
 
+gcloud compute ssh repoz --command "sudo find /home/repoz -name '*.log' | xargs tail -n 100 -f"

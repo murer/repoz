@@ -26,8 +26,7 @@ public class RepoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 		boolean list = ServletUtil.paramBoolean(req, "l");
 		if (list) {
@@ -37,6 +36,12 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
+//		String redirect = fs.redirect("HEAD", path);
+//		if (redirect != null) {
+//			resp.sendRedirect(redirect);
+//			return;
+//		}
+		
 		MetaFile file = fs.head(path);
 		if (file == null) {
 			ServletUtil.sendNotFound(req, resp);
@@ -57,14 +62,13 @@ public class RepoServlet extends HttpServlet {
 		}
 
 		Map<String, String> params = file.getParams();
-		ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+		ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
 
 		resp.flushBuffer();
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		InputStream in = null;
 		try {
 			String path = RepozUtil.path(req);
@@ -75,6 +79,12 @@ public class RepoServlet extends HttpServlet {
 			}
 
 			FileSystem fs = FileSystemFactory.create();
+			
+//			String redirect = fs.redirect("GET", path);
+//			if (redirect != null) {
+//				resp.sendRedirect(redirect);
+//				return;
+//			}
 
 			RepozFile file = fs.read(path);
 			if (file == null) {
@@ -97,7 +107,7 @@ public class RepoServlet extends HttpServlet {
 			}
 
 			Map<String, String> params = file.getParams();
-			ServletUtil.setHeaders(resp, "X-Repoz-Param-", params);
+			ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
 
 			OutputStream out = resp.getOutputStream();
 
@@ -121,14 +131,12 @@ public class RepoServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPut(req, resp);
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 
 		FileSystem fs = FileSystemFactory.create();
@@ -140,10 +148,10 @@ public class RepoServlet extends HttpServlet {
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in)
-				.setPath(path).setMediaType(mediaType).setCharset(charset);
+		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType)
+				.setCharset(charset);
 
-		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
+		Map<String, String> params = ServletUtil.headers(req, "x-goog-meta-p-");
 		file.setParams(params);
 		file.setParam("username", CTX.getAsString("username"));
 
@@ -151,8 +159,7 @@ public class RepoServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 		FileSystem fs = FileSystemFactory.create();
 		fs.delete(path);

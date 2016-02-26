@@ -105,24 +105,24 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
 	@Test
 	public void testParams() {
-		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", "c1").code());
-		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m2", "X-Repoz-Param-any", "b2").code());
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "x-goog-meta-p-any", "b1", "x-goog-meta-p-other", "c1").code());
+		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m2", "x-goog-meta-p-any", "b2").code());
 
 		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
-		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
-		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("b1", resp.headers().first("x-goog-meta-p-any"));
+		assertEquals("c1", resp.headers().first("x-goog-meta-p-other"));
 		assertEquals("m1", resp.content().text());
 
 		resp = a.success(Request.create("GET", "/r/f2.txt"));
-		assertEquals("b2", resp.headers().first("X-Repoz-Param-any"));
-		assertNull(resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("b2", resp.headers().first("x-goog-meta-p-any"));
+		assertNull(resp.headers().first("x-goog-meta-p-other"));
 		assertEquals("m2", resp.content().text());
 
-		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m3", "X-Repoz-Param-any", "b3", "X-Repoz-Param-other", "c3").code());
+		assertEquals(new Integer(200), request("PUT", "/r/f2.txt", "text/plain;charset=UTF-8", "m3", "x-goog-meta-p-any", "b3", "x-goog-meta-p-other", "c3").code());
 
 		resp = a.success(Request.create("GET", "/r/f2.txt"));
-		assertEquals("b3", resp.headers().first("X-Repoz-Param-any"));
-		assertEquals("c3", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("b3", resp.headers().first("x-goog-meta-p-any"));
+		assertEquals("c3", resp.headers().first("x-goog-meta-p-other"));
 		assertEquals("m3", resp.content().text());
 
 		assertEquals(new Integer(200), a.code("DELETE", "/r/f1.txt"));
@@ -131,15 +131,15 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 
 	@Test
 	public void testHead() {
-		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", "c1").code());
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "x-goog-meta-p-any", "b1", "x-goog-meta-p-other", "c1").code());
 		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
-		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
-		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("b1", resp.headers().first("x-goog-meta-p-any"));
+		assertEquals("c1", resp.headers().first("x-goog-meta-p-other"));
 		assertEquals("m1", resp.content().text());
 
 		resp = a.success(Request.create("HEAD", "/r/f1.txt"));
-		assertEquals("b1", resp.headers().first("X-Repoz-Param-any"));
-		assertEquals("c1", resp.headers().first("X-Repoz-Param-other"));
+		assertEquals("b1", resp.headers().first("x-goog-meta-p-any"));
+		assertEquals("c1", resp.headers().first("x-goog-meta-p-other"));
 		assertEquals("2", resp.headers().first("Content-Length"));
 		assertNull(resp.content());
 
@@ -151,7 +151,7 @@ public abstract class AbstractFileSystemTestCase extends AbstractTestCase {
 	public void testContentLength() {
 		String data = Util.generateString("a", maxLimit);
 
-		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "X-Repoz-Param-any", "b1", "X-Repoz-Param-other", data).code());
+		assertEquals(new Integer(200), request("PUT", "/r/f1.txt", "text/plain;charset=UTF-8", "m1", "x-goog-meta-p-any", "b1", "x-goog-meta-p-other", data).code());
 		Response resp = a.success(Request.create("GET", "/r/f1.txt"));
 		assertEquals("2", resp.headers().first("Content-Length"));
 		assertEquals(2, resp.content().text().length());

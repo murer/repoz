@@ -4,11 +4,11 @@
 	<artifactId>repoz</artifactId>
 	<packaging>pom</packaging>
 	<name>repoz</name>
-	<version>1.0.19</version>
+	<version>1.2.1</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mycontainer.version>1.4.11</mycontainer.version>
+		<mycontainer.version>1.6.2</mycontainer.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<appengine.target.plugin.version>1.8.2</appengine.target.plugin.version>
 		<main.basedir>${project.basedir}</main.basedir>
