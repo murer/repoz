@@ -3,6 +3,7 @@ package com.murerz.repoz.web.fs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -240,6 +241,11 @@ public class GCSFileSystem implements FileSystem {
 		} finally {
 			RepozUtil.close(resp);
 		}
+	}
+
+	public String redirect(String path) {
+		long expires = (new Date().getTime() / 1000) + 60;
+		return GCSHandler.me().createSignedURL(path, expires);
 	}
 
 }

@@ -26,8 +26,7 @@ public class RepoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 		boolean list = ServletUtil.paramBoolean(req, "l");
 		if (list) {
@@ -63,8 +62,7 @@ public class RepoServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		InputStream in = null;
 		try {
 			String path = RepozUtil.path(req);
@@ -75,6 +73,13 @@ public class RepoServlet extends HttpServlet {
 			}
 
 			FileSystem fs = FileSystemFactory.create();
+
+			String redirect = fs.redirect(path);
+			if (redirect != null) {
+				System.out.println("signed: " + redirect);
+				resp.sendRedirect(redirect);
+				return;
+			}
 
 			RepozFile file = fs.read(path);
 			if (file == null) {
@@ -121,14 +126,12 @@ public class RepoServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPut(req, resp);
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 
 		FileSystem fs = FileSystemFactory.create();
@@ -140,8 +143,8 @@ public class RepoServlet extends HttpServlet {
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in)
-				.setPath(path).setMediaType(mediaType).setCharset(charset);
+		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType)
+				.setCharset(charset);
 
 		Map<String, String> params = ServletUtil.headers(req, "X-Repoz-Param-");
 		file.setParams(params);
@@ -151,8 +154,7 @@ public class RepoServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = RepozUtil.path(req);
 		FileSystem fs = FileSystemFactory.create();
 		fs.delete(path);
