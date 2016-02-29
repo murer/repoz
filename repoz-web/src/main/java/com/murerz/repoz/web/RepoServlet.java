@@ -92,7 +92,7 @@ public class RepoServlet extends HttpServlet {
 			String redirect = fs.redirect("GET", path);
 			if (redirect != null) {
 				BigInteger size = new BigInteger(file.getLength());
-				if (size.compareTo(SITE_MAX_SIZE) <= 0) {
+				if (size.compareTo(SITE_MAX_SIZE) > 0) {
 					resp.sendRedirect(redirect);
 					return;
 				}
