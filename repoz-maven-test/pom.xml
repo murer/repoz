@@ -36,7 +36,7 @@
 			<id>repoz</id>
 			<name>Repoz</name>
 			<url>http://repoz.dextra.com.br/repozix/r/test/repository</url>
-			<uniqueVersion>false</uniqueVersion>
+			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 
