@@ -1,8 +1,11 @@
 #!/bin/bash -xe
 
 rm -rf gen/maven || true
+find gen/repository -type d -name appengine-tools-sdk -exec rm -rf '{}' \; || true
 mkdir -p gen/files mkdir -p gen/maven || true
 ls gen/files/appengine-tools-sdk-1.9.32.jar || wget 'http://repo1.maven.org/maven2/com/google/appengine/appengine-tools-sdk/1.9.32/appengine-tools-sdk-1.9.32.jar' -O 'gen/files/appengine-tools-sdk-1.9.32.jar'
+
+
 
 check_version() {
   ls "gen/files/$2" || wget "$3" -O "gen/files/$2"
@@ -10,7 +13,7 @@ check_version() {
   tar xzf "../files/$2"
   cd -
   export MAVEN_HOME="$PWD/gen/maven/apache-maven-$1"
-  sed "s/gen\/repository/gen\/repository-$1/g" settings/maven.settings.xml > "$MAVEN_HOME/settings.xml"
+  sed "s/gen\/repository/gen\/repository\/repo-$1/g" settings/maven.settings.xml > "$MAVEN_HOME/settings.xml"
   $MAVEN_HOME/bin/mvn -version
 
   mvn deploy:deploy-file \
