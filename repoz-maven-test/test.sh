@@ -13,10 +13,10 @@ check_version() {
   tar xzf "../files/$2"
   cd -
   export MAVEN_HOME="$PWD/gen/maven/apache-maven-$1"
-  sed "s/gen\/repository/gen\/repository\/repo-$1/g" settings/maven.settings.xml > "$MAVEN_HOME/settings.xml"
+  sed "s/REPO/gen\/repository\/repo-$1/g" settings/maven.settings.xml > "$MAVEN_HOME/settings.xml"
   $MAVEN_HOME/bin/mvn -version
 
-  mvn deploy:deploy-file \
+  $MAVEN_HOME/bin/mvn deploy:deploy-file \
       -s "$MAVEN_HOME/settings.xml" \
       -DgroupId=com.murerz.repoz.test \
       -DartifactId=appengine-tools-sdk \
@@ -26,10 +26,10 @@ check_version() {
       -Durl=http://repoz.dextra.com.br/repozix/r/test/repository \
       -Dfile=gen/files/appengine-tools-sdk-1.9.32.jar
 
-  mvn clean install -s "$MAVEN_HOME/settings.xml" -Dmaven.test.skip
+  $MAVEN_HOME/bin/mvn clean install -s "$MAVEN_HOME/settings.xml" -Dmaven.test.skip
 
-  mvn deploy -s "$MAVEN_HOME/settings.xml" -Dmaven.test.skip
+  $MAVEN_HOME/bin/mvn deploy -s "$MAVEN_HOME/settings.xml" -Dmaven.test.skip
 }
 
-check_version '3.2.2' 'apache-maven-3.2.2-bin.tar.gz' 'https://archive.apache.org/dist/maven/binaries/apache-maven-3.2.2-bin.tar.gz'
+#check_version '3.2.2' 'apache-maven-3.2.2-bin.tar.gz' 'https://archive.apache.org/dist/maven/binaries/apache-maven-3.2.2-bin.tar.gz'
 check_version '2.2.1' 'apache-maven-2.2.1-bin.tar.gz' 'https://archive.apache.org/dist/maven/binaries/apache-maven-2.2.1-bin.tar.gz'
