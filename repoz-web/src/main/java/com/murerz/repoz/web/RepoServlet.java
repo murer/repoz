@@ -3,6 +3,7 @@ package com.murerz.repoz.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import com.murerz.repoz.web.util.Util;
 public class RepoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static final BigInteger SITE_MAX_SIZE = new BigInteger("2097152");
 
 	@Override
 	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,12 +38,12 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-//		String redirect = fs.redirect("HEAD", path);
-//		if (redirect != null) {
-//			resp.sendRedirect(redirect);
-//			return;
-//		}
-		
+		String redirect = fs.redirect("HEAD", path);
+		if (redirect != null) {
+			resp.sendRedirect(redirect);
+			return;
+		}
+
 		MetaFile file = fs.head(path);
 		if (file == null) {
 			ServletUtil.sendNotFound(req, resp);
@@ -80,18 +82,21 @@ public class RepoServlet extends HttpServlet {
 
 			FileSystem fs = FileSystemFactory.create();
 
-//			String redirect = fs.redirect("GET", path);
-//			if (redirect != null) {
-//				resp.sendRedirect(redirect);
-//				return;
-//			}
-
 			RepozFile file = fs.read(path);
 			if (file == null) {
 				ServletUtil.sendNotFound(req, resp);
 				return;
 			}
 			in = file.getIn();
+
+			String redirect = fs.redirect("GET", path);
+			if (redirect != null) {
+				BigInteger size = new BigInteger(file.getLength());
+				if (size.compareTo(SITE_MAX_SIZE) <= 0) {
+					resp.sendRedirect(redirect);
+					return;
+				}
+			}
 
 			String contentType = file.getMediaType();
 			String charset = file.getCharset();
