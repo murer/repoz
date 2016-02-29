@@ -38,10 +38,12 @@ public class RepoServlet extends HttpServlet {
 
 		FileSystem fs = FileSystemFactory.create();
 
-		String redirect = fs.redirect("HEAD", path);
-		if (redirect != null) {
-			resp.sendRedirect(redirect);
-			return;
+		if (canRedirect(req)) {
+			String redirect = fs.redirect("HEAD", path);
+			if (redirect != null) {
+				resp.sendRedirect(redirect);
+				return;
+			}
 		}
 
 		MetaFile file = fs.head(path);
@@ -69,6 +71,17 @@ public class RepoServlet extends HttpServlet {
 		resp.flushBuffer();
 	}
 
+	private boolean canRedirect(HttpServletRequest req) {
+		String agent = req.getHeader("User-Agent");
+		if (agent == null) {
+			return true;
+		}
+		if (agent.toLowerCase().startsWith("apache-maven/2")) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		InputStream in = null;
@@ -89,12 +102,14 @@ public class RepoServlet extends HttpServlet {
 			}
 			in = file.getIn();
 
-			String redirect = fs.redirect("GET", path);
-			if (redirect != null) {
-				BigInteger size = new BigInteger(file.getLength());
-				if (size.compareTo(SITE_MAX_SIZE) > 0) {
-					resp.sendRedirect(redirect);
-					return;
+			if (canRedirect(req)) {
+				String redirect = fs.redirect("GET", path);
+				if (redirect != null) {
+					BigInteger size = new BigInteger(file.getLength());
+					if (size.compareTo(SITE_MAX_SIZE) > 0) {
+						resp.sendRedirect(redirect);
+						return;
+					}
 				}
 			}
 
