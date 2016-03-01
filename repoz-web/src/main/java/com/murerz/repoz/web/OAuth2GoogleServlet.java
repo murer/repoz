@@ -50,10 +50,9 @@ public class OAuth2GoogleServlet extends HttpServlet {
 
 		String clientId = Config.me().getGoogleClientId();
 		String secret = Config.me().getGoogleSecret();
-
+		String redirectURL = RepozUtil.getOauthCallback(req);
 		GoogleOAuthToken oToken = HttpClientUtil.jsonPost(GoogleOAuthToken.class, "https://accounts.google.com/o/oauth2/token", "grant_type", "authorization_code", "code", code,
-				"client_id", clientId, "client_secret", secret, "redirect_uri", RepozUtil.getOauthCallback(req));
-
+				"client_id", clientId, "client_secret", secret, "redirect_uri", redirectURL);
 		String email = getEmail(oToken);
 		LOG.info("User: " + email);
 		if (email == null) {

@@ -87,4 +87,12 @@ public class MemoryFileSystem implements FileSystem {
 		return ret;
 	}
 
+	public MetaFile head(String path) {
+		return read(path);
+	}
+
+	public String redirect(String method, String path) {
+		return null;
+	}
+
 }

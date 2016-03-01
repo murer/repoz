@@ -4,14 +4,15 @@
 	<artifactId>repoz</artifactId>
 	<packaging>pom</packaging>
 	<name>repoz</name>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.2.5-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mycontainer.version>1.4.6</mycontainer.version>
+		<mycontainer.version>1.6.2</mycontainer.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<appengine.target.plugin.version>1.8.2</appengine.target.plugin.version>
 		<main.basedir>${project.basedir}</main.basedir>
+		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 
 	<modules>
@@ -254,11 +255,26 @@
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.7</version>
 				<configuration>
-					<skip>true</skip>
+					<skip>${maven.deploy.skip}</skip>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>repoz</id>
+			<name>Repoz Release Repository</name>
+			<url>${repoz.dist.release}</url>
+		</repository>
+		<snapshotRepository>
+			<id>repoz</id>
+			<uniqueVersion>false</uniqueVersion>
+			<name>Repoz Snapshot Repository</name>
+			<url>${repoz.dist.snapshot}</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 	<profiles>
 		<profile>

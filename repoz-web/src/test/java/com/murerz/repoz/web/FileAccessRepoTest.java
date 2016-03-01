@@ -66,7 +66,9 @@ public class FileAccessRepoTest extends AbstractTestCase {
 		setAccess("path=/b&user=admin&pass=admin1&type=write");
 		setAccess("path=/b&user=other&pass=other1&type=write");
 		assertEquals("/a admin write 25f43b1486ad95a1398e3eeb3d83bc4010015fcc9bedb35b432e00298d5021f7", listAccess("/a"));
-		assertEquals("/b admin write 25f43b1486ad95a1398e3eeb3d83bc4010015fcc9bedb35b432e00298d5021f7\n/b other write 0ef821e6aa54508c6e15575b36aeac4b62521782712b00986297b9745b75790a", listAccess("/b"));
+		assertEquals(
+				"/b admin write 25f43b1486ad95a1398e3eeb3d83bc4010015fcc9bedb35b432e00298d5021f7\n/b other write 0ef821e6aa54508c6e15575b36aeac4b62521782712b00986297b9745b75790a",
+				listAccess("/b"));
 		deleteAccess("/b", "other");
 		deleteAccess("/a", "admin");
 		assertEquals("", listAccess("/a"));

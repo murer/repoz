@@ -3,6 +3,8 @@ package com.murerz.repoz.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -28,6 +30,7 @@ public class AbstractTestCase {
 		System.setProperty("repoz.post.maxLength", Integer.toString(maxLimit));
 		System.setProperty("repoz.google.auth.disabled", "true");
 
+		new File("target/access.log").delete();
 
 		mycontainer = MycontainerHelper.me();
 		mycontainer.setUp();
@@ -79,4 +82,14 @@ public class AbstractTestCase {
 		assertEquals(new Integer(200), execute("main:123", "POST", "/access", "application/x-www-form-urlencoded;charset=UTF-8", querystring).code());
 	}
 
+	public Response request(String method, String uri, String contentType, String content, String... headers) {
+		Request req = Request.create(method, uri);
+		for (int i = 0; i < headers.length; i += 2) {
+			String key = headers[i];
+			String value = headers[i + 1];
+			req.header(key, value);
+		}
+		req.contentType(contentType).content(content);
+		return s.execute(req);
+	}
 }

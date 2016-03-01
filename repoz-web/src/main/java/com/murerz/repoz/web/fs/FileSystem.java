@@ -18,4 +18,8 @@ public interface FileSystem {
 
 	Set<String> listRecursively(String path);
 
+	MetaFile head(String path);
+
+	String redirect(String method, String path);
+
 }

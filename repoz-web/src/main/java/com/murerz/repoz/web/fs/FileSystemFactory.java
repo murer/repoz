@@ -19,7 +19,7 @@ public class FileSystemFactory {
 		if (fs == null) {
 			synchronized (MUTEX) {
 				if (fs == null) {
-					String className = Config.me().getProperty(PROPERTY, RawFileSystem.class.getName());
+					String className = Config.me().getProperty(PROPERTY, MemoryFileSystem.class.getName());
 					LOG.info("Using filesystem: " + className);
 					fs = (FileSystem) ReflectionUtil.newInstance(className);
 				}

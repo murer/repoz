@@ -3,6 +3,8 @@ package com.murerz.repoz.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -12,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.murerz.repoz.web.fs.FileSystem;
 import com.murerz.repoz.web.fs.FileSystemFactory;
+import com.murerz.repoz.web.fs.MetaFile;
 import com.murerz.repoz.web.fs.RepozFile;
 import com.murerz.repoz.web.fs.StreamRepozFile;
+import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.RepozUtil;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.Util;
@@ -21,6 +25,62 @@ import com.murerz.repoz.web.util.Util;
 public class RepoServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static final BigInteger SITE_MAX_SIZE = new BigInteger("2097152");
+
+	@Override
+	protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String path = RepozUtil.path(req);
+		boolean list = ServletUtil.paramBoolean(req, "l");
+		if (list) {
+			ServletUtil.sendMethodNotAllowed(req, resp);
+			return;
+		}
+
+		FileSystem fs = FileSystemFactory.create();
+
+		if (canRedirect(req)) {
+			String redirect = fs.redirect("HEAD", path);
+			if (redirect != null) {
+				resp.sendRedirect(redirect);
+				return;
+			}
+		}
+
+		MetaFile file = fs.head(path);
+		if (file == null) {
+			ServletUtil.sendNotFound(req, resp);
+			return;
+		}
+
+		String contentType = file.getMediaType();
+		String charset = file.getCharset();
+		String length = file.getLength();
+		if (contentType != null) {
+			resp.setContentType(contentType);
+		}
+		if (charset != null) {
+			resp.setCharacterEncoding(charset);
+		}
+		if (length != null) {
+			ServletUtil.setContentLength(resp, length);
+		}
+
+		Map<String, String> params = file.getParams();
+		ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
+
+		resp.flushBuffer();
+	}
+
+	private boolean canRedirect(HttpServletRequest req) {
+		String agent = req.getHeader("User-Agent");
+		if (agent == null) {
+			return true;
+		}
+		if (agent.toLowerCase().startsWith("apache-maven/2")) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,17 +100,35 @@ public class RepoServlet extends HttpServlet {
 				ServletUtil.sendNotFound(req, resp);
 				return;
 			}
+			in = file.getIn();
+
+			if (canRedirect(req)) {
+				String redirect = fs.redirect("GET", path);
+				if (redirect != null) {
+					BigInteger size = new BigInteger(file.getLength());
+					if (size.compareTo(SITE_MAX_SIZE) > 0) {
+						resp.sendRedirect(redirect);
+						return;
+					}
+				}
+			}
 
 			String contentType = file.getMediaType();
 			String charset = file.getCharset();
+			String length = file.getLength();
 			if (contentType != null) {
 				resp.setContentType(contentType);
 			}
 			if (charset != null) {
 				resp.setCharacterEncoding(charset);
 			}
+			if (length != null) {
+				ServletUtil.setContentLength(resp, length);
+			}
 
-			in = file.getIn();
+			Map<String, String> params = file.getParams();
+			ServletUtil.setHeaders(resp, "x-goog-meta-p-", params);
+
 			OutputStream out = resp.getOutputStream();
 
 			Util.copyAll(in, out);
@@ -90,7 +168,12 @@ public class RepoServlet extends HttpServlet {
 		String charset = req.getCharacterEncoding();
 		InputStream in = req.getInputStream();
 
-		RepozFile file = new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType).setCharset(charset);
+		RepozFile file = (RepozFile) new StreamRepozFile().setIn(in).setPath(path).setMediaType(mediaType)
+				.setCharset(charset);
+
+		Map<String, String> params = ServletUtil.headers(req, "x-goog-meta-p-");
+		file.setParams(params);
+		file.setParam("username", CTX.getAsString("username"));
 
 		fs.save(file);
 	}

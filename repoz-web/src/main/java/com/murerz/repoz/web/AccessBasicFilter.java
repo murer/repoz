@@ -11,16 +11,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.murerz.repoz.web.meta.Config;
+import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.ServletUtil;
 import com.murerz.repoz.web.util.UserPass;
 
 public class AccessBasicFilter implements Filter {
-
-	private static final Logger LOG = LoggerFactory.getLogger(AccessBasicFilter.class);
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
@@ -30,7 +26,7 @@ public class AccessBasicFilter implements Filter {
 	}
 
 	private void filter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		if (AuthGoogleFilter.getUsername() != null) {
+		if (CTX.get("username") != null) {
 			chain.doFilter(req, resp);
 			return;
 		}
@@ -44,6 +40,7 @@ public class AccessBasicFilter implements Filter {
 			ServletUtil.sendUnauthorized(resp, req);
 			return;
 		}
+		CTX.set("username", basic.getUsername());
 		chain.doFilter(req, resp);
 	}
 

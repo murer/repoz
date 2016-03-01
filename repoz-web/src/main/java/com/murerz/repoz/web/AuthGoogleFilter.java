@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 import com.murerz.repoz.web.meta.Config;
+import com.murerz.repoz.web.util.CTX;
 import com.murerz.repoz.web.util.CryptUtil;
 import com.murerz.repoz.web.util.GsonUtil;
 import com.murerz.repoz.web.util.RepozUtil;
@@ -25,8 +26,6 @@ public class AuthGoogleFilter implements Filter {
 
 	private static final long TIMEOUT = 1l * 60 * 60 * 1000;
 
-	private static ThreadLocal<String> username = new ThreadLocal<String>();
-
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
 
@@ -35,35 +34,30 @@ public class AuthGoogleFilter implements Filter {
 	}
 
 	private void filter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		try {
-			username.set(null);
-			boolean disabled = Config.me().getBoolean("repoz.google.auth.disabled");
-			if (disabled) {
-				chain.doFilter(req, resp);
-				return;
-			}
-
-			Cookie cookie = ServletUtil.cookie(req, "Repoz");
-			JsonObject obj = validate(cookie);
-			if (obj != null) {
-				username.set(obj.get("u").getAsString());
-				chain.doFilter(req, resp);
-				return;
-			}
-
-			String clientId = Config.me().getGoogleClientId();
-
-			String uri = ServletUtil.getURIWithoutContextPath(req);
-			if ("/panel.html".equals(uri)) {
-				ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", RepozUtil.getOauthCallback(req),
-						"response_type", "code", "client_id", clientId, "access_type", "online");
-				return;
-			}
-
-			ServletUtil.writeJson(resp, GsonUtil.createObject("error", "Forbidden"));
-		} finally {
-			username.set(null);
+		boolean disabled = Config.me().getBoolean("repoz.google.auth.disabled");
+		if (disabled) {
+			chain.doFilter(req, resp);
+			return;
 		}
+
+		Cookie cookie = ServletUtil.cookie(req, "Repoz");
+		JsonObject obj = validate(cookie);
+		if (obj != null) {
+			CTX.set("username", obj.get("u").getAsString());
+			chain.doFilter(req, resp);
+			return;
+		}
+
+		String clientId = Config.me().getGoogleClientId();
+
+		String uri = ServletUtil.getURIWithoutContextPath(req);
+		if ("/panel.html".equals(uri)) {
+			ServletUtil.sendRedirect(resp, "https://accounts.google.com/o/oauth2/auth", "scope", "openid email", "redirect_uri", RepozUtil.getOauthCallback(req), "response_type",
+					"code", "client_id", clientId, "access_type", "online");
+			return;
+		}
+
+		ServletUtil.writeJson(resp, GsonUtil.createObject("error", "Forbidden"));
 	}
 
 	private JsonObject validate(Cookie cookie) {
@@ -89,10 +83,6 @@ public class AuthGoogleFilter implements Filter {
 
 	public void destroy() {
 
-	}
-
-	public static String getUsername() {
-		return username.get();
 	}
 
 }

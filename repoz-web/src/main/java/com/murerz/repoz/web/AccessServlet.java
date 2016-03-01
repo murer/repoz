@@ -25,10 +25,11 @@ public class AccessServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String repo = ServletUtil.param(req, "path");
 		RepozUtil.validatePath(repo);
-		
+
 		if ("/".equals(repo)) {
 			list(req, resp);
 			return;
@@ -62,7 +63,8 @@ public class AccessServlet extends HttpServlet {
 			resp.setCharacterEncoding("UTF-8");
 			PrintWriter out = resp.getWriter();
 			for (String path : paths) {
-				out.println(path);
+				out.print(path);
+				out.print("\n");
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -70,18 +72,21 @@ public class AccessServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		doPut(req, resp);
 	}
 
 	@Override
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String path = ServletUtil.param(req, "path");
 		String username = ServletUtil.param(req, "user");
 		String pass = ServletUtil.param(req, "pass");
 		String type = ServletUtil.param(req, "type");
 
-		User user = new User().setPath(path).setUser(username).setType(type).setPass(pass);
+		User user = new User().setPath(path).setUser(username).setType(type)
+				.setPass(pass);
 		user.validate();
 
 		RepozUtil.checkPattern(path, "^/[^/]+$");
@@ -91,7 +96,8 @@ public class AccessServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		String repo = ServletUtil.param(req, "path");
 		String username = ServletUtil.param(req, "user");
 
@@ -99,18 +105,19 @@ public class AccessServlet extends HttpServlet {
 		RepozUtil.checkFalsePattern(repo, ".+/$");
 		RepozUtil.checkPattern(repo, "^/[^/]+$");
 
-		if(username == null) {
+		if (username == null) {
 			deleteRepository(req, resp);
 			return;
 		}
 
 		RepozUtil.validateUser(username);
-		
+
 		AccessManager am = AccessManagerFactory.create();
 		am.delete(repo, username);
 	}
 
-	private void deleteRepository(HttpServletRequest req, HttpServletResponse resp) {
+	private void deleteRepository(HttpServletRequest req,
+			HttpServletResponse resp) {
 		String repo = ServletUtil.param(req, "path");
 		FileSystem fs = FileSystemFactory.create();
 		fs.delete(repo);

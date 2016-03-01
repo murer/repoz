@@ -4,35 +4,36 @@ export LC_ALL=en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
 
 ############
-mkdir -p repoz-repo packs/WEB-INF/classes 
-sudo mount /dev/disk/by-id/google-repoz-repository repoz-repo
-chown -R repoz:repoz $HOME
-if [ ! -f repoz-repo/repoz.passwd ]; then
-	echo "File not found: repoz.passwd"
-	exit 1;
-fi
-if [ ! -f repoz-repo/repoz.properties ]; then
-	echo "No repoz.properties found in repoz-repo/repoz.properties"
-	exit 1;
-fi
+adduser --disabled-password --gecos "" repoz || true
+
+mkdir /home/repoz/.ssh || true
+ssh-keygen -t rsa -N "" -f /home/repoz/.ssh/id_rsa
+cp /home/repoz/.ssh/id_rsa.pub /home/repoz/.ssh/authorized_keys
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkVvGeF0Q1aN2hwsmxUnJftBqd1JNGwkkQcyKOAi0lD1c9+GxGFDetG5OJCQk7ZX5cA53430vqu8GEJrPxrwmOtY09KxB+XQXUePmuy4gAACfulFVn/G6fvUsApzh5uevTequHFPMJ6A6uskAgAKH3RvgbrLj21r8kTpvOpb/3tEJKGfxtV9xQIB0GHhRACqGgswo0gXJvR0MZkd7AIQQUxaHfPye/u7fs06IBQrw8q1GrpztU9HNis2BJewBMNzFx28b1v/6RI2wv/5RVoVPgMpZJ48kVGy0uKnMEmNfAN+hFVZ5pKe8PZ9ti2zBZyhEoU/toWD8pd3Yvpmt4fRwL repoz@ci" >> /home/repoz/.ssh/authorized_keys
+
+cd /home/repoz
 
 ############
-echo "repoz:$(cat repoz-repo/repoz.passwd)" | sudo chpasswd
-chmod -v 600 repoz-repo/repoz.passwd
-sudo sed -i.sedbak "s/^PasswordAuthentication .*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
-sudo service ssh reload
+mkdir -p cmds/prod/repoz-install
+curl -H 'Metadata-Flavor: Google' 'http://metadata/computeMetadata/v1/instance/attributes/repoz-update' > cmds/prod/repoz-install/repoz-update.sh
+chmod +x cmds/prod/repoz-install/repoz-update.sh
 
-# Public Keys
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPGpAUfOPunVPuW+Kfb4rgmx5DNogD9gzktWWfWRqGUrMqChzM439d90dfhXY1Yc1pa00arGRJyDg/1qj5HtD6WGpkmRKBNvA+7/DoijC6a9wzhbdtJX6MJXpX7hv+gM3RT7pz5Neq6/+GTy1/njJBuBo2qGxhQ3LlCXgwVuCFar+8r9vI8L99xyeezp8hTJI+00CWeBx9sEJAGNo+L0tBcExh0iE30AegvEBWriZfwJHw460Xf/r0t/D0S8CjZMVxqCOe4dlGSFzZHo80+Xak8OzrCM5aZaLTd80zk1di44me1fIdiTj4HDVLhemkAXsutvPnucl6mu01TLYVf+b3 murer@frostnova" >> .ssh/authorized_keys
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApof0ZqvZPwq04ul4RS27elpp4WoeCH9tKBJMO9z8EJ09mfZCDAjAmLOjzED2aiNRXSs43ixDTraUtdlRdfR9ozJx07yDJ06f062v/vvasVld0NsLkBKyrk4jTrPf1aFYvhiXKaSbDXaXy7rW/ALB8PC12yYXbnnsxaUtIfPEjgCQG9tznjByeYZvFrdgu+w7sfkU5A4bSwsBb7KAo3//iCbmDDCEJ6T9D16h2vhKiEeg/taB4SEVpGYTAI5lTJ+JtI5h307nHdFb8srX4pIcT+tka38hnGRmZNsAscEQA0ijNOr2Vt/P/DgNob9I2iEUmoBLJ42691X/36qPYry5dQ== murer@dls185" >> .ssh/authorized_keys
+############
+gsutil -m cp -r gs://cz-repoz-config/repoz-repo .
+
+mkdir -p packs/WEB-INF/classes
+if [ ! -f repoz-repo/repoz.properties ]; then
+    echo "No repoz.properties found in repoz-repo/repoz.properties"
+    exit 1;
+fi
 
 ############
 REPOZ_PASSWORD=$(grep "^repoz\.access\.root=.\+$" repoz-repo/repoz.properties | sed "s/^repoz\.access\.root=\(.\+\)$/\1/g")
 if [ "x$REPOZ_PASSWORD" == "x" ]; then
-	echo "repoz.access.root not found in repoz-repo/repoz.properties";
-	exit 1;
+    echo "repoz.access.root not found in repoz-repo/repoz.properties";
+    exit 1;
 fi
-mkdir repoz-repo/repository | cat
+mkdir repoz-repo/repository || true
 cp repoz-repo/repoz.properties packs/WEB-INF/classes/repoz.properties
 
 ############
@@ -55,34 +56,29 @@ date
 cd /opt
 
 ############
-sudo wget http://storage.googleapis.com/dextra-pdoc-pub/repo/ext/br/com/portaldedocumentos/ext/jdk/7u45-linux-x64/jdk-7u45-linux-x64.zip -O jdk.zip
+gsutil cp gs://cz-repoz/pub/jdk/oracle/jdk-7u67-linux-x64.tar.gz jdk.tar.gz
 
-sudo unzip jdk.zip
-sudo ln -s jdk1.7.0_45 jdk
+tar xzf jdk.tar.gz
+sudo ln -s jdk1.7.0_67 jdk
 
-sudo tee /etc/bash.bashrc.repoz <<-EOF
+tee /etc/bash.bashrc.repoz <<-EOF
 export JAVA_HOME=/opt/jdk
 export PATH=\$JAVA_HOME/bin:$PATH
 EOF
 
-echo "# repoz" | sudo tee -a /etc/bash.bashrc
-echo "source /etc/bash.bashrc.repoz" | sudo tee -a /etc/bash.bashrc
+echo "# repoz" | tee -a /etc/bash.bashrc
+echo "source /etc/bash.bashrc.repoz" | tee -a /etc/bash.bashrc
 
 source /etc/bash.bashrc.repoz
 
 java -version
 
 ############
-sudo a2enmod proxy proxy_http
+a2enmod proxy proxy_http ssl headers rewrite
+htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
-sudo htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
-
-sudo rm /etc/apache2/sites-enabled/000-default
-sudo tee /etc/apache2/sites-available/repoz <<-EOF
-<Location /repoz>
-    ProxyPass http://localhost:8080/repoz
-    ProxyPassReverse http://localhost:8080/repoz
-</Location>
+rm /etc/apache2/sites-enabled/000-default
+tee /etc/apache2/sites-available/repoz <<-EOF
 <Location /home/repoz>
     AuthType Basic
     AuthName "repoz"
@@ -90,6 +86,27 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     Require user root
 </Location>
 <VirtualHost *:80>
+    RewriteEngine on
+    RewriteRule ^/repoz/access - [F]
+    #RewriteRule ^/repoz/panel\.html https://%{HTTP_HOST}/repoz/panel.html
+
+    <Location /repoz>
+        ProxyPass http://localhost:8080/repoz
+        ProxyPassReverse http://localhost:8080/repoz
+        RequestHeader unset Authorization
+        RequestHeader set X-Repoz-Schema "http"
+    </Location>
+    <Location /repozix/r>
+        ProxyPass http://localhost:8080/repoz/r
+        ProxyPassReverse http://localhost:8080/repoz/r
+        RequestHeader set X-Repoz-Schema "http"
+    </Location>
+    <Location /repozix/d>
+        ProxyPass http://localhost:8080/repoz/d
+        ProxyPassReverse http://localhost:8080/repoz/d
+        RequestHeader set X-Repoz-Schema "http"
+    </Location>
+
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
@@ -104,26 +121,91 @@ sudo tee /etc/apache2/sites-available/repoz <<-EOF
     </Directory>
 </VirtualHost>
 EOF
-sudo cp /var/www/index.html /var/www/index.html.old
-sudo tee /var/www/index.html <<-EOF
+
+tee /etc/apache2/sites-available/repoz-ssl <<-EOF
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
+    RewriteEngine on
+    RewriteRule ^/repoz/docs\.html http://%{HTTP_HOST}/repoz/docs.html
+    RewriteRule ^/repoz/index\.html http://%{HTTP_HOST}/repoz/index.html
+    RewriteRule ^/repoz/$ http://%{HTTP_HOST}/repoz/
+
+    <Location /repoz>
+        ProxyPass http://localhost:8080/repoz
+        ProxyPassReverse http://localhost:8080/repoz
+        RequestHeader set X-Repoz-Schema "https"
+    </Location>
+
+    ServerAdmin webmaster@localhost
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    LogLevel warn
+
+    CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
+
+    SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.pem
+    SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.key
+    SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
+
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
+
+    BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+    BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+</VirtualHost>
+</IfModule>
+EOF
+
+cp /var/www/index.html /var/www/index.html.old
+tee /var/www/index.html <<-EOF
 <html><head><title>Repoz</title></head><body onload="location='repoz';"></body></html>
 EOF
-sudo ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
-sudo service apache2 restart
-
-cd -
+ln -s /etc/apache2/sites-available/repoz /etc/apache2/sites-enabled/repoz
+ln -s /etc/apache2/sites-available/repoz-ssl /etc/apache2/sites-enabled/repoz-ssl
+service apache2 restart
 
 ############
+cd /home/repoz
 mkdir opt
 cd opt
-wget http://storage.googleapis.com/dextra-pdoc-pub/repo/ext/br/com/portaldedocumentos/ext/jboss-as/7.1.1.Final/jboss-as-7.1.1.Final.zip -O jboss.zip
+gsutil cp gs://cz-repoz/pub/jboss/jboss-as-7.1.1.Final.zip jboss.zip
 unzip jboss.zip
 ln -s jboss-as-7.1.1.Final jboss
 
-cd -
+chown -R repoz:repoz /home/repoz
+
+sleep 3
 
 echo "install-instance done"
-
-
-
-

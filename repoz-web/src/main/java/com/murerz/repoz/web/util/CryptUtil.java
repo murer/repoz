@@ -11,6 +11,10 @@ public class CryptUtil {
 		return new Base64(-1, null, true).encodeToString(bytes);
 	}
 
+	public static String encodeBase64Normal(byte[] bytes) {
+		return new Base64(-1, null, false).encodeToString(bytes);
+	}
+
 	public static byte[] decodeBase64(String str) {
 		return Base64.decodeBase64(str);
 	}
