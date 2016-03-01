@@ -5,7 +5,17 @@ find /tmp/repoz-test/gen -type d -name appengine-tools-sdk -exec rm -rf '{}' \; 
 mkdir -p gen/files mkdir -p gen/maven || true
 ls gen/files/appengine-tools-sdk-1.9.32.jar || wget 'http://repo1.maven.org/maven2/com/google/appengine/appengine-tools-sdk/1.9.32/appengine-tools-sdk-1.9.32.jar' -O 'gen/files/appengine-tools-sdk-1.9.32.jar'
 
-
+cd gen
+mvn deploy:deploy-file \
+    -s "../settings/maven.settings.xml" \
+    -DgroupId=com.murerz.repoz.test \
+    -DartifactId=appengine-tools-sdk \
+    -Dversion=1.9.32 \
+    -Dpackaging=jar \
+    -DrepositoryId=repoz \
+    -Durl=http://repoz.dextra.com.br/repozix/r/test/repository \
+    -Dfile=files/appengine-tools-sdk-1.9.32.jar
+cd -
 
 check_version() {
   ls "gen/files/$2" || wget "$3" -O "gen/files/$2"
@@ -15,18 +25,6 @@ check_version() {
   export MAVEN_HOME="$PWD/gen/maven/apache-maven-$1"
   sed "s/REPO/gen\/repository\/repo-$1/g" settings/maven.settings.xml > "$MAVEN_HOME/settings.xml"
   $MAVEN_HOME/bin/mvn -version
-
-  cd gen
-  $MAVEN_HOME/bin/mvn deploy:deploy-file \
-      -s "$MAVEN_HOME/settings.xml" \
-      -DgroupId=com.murerz.repoz.test \
-      -DartifactId=appengine-tools-sdk \
-      -Dversion=1.9.32 \
-      -Dpackaging=jar \
-      -DrepositoryId=repoz \
-      -Durl=http://repoz.dextra.com.br/repozix/r/test/repository \
-      -Dfile=files/appengine-tools-sdk-1.9.32.jar
-  cd -
 
   $MAVEN_HOME/bin/mvn clean install -s "$MAVEN_HOME/settings.xml" -Dmaven.test.skip
 
