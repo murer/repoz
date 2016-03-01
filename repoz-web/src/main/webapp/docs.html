@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="css/index.css" media="all" />
 
 <script type="text/javascript" src="js/lib/jquery.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/lib/jquery.windfury.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/lib/jquery.windfury.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/jquery.repoz.util.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/docs.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/checkservices.js" charset="utf-8"></script>
@@ -39,12 +39,12 @@
 			<h2>Overview</h2>
 			<div class="content">
 				<p>Repoz is a simple http repository. You PUT/POST files and GET them.</p>
-				<p>First thing you need to do is configure a repository access</p> 
+				<p>First thing you need to do is configure a repository access</p>
 				<p>All non-anonymous requests should be done with Basic Authorization. The easiest way:</p>
 				<textarea class="code" readonly="readonly">https://[user]:[pass]@domain.com/repoz/r/any/...</textarea>
 			</div>
 		</div>
-		
+
 		<div class="topic">
 			<a name="Configure"></a>
 			<h2>Configuring the repository access</h2>
@@ -57,8 +57,8 @@
 				<textarea class="code url" readonly="readonly" wrap="off"></textarea>
 			</div>
 		</div>
-		
-		
+
+
 		<div class="topic">
 			<a name="uploadingfile"></a>
 			<h2>Uploading file</h2>
@@ -97,8 +97,8 @@ curl https://username:password@[basedomain]r/repository/any/struct/myfile.apk \
 				<p>If Content-Type was not given, repoz will try do resolve it by url file extension.<p>
 			</div>
 		</div>
-		
-		
+
+
 		<div class="topic">
 			<a name="deletingfile"></a>
 			<h2>Deleting file</h2>
@@ -118,12 +118,12 @@ DELETE /repository/any/struct/myfile.txt HTTP/1.1
 					<textarea class="code curl" readonly="readonly" wrap="off">
 curl -X DELETE https://username:password@[basedomain]r/repository/any/struct/myfile.txt
 					</textarea>
-				</div>				
+				</div>
 				<p>The file will be deleted and the response http code should be 200.</p>
 			</div>
 		</div>
-		
-		
+
+
 		<div class="topic">
 			<a name="downloading"></a>
 			<h2>Downloading file</h2>
@@ -146,12 +146,12 @@ murer
 					<textarea class="code curl" readonly="readonly" wrap="off">
 curl https://username:password@[basedomain]r/repository/any/struct/myfile.txt
 					</textarea>
-				</div>				
+				</div>
 				<p>See <a href="#uploadingfile">upload section</a> to understand how repoz handle Content-Type.</p>
 			</div>
 		</div>
-		
-		
+
+
 		<div class="topic">
 			<a name="downloading"></a>
 			<h2>Listing file</h2>
@@ -163,7 +163,7 @@ curl https://username:password@[basedomain]r/repository/any/struct/myfile.txt
 					<div class="codeBtns">
 						<button class="btn http">HTTP</button>
 						<button class="btn curl">curl</button>
-					</div> 
+					</div>
 					<textarea class="code http" readonly="readonly" wrap="off">
 GET /repository/any?l=true&r=true HTTP/1.1
 
@@ -176,17 +176,17 @@ other.zip
 					<textarea class="code curl" readonly="readonly" wrap="off">
 curl "https://username:password@[basedomain]r/repository/any?l=true&r=true"
 					</textarea>
-				</div>				
+				</div>
 				<p>Response code should be 200 Ok</p>
 				<p>The response should be a text/plain with a entry per line</p>
 			</div>
 		</div>
-		
+
 		<div class="topic">
 			<a name="metadata"></a>
 			<h2>Metadata</h2>
 			<div class="content">
-				<p>It is possible to store metadata with files as headers started with X-Repoz-Param-</p>
+				<p>It is possible to store metadata with files as headers started with x-goog-meta-p-</p>
 				<p>If you pass these headers on PUT/POST you will receive them on GET.</p>
 				<div class="codePanel">
 					<textarea class="code http" readonly="readonly" wrap="off">
@@ -194,8 +194,8 @@ PUT /[repository]/any/struct/myfile.txt HTTP/1.1
 Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 Content-Type: text/plain;charset=UTF-8
 Content-Length: 5
-X-Repoz-Param-anyparam: anyvalue
-X-Repoz-Param-otherparam: othervalue
+x-goog-meta-p-anyparam: anyvalue
+x-goog-meta-p-otherparam: othervalue
 
 murer
 
@@ -207,15 +207,15 @@ Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 
 200 Ok
 Content-Type: text/plain;charset=UTF-8
-X-Repoz-Param-anyparam: anyvalue
-X-Repoz-Param-otherparam: othervalue
+x-goog-meta-p-anyparam: anyvalue
+x-goog-meta-p-otherparam: othervalue
 
 murer
 					</textarea>
 				</div>
 			</div>
-		</div>		
-		
+		</div>
+
 		<div class="topic">
 			<a name="maven"></a>
 			<h2>Configuring maven repository</h2>
@@ -232,7 +232,7 @@ murer
 </repositories>
 <pluginRepositories>
 	<repositories>
-		<repository>	
+		<repository>
 			<id>mysamplerepository</id>
 			<name>My Sample Repository</name>
 			<url>[baseurl]mysamplerepostory/snapshot</url>
@@ -253,7 +253,7 @@ murer
 			<name>My Sample Repository</name>
 			<url>[baseurl]mysamplerepostory/snapshots</url>
 		</snapshotRepository>
-</distributionManagement>				
+</distributionManagement>
 				</textarea>
 				<p>settings.xml: Configuring user and password if non-anonymous</p>
 				<textarea class="code" readonly="readonly" wrap="off">
