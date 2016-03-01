@@ -11,6 +11,7 @@ create private key and csr
 ```shell
 openssl genrsa -out repoz.dextra.com.br.key 4096
 openssl req -new -sha256 -key repoz.dextra.com.br.key -out repoz.dextra.com.br.csr
+openssl x509 -inform der -in repoz.dextra.com.br.csr -out repoz.dextra.com.br.pem
 ```
 
 
