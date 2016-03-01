@@ -16,6 +16,10 @@ validate domain repoz.dextra.com.br
 # recreate repoz instance
 ./cmds/prod/stop.sh
 ./cmds/prod/start.sh
+
+# deploy application
+git checkout repoz-x.x.x
+./cmds/update.sh
 ```
 
 
