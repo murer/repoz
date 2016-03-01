@@ -168,7 +168,7 @@ tee /etc/apache2/sites-available/repoz-ssl <<-EOF
     SSLProtocol all -SSLv2
     SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
 
-    SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.csr
+    SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.pem
     SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.key
     SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
 
