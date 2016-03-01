@@ -46,12 +46,13 @@ public class MycontainerHelper {
 
 	private void boot() {
 		try {
-			System.setProperty("java.naming.factory.initial", "com.googlecode.mycontainer.kernel.naming.MyContainerContextFactory");
+			System.setProperty("java.naming.factory.initial",
+					"com.googlecode.mycontainer.kernel.naming.MyContainerContextFactory");
 
 			String repo = Util.str(System.getProperty("gcs"));
 			if (repo != null) {
 				System.setProperty("repoz.filesystem.impl", GCSFileSystem.class.getName());
-				System.setProperty("repoz.gcs.bucket", "repoz-test");
+				System.setProperty("repoz.gcs.bucket", repo);
 			}
 
 			builder = new ContainerBuilder();

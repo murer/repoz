@@ -4,7 +4,7 @@ import com.murerz.repoz.web.*;
 print("x: " + MycontainerHelper.class.getResource("/org/apache/http/client/entity/UrlEncodedFormEntity.class"));
 
 System.setProperty("repoz.google.auth.disabled", "true");
-System.setProperty("gcs", "repoz-test");
+System.setProperty("gcs", "cz-repoz-test-server");
 
 try {
 	mycontainer = MycontainerHelper.me();
