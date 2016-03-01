@@ -10,6 +10,11 @@ validate domain repoz.dextra.com.br
 # generate keys
 ./cmds/prod/ssl/generate-key.sh
 
+# upate startssl certificate
+# download certificate from startssl:
+# repoz.dextra.com.br.pem
+# cp repoz.dextra.com.br.pem target/ssl
+
 # update repoz configs
 ./cmds/prod/ssl/update-key.sh
 
