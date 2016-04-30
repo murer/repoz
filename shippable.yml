@@ -9,5 +9,5 @@ install:
 script:
   - "mvn test -B -Dit -Drepoz.gcs.bucket=cz-repoz-test-travisci"
 env:
-  secure: RHt3g1Dx4Vc4Et4tZ+3NiYnlMSWqJxi/dkC+tqTxGdDY9SLdub1y3wgh0csIFASF9kMITl+7Kq9/v3OgT1pwzMov8iuowzF+nlmkhGurlSgdc7Vn9Cvua3aSh17a6zLMuDX8AxIJ/1mQOBZPdTgi77UOtssu3N/GSX3LGLR79vhlTIBsB85i2PtY5OKsLDy+UGQRddL5ju/9/m1LYENuOUsFQwL5fRLIaFTTe3H3EXj5pLWjZlRx6IbDbH+ejRdR1LimDMrwPfuD/DuSqvvn9mAgLCaeG7SR3A+Xco5CJp7sYT9uYWrpzqld/nt+plxVv5kl8an+6PCMnhcJJgE8Lg==
+  secure: SCeS+LixdF1yCXAwzqzvXEJplRGX8tcN9NFU4InH/hGYTv8h6TpWotGayFK00jIaIbCE30Rp6JqhGRIo1ENqUiC2pQ1W0pQhAemvUhfHzg28BjTw/7tQV9kpYYzv9oQVYwhCYbiMyJY9Ze+gkxt/KEoKPqi1OT3DXpfarBqYCH0lYxYGq3jGZA2O7HZ2Es4TmuNlXBINN4ptSuVuX3rS66857YyyL/v7IKoXxBfCQfnmUISP2dSA1Evx5fP8brP2KQlKOTnRuOIJgXtBjHXDlcc3zM4rttKx2oQKCksFfPCEEmtVA1EG6/8KFxpfsnFNnS4VjJ34RXsUNH8N4DPLzA==
 
