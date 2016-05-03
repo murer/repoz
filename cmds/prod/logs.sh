@@ -6,4 +6,4 @@ EXT_IP=130.211.143.253
 #done
 
 
-gcloud compute ssh repoz --command "(sudo find /home/repoz -name '*.log' && sudo find /home/repoz -name '*.out') | xargs tail -n 100 -f"
+gcloud compute ssh repoz --zone us-central1-a --project cloudcontainerz --command "(sudo find /home/repoz -name '*.log' && sudo find /home/repoz -name '*.out') | xargs tail -n 100 -f"
