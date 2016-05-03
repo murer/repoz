@@ -9,7 +9,7 @@ adduser --disabled-password --gecos "" repoz || true
 mkdir /home/repoz/.ssh || true
 ssh-keygen -t rsa -N "" -f /home/repoz/.ssh/id_rsa
 cp /home/repoz/.ssh/id_rsa.pub /home/repoz/.ssh/authorized_keys
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHaANMJTeAWLzRmquwQWx8GaLHG5xwbFqkjgBe5qT9Wapsuo7lAzwNvfbTCcXg6t4uIjvRXALX89urJQwgpcI8Jivy8gP5G4XMOYk2tCG0wEzi2BwE11I46XpXxdUlWpSoeknl5Ec8ITsQjOlK90L08L9SdLBUUAg5ypQ3DSHp4IM7hy+TwmgSlIbhtdhg/aVDVDUzKc6JUTcEuDiY7cOK36kFbxQdBXXphnU5Y6jViouaKfmYdSfCb33IrZdcz1gTZkJFZFdP9Ya4QvMIMZaCZqd6kFFY6/4tKQ811ntNGeNTqzSpyXWag57OPTKMLqlh3J872AZbtcYzfewsokBX repoz@ci" >> /home/repoz/.ssh/authorized_keys
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC4OrzpGzVrpyugu3nj1NUmPFKSVe7UcbG3mgS8wq6/58jyh8w6f3QdCPqs1Ms+BilzS5PX5OdMEYTY8AsUoNC7tIP62lkAp5OBL8TYelGpeMwgzERO+BOGc8MRGlwIhQgoJvp+BdZVcGXs85kIMYTelEk40V0Yd9jPHV3tUmX5qX14OLBvzc7nsNjENyGM2j1gTo/XzYtSPOYh3TeLvFjjaTUyDu9GOFnMUu/JHuJTeylcAOHqXMVPsvsA8AArtWUIlOj+kab4OLUF4gMy8vlXhqp59JJXzdgSluREwkwvCAht8EbffuEn8bDuWpfpyz4aR/v6yws3GMFV+SkemR+7 repoz@ci" >> /home/repoz/.ssh/authorized_keys
 
 cd /home/repoz
 
