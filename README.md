@@ -1,9 +1,9 @@
 repoz
 =====
 
-[![Build Status](https://travis-ci.org/murer/repoz.svg?branch=master)](https://travis-ci.org/murer/repoz)
 Repoz is a simple http repository.
 
+[![Build Status](https://travis-ci.org/murer/repoz.svg?branch=master)](https://travis-ci.org/murer/repoz)
 
 [Getting Started](http://murer.github.io/repoz/)
 
