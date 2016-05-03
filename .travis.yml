@@ -8,6 +8,3 @@ install:
   - ./cmds/ci/install.sh
 script:
   - "mvn test -B -Dit -Drepoz.gcs.bucket=cz-repoz-test-travisci && ./cmds/prod/update-ci.sh"
-cache:
-  directories:
-  - $HOME/.m2
