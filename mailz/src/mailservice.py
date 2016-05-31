@@ -2,6 +2,8 @@ import webutil
 import oauth
 import re
 import logging
+from google.appengine.api import mail
+from google.appengine.api import app_identity
 
 def is_valid(val):
     if not val:
@@ -36,7 +38,27 @@ class MailService(webutil.BaseHandler):
             raise webutil.UnauthorizedError()
         if password != stored_pass:
             raise webutil.UnauthorizedError()
+        return username
 
-    def get(self):
-        self.auth()
-        self.resp_json('aaaa')
+    def parse_mail_message(self):
+        ret = self.req_json()
+        attachments = ret.get('attachments') or []
+        print 'aaa'
+        ret['attachments'] = [ ( attach['name'], attach['body'] ) for attach in attachments ]
+
+    def post(self):
+        message = self.parse_mail_message()
+        username = self.auth()
+
+        sender = '%s@%s.appspotmail.com' % (username, app_identity.get_application_id())
+        mail.send_mail(sender=sender,
+            to=message['to'],
+            cc=message.get('cc'),
+            bcc=message.get('bcc'),
+            reply_to=message.get('reply_to'),
+            subject=message['subject'],
+            body=message.get('text'),
+            html=message.get('html'),
+            attachments=message['attachments'])
+
+        self.resp_json('OK')
