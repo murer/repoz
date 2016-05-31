@@ -3,6 +3,7 @@ import oauth
 import re
 import logging
 import base64
+import hashlib
 from google.appengine.api import mail
 from google.appengine.api import app_identity
 
@@ -37,7 +38,11 @@ class MailService(webutil.BaseHandler):
         stored_pass = users.get(username)
         if not stored_pass:
             raise webutil.UnauthorizedError()
-        if password != stored_pass:
+        m = hashlib.sha256()
+        m.update(password)
+        hashed_password = m.hexdigest()
+        print 'xxxx', hashed_password, stored_pass
+        if hashed_password != stored_pass:
             raise webutil.UnauthorizedError()
         return username
 
