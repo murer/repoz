@@ -27,14 +27,13 @@ class MailService(webutil.BaseHandler):
 
     def auth(self):
         username, password = self.req_user()
-        logging.info('Auth %s:%s' % (username, password))
+        logging.info('Auth %s' % (username))
         if not is_valid(username) or  not is_valid(password):
             raise webutil.UnauthorizedError()
         users = load_users()
         stored_pass = users.get(username)
         if not stored_pass:
             raise webutil.UnauthorizedError()
-        print 'x', username, stored_pass, password
         if password != stored_pass:
             raise webutil.UnauthorizedError()
 
