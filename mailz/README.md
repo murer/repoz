@@ -1,10 +1,20 @@
 # Mailz
 
-<p>Add a user here:</p>
+## Create user
+
 <a href="https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit#gid=0">
   https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit#gid=0
 </a>
-<p>echo -n 'anypassword' | openssl sha256</p>
+
+Encrypt your password with sha256
+```shell
+echo -n 'anypassword' | openssl sha256
+```
+
+You will use http basic authentication with this credential.
+
+The email sender will be ```<username>@cloudcontainerz.appspotmail.com```
+
 <pre><code>
   {
     "to": ["a4@sample.com"],
