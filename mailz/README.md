@@ -44,3 +44,5 @@ message.json
   }]
 }
 ```
+
+As you can see, attachments must be base64 encoded.
