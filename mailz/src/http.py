@@ -1,6 +1,9 @@
 import httplib
 from urlparse import urlparse
 import json as JSON
+from google.appengine.api import urlfetch
+
+urlfetch.set_default_fetch_deadline(30)
 
 class Error(Exception):
 	"""Exceptions"""
