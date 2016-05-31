@@ -15,22 +15,32 @@ You will use http basic authentication with this credential.
 
 The email sender will be ```<username>@cloudcontainerz.appspotmail.com```
 
-<pre><code>
-  {
-    "to": ["a4@sample.com"],
-    "body": "aaa",
-    "subject": "s1",
-    "reply_to": "a3@sample.com",
-    "cc": ["a2@sample.com"],
-    "bcc": ["a1@sample.com"],
-    "body": "body text",
-    "html": "<html><body><h1>html text</h1><p>:)</p></body></html>",
-    "attachments": [{
-      "name": "abc.txt",
-      "body": "dGV4dAo="
-    }, {
-      "name": "other.txt",
-      "body": "Y29udGVudCBtdXN0IGJlIGJhc2U2NCBlbmNvZGVkCg=="
-    }]
-  }
-</code></pre>
+## Sending a email
+
+```shell
+curl 'https://<username>:<password>@mailz-dot-cloudcontainerz.appspot.com/s/mail' \
+    -H 'Expect: ' -H 'Content-Type: application/json' \
+    --data-binary '@message.json'
+```
+
+message.json
+
+```json
+{
+  "to": ["a4@sample.com"],
+  "body": "aaa",
+  "subject": "s1",
+  "reply_to": "a3@sample.com",
+  "cc": ["a2@sample.com"],
+  "bcc": ["a1@sample.com"],
+  "body": "body text",
+  "html": "<html><body><h1>html text</h1><p>:)</p></body></html>",
+  "attachments": [{
+    "name": "abc.txt",
+    "body": "dGV4dAo="
+  }, {
+    "name": "other.txt",
+    "body": "Y29udGVudCBtdXN0IGJlIGJhc2U2NCBlbmNvZGVkCg=="
+  }]
+}
+```
