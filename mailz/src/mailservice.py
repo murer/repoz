@@ -20,7 +20,7 @@ def load_users():
     for value in resp.get('values') or []:
         user = value[0]
         password = value[1]
-        if is_valid(user) and is_valid(password):
+        if is_valid(user) and password:
             users[user] = password
         else:
             logging.warn('Invalid user or password "%s":"%s"' % (user, password))
