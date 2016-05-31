@@ -6,15 +6,17 @@ api_version: 1
 threadsafe: yes
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-
-#- url: /s/ping
-#  script: src.ping.app
+- url: /
+  static_files: static/index.html
+  upload: static\/index\.html
 
 - url: /s/.*
   script: src.main.app
+
+- url: /(.*)
+  static_files: static/\1
+  upload: static/.*
+
 
 libraries:
 - name: webapp2
@@ -28,4 +30,3 @@ skip_files:
 - ^(.*/)?\..*$
 - test/.*
 - cmds/.*
-
