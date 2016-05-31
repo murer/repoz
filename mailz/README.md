@@ -2,8 +2,8 @@
 
 ## Create user
 
-<a href="https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit#gid=0">
-  https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit#gid=0
+<a href="https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit">
+  https://docs.google.com/spreadsheets/d/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/edit
 </a>
 
 Encrypt your password with sha256
