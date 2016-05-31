@@ -68,14 +68,14 @@ class BaseHandler(webapp2.RequestHandler):
     def get_user(self):
         header = self.req_header('Authorization')
         if header == None:
-            return None
+            return None, None
         header = header.replace('Basic ', '')
         header = base64.b64decode(header)
         header = header.split(':')
         username = trim(header[0])
         password = trim(header[1])
         if not username:
-            return None
+            return None, None
         return username, password or ''
 
     def req_user(self):
