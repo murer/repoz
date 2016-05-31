@@ -48,8 +48,8 @@ class MailService(webutil.BaseHandler):
 
     def parse_mail_message(self):
         ret = self.req_json()
-        attachments = ret.get('attachments') or []
-        ret['attachments'] = [ ( attach['name'], base64.b64decode(attach['body']) ) for attach in attachments ]
+        if ret.get('attachments'):
+        ret['attachments'] = [ ( attach['name'], base64.b64decode(attach['body']) ) for attach in ret['attachments'] ]
         return ret
 
     def post(self):
@@ -71,7 +71,8 @@ class MailService(webutil.BaseHandler):
             msg.body = message.get('body')
         if message.get('html'):
             msg.html = message.get('html')
-        msg.attachments = message['attachments']
+        if message.get('attachments'):
+            msg.attachments = message.get('attachments')
         msg.send()
 
         self.resp_json('OK')
