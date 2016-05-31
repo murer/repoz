@@ -2,6 +2,7 @@ import webutil
 import oauth
 import re
 import logging
+import base64
 from google.appengine.api import mail
 from google.appengine.api import app_identity
 
@@ -43,22 +44,29 @@ class MailService(webutil.BaseHandler):
     def parse_mail_message(self):
         ret = self.req_json()
         attachments = ret.get('attachments') or []
-        print 'aaa'
-        ret['attachments'] = [ ( attach['name'], attach['body'] ) for attach in attachments ]
+        ret['attachments'] = [ ( attach['name'], base64.b64decode(attach['body']) ) for attach in attachments ]
+        return ret
 
     def post(self):
         message = self.parse_mail_message()
         username = self.auth()
 
         sender = '%s@%s.appspotmail.com' % (username, app_identity.get_application_id())
-        mail.send_mail(sender=sender,
+        msg = mail.EmailMessage(sender=sender,
             to=message['to'],
-            cc=message.get('cc'),
-            bcc=message.get('bcc'),
-            reply_to=message.get('reply_to'),
-            subject=message['subject'],
-            body=message.get('text'),
-            html=message.get('html'),
-            attachments=message['attachments'])
+            subject=message['subject'])
+
+        if message.get('cc'):
+            msg.cc = message.get('cc')
+        if message.get('bcc'):
+            msg.bcc = message.get('bcc')
+        if message.get('reply_to'):
+            msg.reply_to = message.get('reply_to')
+        if message.get('body'):
+            msg.body = message.get('body')
+        if message.get('html'):
+            msg.html = message.get('html')
+        msg.attachments = message['attachments']
+        msg.send()
 
         self.resp_json('OK')
