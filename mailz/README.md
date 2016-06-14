@@ -18,7 +18,7 @@ The email sender will be ```<username>@cloudcontainerz.appspotmail.com```
 ## Sending a email
 
 ```shell
-curl 'https://<username>:<password>@mailz-dot-cloudcontainerz.appspot.com/s/mail' \
+curl 'https://<username>:<password>@mailz-dot-cloudcontainerz.appspot.com/s/mail/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870' \
     -H 'Expect: ' -H 'Content-Type: application/json' \
     --data-binary '@message.json'
 ```
