@@ -41,7 +41,6 @@ class MailService(webutil.BaseHandler):
         m = hashlib.sha256()
         m.update(password)
         hashed_password = m.hexdigest()
-        print 'xxxx', hashed_password, stored_pass
         if hashed_password != stored_pass:
             raise webutil.UnauthorizedError()
         return username
