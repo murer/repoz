@@ -7,5 +7,5 @@ class PingService(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/s/ping', PingService),
-    ('/s/mail', mailservice.MailService)
+    ('/s/mail/.*', mailservice.MailService)
 ])

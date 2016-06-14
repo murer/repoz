@@ -10,11 +10,11 @@ from google.appengine.api import app_identity
 def is_valid(val):
     if not val:
         return False
-    valid_regex = re.compile('^[a-zA-Z0-9\-]{1,20}$')
+    valid_regex = re.compile('^[a-zA-Z0-9\-]{1,100}$')
     return valid_regex.match(val)
 
-def load_users():
-    req = oauth.Request('GET', 'https://sheets.googleapis.com/v4/spreadsheets/1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870/values/auth')
+def load_users(spreadsheet):
+    req = oauth.Request('GET', 'https://sheets.googleapis.com/v4/spreadsheets/%s/values/auth' % (spreadsheet))
     resp = req.execute().validate([200]).body_json()
     users = {}
     for value in resp.get('values') or []:
@@ -26,15 +26,16 @@ def load_users():
             logging.warn('Invalid user or password "%s":"%s"' % (user, password))
     return users
 
-
 class MailService(webutil.BaseHandler):
 
     def auth(self):
+        spreadsheet = self.request.path.split('/')[3]
+        logging.info('uri %s' % (spreadsheet))
         username, password = self.req_user()
         logging.info('Auth %s' % (username))
         if not is_valid(username) or  not is_valid(password):
             raise webutil.UnauthorizedError()
-        users = load_users()
+        users = load_users(spreadsheet)
         stored_pass = users.get(username)
         if not stored_pass:
             raise webutil.UnauthorizedError()
@@ -43,7 +44,7 @@ class MailService(webutil.BaseHandler):
         hashed_password = m.hexdigest()
         if hashed_password != stored_pass:
             raise webutil.UnauthorizedError()
-        return username
+        return '%s-%s' % (username, spreadsheet)
 
     def parse_mail_message(self):
         ret = self.req_json()
