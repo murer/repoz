@@ -22,7 +22,7 @@ class NotFoundError(HttpError):
 
 class ForbiddenError(HttpError):
     def __init__(self):
-        super(NotFoundError, self).__init__(403)
+        super(ForbiddenError, self).__init__(403)
 
 def trim(string):
     if string == None:

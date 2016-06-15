@@ -7,6 +7,13 @@ import hashlib
 from google.appengine.api import mail
 from google.appengine.api import app_identity
 
+SPREADSHEETS = [
+    '1LoQmZ7Qe6PfRvmMXfziW8mmZOJDLECm3lysD52MD870'
+]
+def checkSpreadsheet(spreadsheet):
+    if spreadsheet not in SPREADSHEETS:
+        raise webutil.ForbiddenError()
+
 def is_valid(val):
     if not val:
         return False
@@ -30,6 +37,7 @@ class MailService(webutil.BaseHandler):
 
     def auth(self):
         spreadsheet = self.request.path.split('/')[3]
+        checkSpreadsheet(spreadsheet)
         logging.info('uri %s' % (spreadsheet))
         username, password = self.req_user()
         logging.info('Auth %s' % (username))
