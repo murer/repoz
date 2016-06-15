@@ -17,7 +17,7 @@ def checkSpreadsheet(spreadsheet):
 def is_valid(val):
     if not val:
         return False
-    valid_regex = re.compile('^[a-zA-Z0-9\-]{1,100}$')
+    valid_regex = re.compile('^[a-zA-Z0-9]{1,100}$')
     return valid_regex.match(val)
 
 def load_users(spreadsheet):
@@ -33,14 +33,21 @@ def load_users(spreadsheet):
             logging.warn('Invalid user or password "%s":"%s"' % (user, password))
     return users
 
+def parseUsername(username):
+    array = username.split('-')
+    if len(array) < 2:
+        raise webutil.UnauthorizedError()
+    username = array.pop(0)
+    spreadsheet = '-'.join(array)
+    return username, spreadsheet
+
 class MailService(webutil.BaseHandler):
 
     def auth(self):
-        spreadsheet = self.request.path.split('/')[3]
-        checkSpreadsheet(spreadsheet)
-        logging.info('uri %s' % (spreadsheet))
         username, password = self.req_user()
         logging.info('Auth %s' % (username))
+        username, spreadsheet = parseUsername(username)
+        checkSpreadsheet(spreadsheet)
         if not is_valid(username) or  not is_valid(password):
             raise webutil.UnauthorizedError()
         users = load_users(spreadsheet)
