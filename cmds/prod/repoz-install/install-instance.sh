@@ -197,6 +197,13 @@ ln -s /etc/apache2/sites-available/repoz-ssl /etc/apache2/sites-enabled/repoz-ss
 service apache2 restart
 
 ############
+#./certbot-auto certonly --staging --agree-tos -n --register-unsafely-without-email --webroot -w /var/www/ -d repoz.dextra.com.br
+
+#    SSLCertificateFile /etc/letsencrypt/live/repoz.dextra.com.br/cert.pem
+#    SSLCertificateKeyFile /etc/letsencrypt/live/repoz.dextra.com.br/privkey.pem
+#    SSLCertificateChainFile /etc/letsencrypt/live/repoz.dextra.com.br/chain.pem
+
+############
 cd /home/repoz
 mkdir opt
 cd opt
