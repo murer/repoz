@@ -1,0 +1,32 @@
+application: cloudcontainerz
+module: mailz
+version: last
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /
+  static_files: static/index.html
+  upload: static\/index\.html
+
+- url: /s/.*
+  script: src.main.app
+
+- url: /(.*)
+  static_files: static/\1
+  upload: static/.*
+
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- test/.*
+- cmds/.*
