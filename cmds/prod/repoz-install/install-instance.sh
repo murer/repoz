@@ -19,7 +19,7 @@ curl -H 'Metadata-Flavor: Google' 'http://metadata/computeMetadata/v1/instance/a
 chmod +x cmds/prod/repoz-install/repoz-update.sh
 
 ############
-gsutil -m cp -r gs://cz-repoz-config/repoz-repo .
+gsutil -qm cp -r gs://cz-repoz-config/repoz-repo .
 
 mkdir -p packs/WEB-INF/classes
 if [ ! -f repoz-repo/repoz.properties ]; then
@@ -56,7 +56,7 @@ date
 cd /opt
 
 ############
-gsutil cp -q gs://cz-repoz/pub/jdk/oracle/jdk-7u67-linux-x64.tar.gz jdk.tar.gz
+gsutil -q cp gs://cz-repoz/pub/jdk/oracle/jdk-7u67-linux-x64.tar.gz jdk.tar.gz
 
 tar xzf jdk.tar.gz
 sudo ln -s jdk1.7.0_67 jdk
@@ -168,9 +168,13 @@ tee /etc/apache2/sites-available/repoz-ssl <<-EOF
     SSLProtocol all -SSLv2
     SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM
 
-    SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.pem
-    SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.key
-    SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
+    #SSLCertificateFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.pem
+    #SSLCertificateKeyFile /home/repoz/repoz-repo/ssl/repoz.dextra.com.br.key
+    #SSLCertificateChainFile /home/repoz/repoz-repo/ssl/sub.class1.server.ca.pem
+
+    SSLCertificateFile /etc/letsencrypt/live/repoz.dextra.com.br/cert.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/repoz.dextra.com.br/chain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/repoz.dextra.com.br/privkey.pem
 
     <FilesMatch "\.(cgi|shtml|phtml|php)$">
         SSLOptions +StdEnvVars
@@ -197,7 +201,7 @@ EOF
 cd /home/repoz
 mkdir opt
 cd opt
-gsutil cp -q gs://cz-repoz/pub/jboss/jboss-as-7.1.1.Final.zip jboss.zip
+gsutil -q cp gs://cz-repoz/pub/jboss/jboss-as-7.1.1.Final.zip jboss.zip
 unzip jboss.zip
 ln -s jboss-as-7.1.1.Final jboss
 
