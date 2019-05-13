@@ -1,6 +1,7 @@
 language: java
 before_script:
   - "./decrypt.sh"
+  - echo "$REPOZSECRET" | base64 
   - "export JAVA_OPTS=-Xmx512m"
 install:
   - ./cmds/ci/install.sh
