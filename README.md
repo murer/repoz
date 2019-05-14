@@ -10,4 +10,3 @@ Repoz is a simple http repository.
 Client: https://github.com/romajs/repoz-cli
 
 Developed by [@murer](https://github.com/murer) and powered by [Dextra](http://www.dextra.com.br/)
-

@@ -77,8 +77,8 @@ java -version
 a2enmod proxy proxy_http ssl headers rewrite
 htpasswd -bc /etc/apache2/passwd root "$REPOZ_PASSWORD"
 
-rm /etc/apache2/sites-enabled/000-default
-tee /etc/apache2/sites-available/repoz <<-EOF
+rm /etc/apache2/sites-enabled/000-default.conf
+tee /etc/apache2/sites-available/repoz.conf <<-EOF
 <Location /home/repoz>
     AuthType Basic
     AuthName "repoz"
@@ -122,7 +122,7 @@ tee /etc/apache2/sites-available/repoz <<-EOF
 </VirtualHost>
 EOF
 
-tee /etc/apache2/sites-available/repoz-ssl <<-EOF
+tee /etc/apache2/sites-available/repoz-ssl.conf <<-EOF
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
     RewriteEngine on
@@ -192,8 +192,7 @@ tee /etc/apache2/sites-available/repoz-ssl <<-EOF
 </IfModule>
 EOF
 
-cp /var/www/index.html /var/www/index.html.old
-tee /var/www/index.html <<-EOF
+tee /var/www/html/index.html <<-EOF
 <html><head><title>Repoz</title></head><body onload="location='repoz';"></body></html>
 EOF
 
