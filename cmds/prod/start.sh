@@ -5,7 +5,8 @@ gcloud compute instances create repoz \
     --boot-disk-auto-delete \
     --zone us-central1-a \
     --machine-type n1-standard-1 \
-    --image debian \
+    --image-project debian-cloud \
+    --image-family debian-9 \
     --address 130.211.143.253 \
 		--metadata-from-file 'startup-script=cmds/prod/repoz-install/install-instance.sh,repoz-update=cmds/prod/repoz-install/repoz-update.sh' \
     --scopes 'https://www.googleapis.com/auth/devstorage.read_only'
